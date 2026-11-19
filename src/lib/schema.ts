@@ -1,13 +1,13 @@
 import { SITE } from '../site';
 
-const abs = (p: string) => new URL(p, SITE.url).href;
+const abs = (p: string) => new URL(p, SITE.siteUrl).href;
 
 export const organization = () => ({
   '@context': 'https://schema.org',
   '@type': 'Organization',
   '@id': abs('/#org'),
   name: SITE.brand,
-  url: SITE.url,
+  url: SITE.siteUrl,
   logo: abs('/apple-touch-icon.png'),
   email: SITE.email,
   contactPoint: { '@type': 'ContactPoint', contactType: 'sales', email: SITE.email, availableLanguage: ['English'] },
@@ -18,7 +18,7 @@ export const website = () => ({
   '@type': 'WebSite',
   '@id': abs('/#website'),
   name: SITE.brand,
-  url: SITE.url,
+  url: SITE.siteUrl,
   publisher: { '@id': abs('/#org') },
 });
 

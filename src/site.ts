@@ -3,7 +3,9 @@
 export const SITE = {
   name: 'Catalyst',
   brand: 'Catalyst API',
-  url: 'https://catalyst-api.com',
+  url: 'https://catalyst-api.com', // the production domain, as named in the legal pages
+  // where this build is served (astro.config `site`): used for absolute links such as og:image and canonical
+  siteUrl: (import.meta.env.SITE as string | undefined)?.replace(/\/$/, '') || 'https://catalyst-api.com',
   email: 'consult@catalyst-api.com',
   legalName: '[Company legal name]',
   address: '[Registered address]',
