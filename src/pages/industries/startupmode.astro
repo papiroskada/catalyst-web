@@ -249,6 +249,7 @@ const collage = [
   .feat.js .tpanel + .tpanel { margin-top: 0 }
   .feat.js .tpanel.on { animation: tin .45s cubic-bezier(.2, .7, .2, 1) }
   @keyframes tin { from { opacity: 0; transform: translateY(10px) } }
+  @keyframes tfade { from { opacity: 0 } }
 
   /* capabilities: heading on the left, a ruled list on the right */
   .capwrap { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 40px 72px; align-items: start }
@@ -274,8 +275,16 @@ const collage = [
     .flow { grid-template-columns: minmax(0, 1fr) }
     .caps li { grid-template-columns: 44px minmax(0, 1fr) }
     .caps p { grid-column: 2; padding-top: 0 }
-    .tablist { width: 100% }
-    .tablist button { flex: 1 1 auto }
+    /* tabs: one row that scrolls sideways instead of wrapping, and every tab keeps the same width
+       whether selected or not (the dot's space is always reserved), so switching never reflows the row */
+    .tablist { width: calc(100% + 48px); margin-inline: -24px; padding: 6px 24px; border-radius: 0; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; background: none }
+    .tablist::-webkit-scrollbar { display: none }
+    .tablist button { flex: none; white-space: nowrap; padding: 10px 16px; font-size: 14px; background: var(--tint) }
+    .tablist button::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%; background: transparent; vertical-align: 1px; transition: background-color .25s }
+    .tablist button[aria-selected="true"] { background: var(--navy); color: #fff; box-shadow: none }
+    .tablist button[aria-selected="true"]::before { margin-right: 8px; background: #fff }
+    /* the panel only fades in: sliding it as well made the swap look jumpy on a phone */
+    .feat.js .tpanel.on { animation-name: tfade }
   }
   @media (prefers-reduced-motion: reduce) { .feat.js .tpanel.on, .piece { animation: none } .piece { transform: none } .flow.anim .res > * { opacity: 1; transform: none; transition: none } }
 </style>
@@ -312,6 +321,9 @@ const collage = [
         document.getElementById(o.getAttribute('aria-controls')!)!.classList.toggle('on', on);
       });
       if (focus) t.focus();
+      // phones: the tab row scrolls sideways; bring the chosen tab fully into view
+      const row = t.parentElement!;
+      if (row.scrollWidth > row.clientWidth) row.scrollTo({ left: row.scrollLeft + t.getBoundingClientRect().left - row.getBoundingClientRect().left - (row.clientWidth - t.offsetWidth) / 2, behavior: 'smooth' });
     };
     tabs.forEach((t, i) => {
       t.addEventListener('click', () => select(t));
