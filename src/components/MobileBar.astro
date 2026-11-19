@@ -1,0 +1,55 @@
+---
+// Phones only (≤640px): a bar pinned to the bottom of the screen, in thumb reach, with "Get in touch"
+// (opens the contact dialog, see ContactDialog.astro) and a "Back to top" button.
+// It slides in once the first screen has been scrolled past and steps aside when the final
+// contact section comes into view, since that has its own button. Rendered once per page by Base.
+import { SITE } from '../site';
+---
+<div class="mbar" hidden>
+  <a class="btn mbar-cta" href={`mailto:${SITE.email}`} data-contact>Get in touch</a>
+  <button class="mbar-top" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" /></svg>
+  </button>
+</div>
+
+<style>
+  .mbar { display: none }
+  @media (max-width: 640px) {
+    .mbar { position: fixed; left: 12px; right: 12px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 45; /* 20px clear of the edge: Safari's collapsed toolbar takes taps right at the bottom */
+      display: flex; gap: 8px; padding: 8px; border-radius: 999px;
+      background: rgba(251, 251, 253, .82); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+      border: 1px solid var(--line); box-shadow: 0 12px 32px rgba(26, 35, 64, .16);
+      opacity: 0; translate: 0 24px; pointer-events: none; transition: opacity .25s, translate .3s cubic-bezier(.2, .8, .2, 1) }
+    .mbar.show { opacity: 1; translate: 0 0; pointer-events: auto }
+    .mbar[hidden] { display: none }
+    .mbar-cta { flex: 1; justify-content: center; padding: 14px 20px; font-size: 16px }
+    .mbar-top { flex: none; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 0; border-radius: 50%; background: #fff; color: var(--navy); box-shadow: inset 0 0 0 1px var(--line); cursor: pointer }
+    .mbar-top:active, .mbar-cta:active { scale: .96 }
+  }
+  @media (prefers-reduced-motion: reduce) { .mbar { transition: none } }
+</style>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('.mbar');
+  if (bar) {
+    bar.hidden = false; // without JavaScript the bar stays hidden: the page's own contact section is enough
+    const contact = document.getElementById('contact');
+    // typing: while a field has focus the on-screen keyboard is up, and the bar would float above it
+    const typing = () => { const el = document.activeElement; return !!el && (el.matches('input, textarea, select, [contenteditable]')); };
+    const update = () => {
+      const past = scrollY > innerHeight * .8;
+      // hide once the contact section (or anything after it) is on screen
+      const atEnd = contact ? contact.getBoundingClientRect().top < innerHeight - 40 : false;
+      bar.classList.toggle('show', past && !atEnd && !typing());
+    };
+    addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', update);
+    document.addEventListener('focusin', update);
+    document.addEventListener('focusout', () => setTimeout(update, 0)); // after focus has moved on
+    update();
+    bar.querySelector('.mbar-top')!.addEventListener('click', (e) => {
+      scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      (e.currentTarget as HTMLElement).blur();
+    });
+  }
+</script>

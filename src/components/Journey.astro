@@ -1,0 +1,332 @@
+---
+// Hero + scroll story for the "How we work" page.
+// Hero: large title on the left, the conversation card on the right (static).
+// Desktop (≥1000px): below the hero a sticky card in the left column shows the scene of the step in the
+// middle of the screen, with a stepper under it, while a faint progress rail on the right fills as the
+// steps go by; after the last step the card scrolls away with it.
+// Narrow screens: hero text with its card underneath, then a plain list with a scene under each step.
+// Scenes (JourneyScene.astro) are plain HTML, so they can be rendered more than once without id clashes.
+import Icon from './Icon.astro';
+import JourneyScene from './JourneyScene.astro';
+
+type Scene = 'talk' | 'map' | 'first' | 'grow' | 'run';
+interface Step { title: string; text: string; tag: string; icon: string; scene: Scene; tone: string }
+interface Props { items: readonly Step[]; label?: string }
+const { items, label = 'Steps' } = Astro.props;
+// the hero plays the conversation, so the steps listed here are numbered from 02
+const pad = (i: number) => String(i + 2).padStart(2, '0');
+---
+<section class="jx" aria-label={label}>
+  <div class="jhead" id="hero">
+    <div class="wrap jgrid">
+      <div class="jcopy"><slot name="hero" /></div>
+      <div class="jart t-blue hcard" aria-hidden="true"><div class="scene"><JourneyScene kind="talk" /></div></div>
+    </div>
+  </div>
+
+  <div class="jbody">
+  <!-- desktop: pinned card that shows the active step's scene, with a stepper under it -->
+  <div class="jpin" aria-hidden="true">
+    <div class="jbox">
+      {items.map((s, i) => (
+        <div class:list={['jart', `t-${s.tone}`, { on: i === 0 }]} data-i={i}>
+          <div class="scene"><JourneyScene kind={s.scene} /></div>
+        </div>
+      ))}
+    </div>
+    <div class="jsegs">{items.map((_, i) => <i class:list={{ on: i === 0 }} />)}</div>
+  </div>
+
+  <div class="wrap jgrid jr">
+  <div class="jcol" />
+  <div class="jlist">
+  <span class="rail" aria-hidden="true"><span class="fill" /></span>
+  <ol class="jsteps">
+    {items.map((s, i) => (
+      <li class:list={['jstep', { on: i === 0 }]} data-i={i}>
+        <span class="dot" aria-hidden="true" />
+        <div class="jtop">
+          <span class="jn" aria-hidden="true">{pad(i)}</span>
+          <span class="chip"><Icon name={s.icon} />{s.tag}</span>
+        </div>
+        <h3><span class="sr-only">Step {i + 2}: </span>{s.title}</h3>
+        <p>{s.text}</p>
+        <div class:list={['jart', 'inline', `t-${s.tone}`]} aria-hidden="true">
+          <div class="scene"><JourneyScene kind={s.scene} /></div>
+        </div>
+      </li>
+    ))}
+  </ol>
+  </div>
+  </div>
+  </div>
+</section>
+
+
+<style>
+  .jx { --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); --rail-x: 31px; --hero-bg: radial-gradient(ellipse 55% 45% at 30% 50%, color-mix(in srgb, var(--bloom) 70%, transparent), transparent 72%), linear-gradient(135deg, var(--g1) 0%, var(--g2) 52%, var(--g3) 100%); position: relative; padding-bottom: clamp(96px, 14vh, 160px) }
+  .jpin, .jcol { display: none }
+  .jr { position: relative }
+  .jlist { position: relative }
+  .jbody { position: relative }
+
+  /* ---------- hero ---------- */
+  .jhead { position: relative; padding-top: calc(var(--hh) + clamp(48px, 8vh, 88px)); margin-bottom: 88px }
+  .jcopy { display: flex; flex-direction: column; align-items: flex-start }
+  .jcopy :global(h1) { font-size: clamp(40px, 5vw, 76px); line-height: 1.02; letter-spacing: -.03em; max-width: 13ch }
+  .jcopy :global(.lede) { margin: 24px 0 0; font-size: clamp(17px, 1.4vw, 20px) }
+  .hcard { margin-top: 36px }
+
+  /* ---------- steps list ---------- */
+  .jsteps { list-style: none; margin: 0 auto; padding: 0; display: flex; flex-direction: column; gap: 72px; max-width: 640px; position: relative }
+  .rail, .dot { display: none }
+  .jtop { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px }
+  .jn { font: 600 clamp(56px, 7vw, 88px)/.9 var(--display); letter-spacing: -.04em; color: var(--navy) }
+  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 10px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font: 500 14px var(--body); color: var(--navy); white-space: nowrap; box-shadow: 0 4px 14px rgba(26, 35, 64, .06) }
+  .chip :global(svg) { width: 18px; height: 18px; color: var(--accent) }
+  .jstep h3 { font: 600 clamp(24px, 2.4vw, 32px)/1.15 var(--display); letter-spacing: -.015em; max-width: 20ch }
+  .jstep p { margin: 14px 0 0; font-size: 17px; line-height: 1.6; color: var(--body-ink); max-width: 52ch }
+  .jstep .jart.inline { margin-top: 28px }
+
+  /* ---------- art panels ---------- */
+  /* card surface: the hero palette as soft colour blobs (a "mesh"), no diagonal sheen, plus fine grain
+     so it reads as printed rather than plastic; a 1px light inner edge instead of a floating shadow */
+  .jart { position: relative; height: 320px; border-radius: 24px; overflow: hidden; display: grid; place-items: center;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5);
+    background:
+      radial-gradient(55% 60% at 8% 12%, color-mix(in srgb, var(--c1) 90%, transparent), transparent 70%),
+      radial-gradient(50% 55% at 95% 92%, color-mix(in srgb, var(--bl) 80%, transparent), transparent 70%),
+      radial-gradient(40% 45% at 88% 8%, color-mix(in srgb, var(--c3) 90%, transparent), transparent 70%),
+      var(--c2) }
+  .jart::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; border-radius: inherit;
+    background-image: var(--grain); background-size: 180px; mix-blend-mode: overlay; opacity: .14 }
+  .t-blue { --c1: var(--g1); --c2: var(--g2); --c3: var(--g3); --bl: var(--bloom) } /* exactly the hero */
+  .t-violet { --c1: #AEB0E8; --c2: #E3E2F6; --c3: #CBCAEE; --bl: #A9ACEC }
+  .t-sky { --c1: #97BCE4; --c2: #DCE8F4; --c3: #BFD3EC; --bl: #98BEEA }
+  .t-lilac { --c1: #B7A9E6; --c2: #E6E0F6; --c3: #D0C6EF; --bl: #B3A6EC }
+  .t-indigo { --c1: #9FA8DC; --c2: #DEE1F2; --c3: #C3C8E8; --bl: #A0AAE4 }
+
+  .scene { position: relative; z-index: 1; width: 300px; height: 276px; font-family: var(--body); color: var(--ink) }
+  .scene :global(.pc) { position: absolute; box-shadow: 0 0 0 1px rgba(26, 35, 64, .05), 0 1px 2px rgba(26, 35, 64, .06), 0 6px 16px -6px rgba(26, 35, 64, .12) }
+  .scene :global(.bub) { display: flex; align-items: center; gap: 10px; max-width: 236px; padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.35; background: #fff }
+  .scene :global(.chat) { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: 14px }
+  .scene :global(.chat .pc) { position: relative; flex: none }
+  .scene :global(.chat .us) { align-self: flex-start }
+  .scene :global(.chat .them), .scene :global(.chat .typing) { align-self: flex-end }
+  .scene :global(.bub.us) { border-bottom-left-radius: 6px }
+  .scene :global(.bub.them) { background: var(--navy); color: #fff; border-bottom-right-radius: 6px }
+  .scene :global(.bub.sm) { font-size: 13.5px }
+  .scene :global(.bub.us.sm) { background: #fff; color: #2F6B4D; font-weight: 500; border-bottom-left-radius: 18px; border-bottom-right-radius: 6px }
+  .scene :global(.bub.them.sm) { background: #fff; color: var(--ink); border-bottom-right-radius: 18px; border-bottom-left-radius: 6px }
+  .scene :global(.av) { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--navy); color: #fff; font: 600 12px var(--display) }
+  .scene :global(.av.b) { background: #9F8FD9 }
+  .scene :global(.av.c) { background: #7EA3D6 }
+  .scene :global(.av.s) { width: 22px; height: 22px; font-size: 10px; border: 2px solid #fff; margin-right: -8px; box-shadow: none }
+  .scene :global(.file), .scene :global(.help) { display: flex; align-items: center; gap: 12px; padding: 10px 16px 10px 10px; border-radius: 14px; background: #fff }
+  .scene :global(.file b), .scene :global(.help b) { display: block; font-size: 13.5px; font-weight: 600 }
+  .scene :global(.file small), .scene :global(.help small) { display: block; font-size: 12px; color: var(--mid) }
+  .scene :global(.fi), .scene :global(.hi) { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: #E3F1E8; color: #2F6B4D }
+  .scene :global(.hi) { background: var(--soft); color: var(--navy) }
+  .scene :global(.fi svg), .scene :global(.hi svg) { width: 20px; height: 20px }
+  .scene :global(.typing) { display: flex; gap: 5px; padding: 12px 14px; border-radius: 16px; background: var(--navy) }
+  .scene :global(.typing i) { width: 6px; height: 6px; border-radius: 50%; background: #fff; opacity: .5; animation: jr-dot 1.2s infinite }
+  .scene :global(.typing i:nth-child(2)) { animation-delay: .15s }
+  .scene :global(.typing i:nth-child(3)) { animation-delay: .3s }
+  .scene :global(.typing.light) { background: #fff; border-bottom-left-radius: 6px }
+  .scene :global(.typing.light i) { background: var(--navy) }
+  .scene :global(.typing:not(.light)) { border-bottom-right-radius: 6px }
+  @keyframes jr-dot { 0%, 60%, 100% { opacity: .35; transform: none } 30% { opacity: 1; transform: translateY(-3px) } }
+
+  .scene :global(.card) { padding: 16px; border-radius: 16px; background: #fff }
+  .scene :global(.lbl) { display: block; margin-bottom: 12px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mid) }
+  .scene :global(.nodes) { display: flex; align-items: center; gap: 4px }
+  .scene :global(.nodes span) { padding: 6px 8px; border-radius: 8px; background: var(--tint); font-size: 12px; font-weight: 500; white-space: nowrap }
+  .scene :global(.nodes span.hl) { background: var(--navy); color: #fff }
+  .scene :global(.nodes em) { flex: 1; min-width: 6px; height: 2px; border-radius: 2px; background: var(--g1) }
+  .scene :global(.who) { display: flex; align-items: center; margin-top: 14px }
+  .scene :global(.who small) { margin-left: 16px; font-size: 12px; color: var(--mid) }
+  .scene :global(.bar) { display: block; height: 7px; margin-top: 8px; border-radius: 4px; background: #E3E7F0 }
+  .scene :global(.bar.dark) { height: 10px; background: var(--navy); margin: 0 }
+  .scene :global(.qfoot) { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--line) }
+  .scene :global(.ok) { padding: 4px 10px; border-radius: 999px; background: #E3F1E8; color: #2F6B4D; font-size: 12px; font-weight: 600 }
+
+  .scene :global(.win) { border-radius: 14px; background: #fff; overflow: hidden; padding-bottom: 6px }
+  .scene :global(.wbar) { display: flex; align-items: center; gap: 5px; padding: 10px 12px; border-bottom: 1px solid var(--line); background: #F7F8FC }
+  .scene :global(.wbar i) { width: 7px; height: 7px; border-radius: 50%; background: #D3D8E4 }
+  .scene :global(.wbar b) { margin-left: 8px; font-size: 12.5px; font-weight: 600 }
+  .scene :global(.row) { display: grid; grid-template-columns: 58px 1fr auto; align-items: center; gap: 8px; padding: 9px 12px; font-size: 12.5px; border-bottom: 1px solid #F0F2F7 }
+  .scene :global(.row:last-child) { border-bottom: 0 }
+  .scene :global(.row .bar) { margin: 0; height: 6px }
+  .scene :global(.row.ghost) { opacity: .6 }
+  .scene :global(.mono) { font-family: var(--mono); font-size: 11px; color: var(--mid) }
+  .scene :global(.st) { padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 600 }
+  .scene :global(.st.amber) { background: #FBEFD9; color: #8A5A12 }
+  .scene :global(.st.green) { background: #E3F1E8; color: #2F6B4D }
+  .scene :global(.st.blue) { background: #E3EAF9; color: #2D4A8A }
+  .scene :global(.live) { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--navy); color: #fff; font-size: 12px; font-weight: 600 }
+  .scene :global(.live i), .scene :global(.shead i) { width: 8px; height: 8px; border-radius: 50%; background: #5FD08F; box-shadow: 0 0 0 0 rgba(95, 208, 143, .6); animation: jr-ping 2s infinite }
+  @keyframes jr-ping { 70% { box-shadow: 0 0 0 7px rgba(95, 208, 143, 0) } 100% { box-shadow: 0 0 0 0 rgba(95, 208, 143, 0) } }
+  .scene :global(.toast) { padding: 10px 14px; border-radius: 12px; background: #fff; color: #2F6B4D; font-size: 13px; font-weight: 600 }
+
+  .scene :global(.tiles) { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; box-shadow: none }
+  .scene :global(.tile) { display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 14px; background: #fff; font-size: 13px; font-weight: 600; box-shadow: 0 0 0 1px rgba(26, 35, 64, .05), 0 1px 2px rgba(26, 35, 64, .06), 0 6px 16px -6px rgba(26, 35, 64, .12) }
+  .scene :global(.tile em) { font-style: normal; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #E3F1E8; color: #2F6B4D; font-size: 12px }
+  .scene :global(.tile.next) { background: rgba(255, 255, 255, .45); border: 1.5px dashed rgba(26, 35, 64, .35); box-shadow: none; color: var(--navy) }
+  .scene :global(.tile.next em) { background: var(--navy); color: #fff; font-size: 16px }
+  .scene :global(.ver) { padding: 6px 12px; border-radius: 999px; background: var(--navy); color: #fff; font: 600 12px var(--mono) }
+
+  .scene :global(.shead) { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600 }
+  .scene :global(.up) { display: flex; gap: 3px; margin: 14px 0 }
+  .scene :global(.up i) { flex: 1; height: 26px; border-radius: 3px; background: #7FCB9C }
+  .scene :global(.up i.lo) { height: 26px; background: #C8E9D4 }
+  .scene :global(.checks) { display: flex; gap: 6px; flex-wrap: wrap }
+  .scene :global(.checks span) { padding: 4px 9px; border-radius: 999px; background: var(--tint); font-size: 11.5px; font-weight: 500; color: var(--navy) }
+
+  /* ---------- desktop: hero panel that shrinks into a sticky card ---------- */
+  @media (min-width: 1000px) {
+    .jgrid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(48px, 6vw, 96px) }
+    .jcol { display: block }
+    .jpin { display: block; position: sticky; top: 0; z-index: 0; height: 100vh; margin-bottom: -100vh; pointer-events: none; translate: 0 var(--pin-y, 0px) }
+    /* geometry comes from the script: --bx/--by/--bw/--bh card box, --sc scene scale */
+    .jbox { position: absolute; left: var(--bx, 0px); top: var(--by, 0px); width: var(--bw, 50%); height: var(--bh, 480px); border-radius: var(--r-lg); overflow: hidden }
+    .jbox::after { content: ""; position: absolute; inset: 0; z-index: 3; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .55); pointer-events: none }
+    .jbox .jart { position: absolute; inset: 0; height: auto; border-radius: 0; opacity: 0; transition: opacity .6s }
+    .jbox .jart.on { opacity: 1 }
+    .jbox .scene { transform: scale(var(--sc, 1.3)) }
+    .jbox .scene :global(.pc) { opacity: 0; translate: 0 18px; transition: opacity .3s, translate .3s }
+    /* pieces play in once the card has come into view */
+    .jx.formed .jbox .jart.on .scene :global(.pc) { opacity: 1; translate: 0 0; transition: opacity .5s calc(.2s + var(--d, 0s)), translate .7s cubic-bezier(.2, .7, .2, 1) calc(.2s + var(--d, 0s)) }
+    .jsegs { position: absolute; left: var(--bx, 0px); top: calc(var(--by, 0px) + var(--bh, 0px) + 18px); width: var(--bw, 50%); display: flex; gap: 8px; padding-inline: 4px }
+    .jsegs i { flex: 1; height: 4px; border-radius: 4px; background: var(--soft); transition: background-color .4s }
+    .jsegs i.on { background: var(--navy) }
+
+    .jr { z-index: 1 }
+    /* hero fills the first screen: copy on the left, its own card on the right */
+    .jhead { margin: 0; padding: var(--hh) 0 0 }
+    .jhead .jgrid { min-height: calc(100vh - var(--hh)); align-items: center }
+    .hcard { margin: 0; height: clamp(400px, 56vh, 520px); border-radius: var(--r-lg) }
+    .hcard .scene { transform: scale(1.45) }
+    /* steps start a little under the hero */
+    .jbody { margin-top: calc(72px - var(--by, 180px)) }
+
+    /* top padding drops step 02 so its text is centred on the card as they come in:
+       card centre ≈ 50vh + header/2 - 11px below the block top, a step's centre is 31vh into it */
+    .jsteps { gap: 0; padding-left: 72px; padding-block: calc(19vh + var(--hh) / 2 - 11px) 14vh }
+    .jstep { position: relative; min-height: 62vh; display: flex; flex-direction: column; justify-content: center; padding-block: 24px }
+    .jstep .jart.inline { display: none }
+    .rail { display: block; position: absolute; left: var(--rail-x); top: 0; bottom: 0; width: 2px; border-radius: 2px;
+      /* faint track that fades in from the top; the fill below grows with scrolling */
+      background: color-mix(in srgb, var(--soft) 55%, transparent); -webkit-mask-image: linear-gradient(transparent, #000 28vh); mask-image: linear-gradient(transparent, #000 28vh) }
+    .fill { position: absolute; inset: 0 0 auto; height: calc(var(--p, 0) * 100%); border-radius: inherit; background: linear-gradient(var(--g1), var(--navy)) }
+    .dot { display: block; position: absolute; left: calc(var(--rail-x) - 72px - 7px + 1px); top: 50%; width: 14px; height: 14px; margin-top: -7px; border-radius: 50%; background: var(--paper); border: 2px solid var(--soft); transition: border-color .4s, background-color .4s, box-shadow .4s }
+    .jstep.past .dot, .jstep.on .dot { border-color: var(--navy); background: var(--navy) }
+    .jstep.on .dot { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 25%, transparent) }
+    /* with JS, steps that are not in focus fade back so the eye lands on one at a time */
+    .jx.js .jstep { opacity: .32; transition: opacity .5s }
+    .jx.js .jstep.on { opacity: 1 }
+  }
+  /* phones: tighter gaps, in line with the rest of the site */
+  @media (max-width: 640px) {
+    .jx { padding-bottom: 40px } /* + the next section's 40px = 80px between sections */
+    .jhead { margin-bottom: 80px } /* hero → steps reads as a new section */
+    .jsteps { gap: 48px }
+  }
+  @media (max-width: 380px) {
+    .scene { transform: scale(.92) }
+    .chip { font-size: 13px }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scene :global(.typing i), .scene :global(.live i), .scene :global(.shead i) { animation: none }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.jx');
+  if (root) {
+    root.classList.add('js');
+    const pin = root.querySelector<HTMLElement>('.jpin')!;
+    const col = root.querySelector<HTMLElement>('.jr .jcol')!;
+    const steps = Array.from(root.querySelectorAll<HTMLElement>('.jstep'));
+    const body = root.querySelector<HTMLElement>('.jbody')!;
+    const arts = Array.from(root.querySelectorAll<HTMLElement>('.jbox .jart'));
+    const segs = Array.from(root.querySelectorAll<HTMLElement>('.jsegs i'));
+    const list = root.querySelector<HTMLElement>('.jlist')!;
+    const rail = list.querySelector<HTMLElement>('.rail');
+    const desktop = matchMedia('(min-width: 1000px)');
+    let cur = 0;
+
+    const set = (i: number) => {
+      if (i === cur) return;
+      cur = i;
+      steps.forEach((s, k) => { s.classList.toggle('on', k === i); s.classList.toggle('past', k < i); });
+      arts.forEach((a, k) => a.classList.toggle('on', k === i));
+      segs.forEach((s, k) => s.classList.toggle('on', k <= i));
+    };
+
+    // the step crossing the middle band of the viewport is the active one
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) set(Number((e.target as HTMLElement).dataset.i)); });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    steps.forEach((s) => io.observe(s));
+
+    const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+    const px = (k: string, v: number) => root.style.setProperty(k, `${v.toFixed(2)}px`);
+
+    let raf = 0;
+    const paint = () => {
+      raf = 0;
+      // progress rail fills up to the middle of the viewport
+      const r = (rail ?? list).getBoundingClientRect();
+      list.style.setProperty('--p', clamp((innerHeight / 2 - r.top) / r.height).toFixed(4));
+      if (!desktop.matches) return;
+
+      const vh = pin.clientHeight;
+      const hh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hh')) || 72;
+      const c = col.getBoundingClientRect();
+      // card: left column, vertically centred under the header, room for the segments below it
+      const H = clamp(Math.min(540, vh - hh - 110), 360, 540);
+      const T = hh + Math.max(24, (vh - hh - H - 22) / 2);
+      px('--bx', c.left);
+      px('--bw', c.width);
+      const w = c.width;
+      px('--by', T);
+      px('--bh', H);
+      // the scene fills most of the card, so the product is the hero rather than the background
+      root.style.setProperty('--sc', clamp(Math.min(H / 276 * .9, w / 300 * .9), 1, 1.6).toFixed(4));
+      // the first step's scene plays in once the card has come up into view
+      if (body.getBoundingClientRect().top < vh * .4) root.classList.add('formed');
+      // once the last step passes the card's centre, the card leaves with it instead of staying pinned
+      const last = steps[steps.length - 1];
+      if (last) {
+        const shift = parseFloat(root.style.getPropertyValue('--pin-y')) || 0;
+        const pinTop = pin.getBoundingClientRect().top - shift;
+        const lr = last.getBoundingClientRect();
+        const lastMid = lr.top + lr.height / 2;
+        px('--pin-y', Math.min(0, lastMid - (pinTop + T + H / 2)));
+      }
+    };
+    // CSS keeps a wrapped bubble at its max-width, leaving a gap after the longest line;
+    // trim every bubble to that line (works at any scale: the gap is divided by the drawn/layout ratio)
+    const hug = () => {
+      root.querySelectorAll<HTMLElement>('.scene .bub').forEach((el) => {
+        el.style.width = '';
+        if (!el.offsetWidth) return;
+        const box = el.getBoundingClientRect();
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        const gap = (box.right - parseFloat(getComputedStyle(el).paddingRight) * box.width / el.offsetWidth - range.getBoundingClientRect().right) / (box.width / el.offsetWidth);
+        if (gap > 2) el.style.width = `${Math.ceil(el.offsetWidth - gap + 1)}px`;
+      });
+    };
+    document.fonts?.ready.then(hug);
+    addEventListener('resize', hug);
+    desktop.addEventListener('change', hug);
+    hug();
+
+    const req = () => { if (!raf) raf = requestAnimationFrame(paint); };
+    addEventListener('scroll', req, { passive: true });
+    addEventListener('resize', req);
+    desktop.addEventListener('change', req);
+    paint();
+  }
+</script>

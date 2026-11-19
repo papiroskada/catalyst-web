@@ -1,0 +1,43 @@
+---
+// Final contact panel, two variants:
+//  - default: centred call to action. The button opens the contact dialog (ContactDialog.astro);
+//    without JavaScript it falls back to an email link.
+//  - form: text on the left and the contact form right in the section (used on the home page).
+//    On phones the form is hidden and a button opens the contact dialog instead, as on other pages.
+import ContactForm from './ContactForm';
+import { SITE } from '../site';
+
+interface Props { eyebrow?: string; title?: string; lede?: string; cta?: string; form?: boolean }
+const {
+  eyebrow = 'Contact',
+  title = 'Tell us how your business runs.',
+  lede = 'We will come back within two working days with questions, not a sales pitch.',
+  cta = 'Get in touch',
+  form = false,
+} = Astro.props;
+const mailto = `mailto:${SITE.email}?subject=${encodeURIComponent(cta)}`;
+---
+<section class:list={['contact', { 'has-form': form }]} id="contact" aria-labelledby="contact-h">
+  <div class="wrap">
+    {form ? (
+      <>
+        <div class="ctext">
+          <p class="eyebrow">{eyebrow}</p>
+          <h2 id="contact-h">{title}</h2>
+          <p class="lede">{lede}</p>
+          <a class="btn cbtn" href={mailto} data-contact>{cta}</a>
+          <a class="mail link" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </div>
+        <div class="cform-slot"><ContactForm client:idle endpoint={SITE.formEndpoint} email={SITE.email} source={Astro.url.pathname} idPrefix="cf" /></div>
+      </>
+    ) : (
+      <>
+        <p class="eyebrow">{eyebrow}</p>
+        <h2 id="contact-h">{title}</h2>
+        <p class="lede">{lede}</p>
+        <a class="btn" href={mailto} data-contact>{cta}</a>
+        <a class="mail link" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </>
+    )}
+  </div>
+</section>

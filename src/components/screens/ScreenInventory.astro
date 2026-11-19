@@ -1,0 +1,130 @@
+---
+// The design inventory (gallery view): filters, quick filters and a card per design.
+import AppScreen from './AppScreen.astro';
+interface Props { label?: string }
+
+const shapes: Record<string, string> = {
+  hood: '<g transform="translate(50 0) scale(1.22 1) translate(-50 0)"><path d="M43 14 Q41 4 50 2 Q59 4 57 14 Q54 11 50 11 Q46 11 43 14Z" fill="var(--c)" fill-opacity=".82"/><path d="M42 13 L33 17 Q26 20 25 28 L20 84 L28 85 L33 40 L33 94 L67 94 L67 40 L72 85 L80 84 L75 28 Q74 20 67 17 L58 13 Q54 17 50 17 Q46 17 42 13Z" fill="var(--c)"/><path d="M50 17 V94" stroke="#fff" stroke-opacity=".18" stroke-width=".8"/></g>',
+  jacket: '<g transform="translate(50 0) scale(1.22 1) translate(-50 0)"><path d="M41 8 L33 13 Q26 16 25 25 L20 84 L28 85 L33 38 L33 94 L67 94 L67 38 L72 85 L80 84 L75 25 Q74 16 67 13 L59 8 L50 18Z" fill="var(--c)"/><path d="M50 18 V94" stroke="#fff" stroke-opacity=".2" stroke-width=".8"/></g>',
+  trench: '<g transform="translate(50 0) scale(1.22 1) translate(-50 0)"><path d="M41 4 L32 9 Q25 12 24 21 L19 80 L27 81 L32 36 L30 96 L70 96 L68 36 L73 81 L81 80 L76 21 Q75 12 68 9 L59 4 L50 16Z" fill="var(--c)"/><path d="M50 16 V96" stroke="#000" stroke-opacity=".12" stroke-width=".8"/></g>',
+  trousers: '<path d="M33 8 H67 L71 94 H55 L50 36 L45 94 H29Z" fill="var(--c)"/>',
+  tee: '<path d="M38 10 Q50 18 62 10 L82 22 L74 36 L66 31 L66 92 L34 92 L34 31 L26 36 L18 22Z" fill="var(--c)" stroke="var(--s, none)" stroke-width="1"/>',
+};
+const cards = [
+  { id: 'IM-3627', no: '312557', name: 'Hooded Zip Jacket', st: 'In Transit', k: 'transit', shape: 'hood', c: '#191d2e', sup: 'Lumen Textiles', col: 'Midnight', sw: '#191d2e', des: 'Anna', del: 'ETA 02 Dec', bar: [6, 1] },
+  { id: 'IM-3402', no: '312544', name: 'Printed Denim Jacket', st: 'In Transit', k: 'transit', shape: 'jacket', c: '#3a5f8a', sup: 'Delta Denim', col: 'Blue', sw: '#3a5f8a', des: 'Leo', del: 'late', bar: [6, 1] },
+  { id: 'IM-3601', no: '312529', name: 'Wide-Leg Trouser Jean', st: 'Order Ready', k: 'ready', shape: 'trousers', c: '#2a4468', sup: 'Delta Denim', col: 'Dark Blue', sw: '#2a4468', des: 'Mei', del: 'none', bar: [5, 1] },
+  { id: 'IM-3862', no: '312513', name: 'Botanical Graphic Tee', st: 'In Production', k: 'prod', shape: 'tee', c: '#efece4', s: '#d6d2c8', sup: 'Orra Knit', col: 'Off White', sw: '#efece4', des: 'Noor', del: 'ETA 14 Dec', bar: [6, 1] },
+  { id: 'IM-3903', no: '312530', name: 'Straight Leg Jean', st: 'Sample Requested', k: 'sample', shape: 'trousers', c: '#3a5f8a', sup: 'Delta Denim', col: 'Blue', sw: '#3a5f8a', des: 'Anna', del: '', bar: [2, 1] },
+  { id: 'IM-3915', no: '312533', name: 'Cropped Trench', st: 'Sample Received', k: 'sample', shape: 'trench', c: '#d9c7a7', sup: 'Lumen Textiles', col: 'Sand', sw: '#d9c7a7', des: 'Leo', del: '', bar: [3, 1] },
+  { id: 'P-1215', no: '312140', name: 'Harbour Shirt', st: 'Order Sent', k: 'ready', shape: 'tee', c: '#232f4b', sup: 'Atelier Sud', col: 'Navy', sw: '#232f4b', des: 'Mei', del: '', bar: [5, 1] },
+  { id: 'IM-3636', no: '312512', name: 'City Print Tee', st: 'Complete', k: 'done', shape: 'tee', c: '#b8403a', sup: 'Orra Knit', col: 'Signal red', sw: '#b8403a', des: 'Noor', del: '', bar: [8, 0] },
+];
+const icon = {
+  grid: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/>',
+  list: '<path d="M4 6h16M4 12h16M4 18h16"/>',
+  chev: '<path d="M6 9l6 6 6-6"/>',
+  funnel: '<path d="M4 5h16l-6.2 7.4V19l-3.6-1.8v-4.8Z"/>',
+  sort: '<path d="M8 4v16M4 8l4-4 4 4M16 20V4M12 16l4 4 4-4"/>',
+  alert: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5M12 16.2v.3"/>',
+  truck: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+  check: '<circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/>',
+};
+---
+<AppScreen active="Inventory" width={1440} height={640} footTop={824} label={Astro.props.label ?? 'Design inventory: every design in the collection as a card with its sketch, status, supplier, colour and delivery date.'}>
+  <div class="inv">
+    <h1 class="ttl">Design inventory <span>· 8 shown</span></h1>
+    <span class="seg view" style="left:761px;top:-5px"><span class="on"><svg viewBox="0 0 24 24" set:html={icon.grid} />Gallery</span><span><svg viewBox="0 0 24 24" set:html={icon.list} />Table</span></span>
+    <span class="lnk" style="left:943px;top:1px">Export CSV</span>
+    <span class="btn dark" style="left:1030px;top:-6px">+ New design</span>
+
+    <span class="eb" style="left:0;top:37px">Collection</span>
+    <span class="sel" style="left:0;top:57px">Spring 2027 · <span class="n">312</span><svg viewBox="0 0 24 24" set:html={icon.chev} /></span>
+    <span class="eb" style="left:284px;top:37px">Production</span>
+    <span class="seg cnt-seg" style="left:284px;top:57px"><span class="on"><b>8</b>All</span><span><b>7</b>Import</span><span><b>1</b>Domestic</span></span>
+    <span class="btn sm" style="left:1006px;top:57px;width:86px"><svg viewBox="0 0 24 24" set:html={icon.funnel} />Filters</span>
+    <span class="btn sm" style="left:1100px;top:57px;width:35.5px;padding:0"><svg viewBox="0 0 24 24" set:html={icon.sort} /></span>
+
+    <span class="eb" style="left:0;top:100px">Personal board</span>
+    <span class="seg cnt-seg" style="left:0;top:120px"><span class="on"><b>8</b>All</span><span><b>3</b>Anna</span><span><b>2</b>Leo</span><span><b>1</b>Mei</span><span><b>2</b>Noor</span></span>
+    <span class="eb" style="left:389px;top:102px">Quick filters</span>
+    <span class="qf" style="left:389px;top:122px">
+      <span class="chip red"><svg viewBox="0 0 24 24" set:html={icon.alert} />Overdue<b>1</b></span>
+      <span class="chip"><svg viewBox="0 0 24 24" set:html={icon.truck} />In transit<b>2</b></span>
+      <span class="chip"><svg viewBox="0 0 24 24" set:html={icon.check} />Delivered<b>1</b></span>
+    </span>
+
+    {cards.map((c, i) => (
+      <div class="ic" style={`left:${(i % 4) * 287.3}px;top:${i < 4 ? 164 : 529}px`}>
+        <div class="h mono"><span>{c.id}</span><span>{c.no}</span></div>
+        <div class="ph"><svg viewBox="0 0 100 100" style={`--c:${c.c};${c.s ? `--s:${c.s}` : ''}`} set:html={shapes[c.shape]} /></div>
+        <b class="nm">{c.name}</b>
+        <span class:list={['ss', c.k]}><i></i>{c.st}</span>
+        <dl>
+          <div><dt>Supplier</dt><dd>{c.sup}</dd></div>
+          <div><dt>Color</dt><dd><i style={`background:${c.sw}`}></i>{c.col}</dd></div>
+          <div><dt>Designer</dt><dd>{c.des}</dd></div>
+          <div><dt>Delivery</dt><dd>{c.del === 'late' ? <><span class="mono late-d">06 Nov</span><span class="late">· late</span></> : c.del === 'none' ? <span class="muted">Not planned</span> : <span class="mono">{c.del}</span>}</dd></div>
+        </dl>
+        <div class="bar">{Array.from({ length: 8 }, (_, k) => <i class:list={{ g: k < c.bar[0], d: k >= c.bar[0] && k < c.bar[0] + c.bar[1] }} />)}</div>
+      </div>
+    ))}
+  </div>
+</AppScreen>
+
+<style is:global>
+  .app .inv { position: relative; font-size: 13px }
+  .app .inv > * { position: absolute }
+  .app .inv .ttl { left: 0; top: -2px; margin: 0; font-size: 19px; font-weight: 600; line-height: 26px; white-space: nowrap }
+  .app .inv .ttl span { margin-left: 5px; font-size: 13px; font-weight: 400; color: #5d6676 }
+  .app .inv .eb { font-size: 9.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #3d4554; line-height: 14px }
+  .app .inv .btn { height: 31.5px; padding: 0 13px; font-size: 13px; border-radius: 8px; gap: 6px }
+  .app .inv .btn svg { width: 14px; height: 14px; stroke-width: 1.8 }
+  .app .inv .lnk { font-size: 13px; font-weight: 500; color: #1f4f86; line-height: 22px }
+  .app .inv .sel { display: flex; align-items: center; gap: 5px; width: 259.5px; height: 31.5px; box-sizing: border-box; padding: 0 12px 0 15px; border: 1px solid #cfd4dd; border-radius: 8px; background: #fff; font-size: 13px; white-space: nowrap }
+  .app .inv .sel .n { margin-left: 2px }
+  .app .inv .sel svg { margin-left: auto; width: 13px; height: 13px; stroke-width: 2 }
+  .app .inv .seg { display: flex; height: 31.5px; box-sizing: border-box; border: 1px solid #cfd4dd; border-radius: 8px; background: #fff; overflow: hidden; font-size: 13px; color: #3d4554; white-space: nowrap }
+  .app .inv .seg > span { display: flex; align-items: center; gap: 9px; padding: 0 14px; border-left: 1px solid #cfd4dd }
+  .app .inv .seg > span:first-child { border-left: 0 }
+  .app .inv .seg b { font-weight: 600; color: #1b2230 }
+  .app .inv .seg .on { background: #1f2a44; color: #fff }
+  .app .inv .seg .on b { color: #fff }
+  .app .inv .view { height: 29.5px; width: 158.5px }
+  .app .inv .view > span { flex: 1; justify-content: center; gap: 7px; padding: 0; font-weight: 500; color: #1b2230 }
+  .app .inv .view .on { background: #e6ebf5; color: #1f2a44; font-weight: 600 }
+  .app .inv .view svg { width: 13px; height: 13px }
+  .app .inv .qf { display: flex; gap: 6.5px }
+  .app .inv .chip { display: flex; align-items: center; gap: 6px; height: 29.5px; box-sizing: border-box; padding: 0 11px 0 8px; border: 1px solid #cfd4dd; border-radius: 8px; background: #fff; font-size: 12.5px; color: #3d4554; white-space: nowrap }
+  .app .inv .chip svg { width: 13px; height: 13px; stroke-width: 1.7 }
+  .app .inv .chip b { font-weight: 600; color: #1b2230; margin-left: 2px }
+  .app .inv .chip.red { background: #fdf6f5; border-color: #efcfcb; color: #b0382f; font-weight: 600 }
+  .app .inv .chip.red b { display: grid; place-items: center; min-width: 18px; height: 16px; padding: 0 4px; box-sizing: border-box; border-radius: 99px; background: #b0382f; color: #fff; font-size: 11px; margin-left: 4px }
+
+  .app .inv .ic { width: 273.5px; height: 350.5px; box-sizing: border-box; padding: 0 13px; border: 1px solid #e1e4ea; border-radius: 14px; background: #fff }
+  .app .inv .ic .h { display: flex; justify-content: space-between; height: 33px; align-items: center; font-size: 10px; color: #3d4554 }
+  .app .inv .ic .ph { height: 131.5px; border-radius: 10px; background: #eceae5; display: grid; place-items: center }
+  .app .inv .ic .ph svg { width: 86px; height: 86px; fill: none; stroke: none }
+  .app .inv .ic .nm { display: block; margin-top: 10px; font-size: 13px; font-weight: 600; line-height: 18px }
+  .app .inv .ss { display: flex; align-items: center; gap: 6px; margin-top: 2px; height: 20px; font-size: 11px; font-weight: 600; color: var(--t) }
+  .app .inv .ss i { width: 6.5px; height: 6.5px; border-radius: 99px; background: var(--d) }
+  .app .inv .ss.transit { --d: #3a7fc9; --t: #1f4f86 }
+  .app .inv .ss.ready { --d: #b8a06e; --t: #7a5c1e }
+  .app .inv .ss.prod { --d: #b86e6e; --t: #7a3f3f }
+  .app .inv .ss.sample { --d: #7fa8b8; --t: #2f5f6e }
+  .app .inv .ss.done { --d: #22a24a; --t: #2f6b45 }
+  .app .inv .ic dl { margin: 2px 0 0; border-top: 1px solid #eef0f3 }
+  .app .inv .ic dl div { display: grid; grid-template-columns: 77.5px 1fr; align-items: center; height: 27.8px; border-bottom: 1px solid #eef0f3; font-size: 11px }
+  .app .inv .ic dl div:last-child { border-bottom: 0 }
+  .app .inv .ic dt { color: #5d6676 }
+  .app .inv .ic dd { margin: 0; display: flex; align-items: center; gap: 5px; color: #1b2230 }
+  .app .inv .ic dd i { width: 10px; height: 10px; border-radius: 2.5px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .06) }
+  .app .inv .ic dd .mono { font-size: 10.5px }
+  .app .inv .late-d { font-weight: 500; margin-right: 1px }
+  .app .inv .late { color: #b0382f; font-weight: 600 }
+  .app .inv .muted { color: #5d6676 }
+  .app .inv .bar { display: flex; gap: 4px; margin-top: 5px }
+  .app .inv .bar i { flex: 1; height: 4.5px; border-radius: 99px; background: #e1e4ea }
+  .app .inv .bar i.g { background: #3f7d5c }
+  .app .inv .bar i.d { background: #1f2a44 }
+</style>

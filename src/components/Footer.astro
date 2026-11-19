@@ -1,0 +1,16 @@
+---
+// Kept short on purpose: navigation lives in the header and the email in the contact section
+// right above. Privacy must stay linked from every page (the contact form collects personal data).
+import { SITE } from '../site';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <span class="fwm">CATALYST API</span>
+    <nav aria-label="Legal">
+      <span>© {year} {SITE.name}</span>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+    </nav>
+  </div>
+</footer>

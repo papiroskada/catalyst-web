@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ContactDialog from '../components/ContactDialog.astro';
+import MobileBar from '../components/MobileBar.astro';
+import { organization } from '../lib/schema';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+  overlayHeader?: boolean;
+  contactHref?: string;
+  /** Render the contact dialog. */
+  contactDialog?: boolean;
+  /** The page also has the contact form in its final section (the dialog then only takes over on phones). */
+  contactFormOnPage?: boolean;
+}
+const { overlayHeader = false, contactHref, contactDialog = true, contactFormOnPage = false, jsonLd = [], ...seo } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#FBFBFD" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <Seo {...seo} jsonLd={[organization(), ...jsonLd]} />
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <Header overlay={overlayHeader} contactHref={contactHref} />
+    <main id="content">
+      <slot />
+    </main>
+    <Footer />
+    {contactDialog && <ContactDialog formOnPage={contactFormOnPage} />}
+    <MobileBar />
+  </body>
+</html>

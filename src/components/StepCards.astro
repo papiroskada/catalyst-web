@@ -1,0 +1,126 @@
+---
+// Row of step cards: one card is open at a time and shows an illustration on a panel
+// in that step's accent colour. The icon in the bottom-right corner uses the same colour.
+// Desktop: hover, focus or click opens a card. Below 1100px every card is shown open, stacked.
+// Illustrations live in ./step-art/ (decorative SVG, 300x400 viewBox; groups with class "fl" float in).
+import Icon from './Icon.astro';
+
+type Tone = 'blue' | 'violet' | 'sky' | 'lilac';
+interface Step {
+  step: string;
+  title: string;
+  text: string;
+  icon: string;
+  tone: Tone;
+  art: (props: Record<string, unknown>) => any;
+}
+interface Props { items: Step[] }
+const { items } = Astro.props;
+---
+<div class="srow">
+  {items.map((s, i) => (
+    <article class:list={['scard', `t-${s.tone}`, { on: i === 0 }]} tabindex="0" aria-label={`${s.step}: ${s.title}`}>
+      <div class="stxt">
+        <span class="step">{s.step}</span>
+        <h3>{s.title}</h3>
+        <p>{s.text}</p>
+        <span class="sicon" aria-hidden="true"><Icon name={s.icon} /></span>
+      </div>
+      <div class="sart"><s.art /></div>
+    </article>
+  ))}
+</div>
+
+<style>
+  .srow { --gap: 12px; --grow: 2.5; container-type: inline-size; display: flex; flex-direction: column; gap: var(--gap); padding: var(--gap); background: #EBEEF7; border-radius: 34px }
+  .scard { position: relative; display: flex; flex-direction: column; border-radius: 24px; background: #fff; overflow: hidden; outline-offset: -2px }
+  .stxt { position: relative; display: flex; flex-direction: column; gap: 16px; padding: 30px 28px 104px }
+  .step { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent) }
+  h3 { font: 600 clamp(21px, 1.9vw, 24px)/1.3 var(--body) }
+  p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--body-ink) }
+  .sicon { position: absolute; right: 22px; bottom: 22px; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 14px; background: color-mix(in srgb, var(--c1) 55%, var(--c2)); color: var(--navy); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5) } /* flat: gradients on small tiles look dated */
+  .sicon :global(svg) { width: 26px; height: 26px }
+  .sart { position: relative; height: 340px; margin: 0 var(--gap) var(--gap); border-radius: 18px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5);
+    /* same surface as the "How we work" step cards: soft colour blobs from the palette + fine grain */
+    background:
+      radial-gradient(55% 60% at 8% 12%, color-mix(in srgb, var(--c1) 90%, transparent), transparent 70%),
+      radial-gradient(50% 55% at 95% 92%, color-mix(in srgb, var(--bl) 80%, transparent), transparent 70%),
+      radial-gradient(40% 45% at 88% 8%, color-mix(in srgb, var(--c3) 90%, transparent), transparent 70%),
+      var(--c2) }
+  .sart::before { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 180px; mix-blend-mode: overlay; opacity: .14 }
+  .sart :global(.art) { position: absolute; inset: 8px; width: calc(100% - 16px); height: calc(100% - 16px); overflow: visible }
+  .sart :global(.art text) { font-family: var(--body) }
+  .sart :global(.art .mono) { font-family: ui-monospace, "SF Mono", Menlo, monospace }
+  .sart :global(.art .cloud) { display: none } /* the blobs in the background replace these */
+
+  /* palettes shared with Journey.astro */
+  .t-blue { --c1: var(--g1); --c2: var(--g2); --c3: var(--g3); --bl: var(--bloom) }
+  .t-violet { --c1: #AEB0E8; --c2: #E3E2F6; --c3: #CBCAEE; --bl: #A9ACEC }
+  .t-sky { --c1: #97BCE4; --c2: #DCE8F4; --c3: #BFD3EC; --bl: #98BEEA }
+  .t-lilac { --c1: #B7A9E6; --c2: #E6E0F6; --c3: #D0C6EF; --bl: #B3A6EC }
+
+  /* Desktop: one wide open card, the others collapse to the width of their text */
+  @media (min-width: 1100px) {
+    .srow { flex-direction: row; height: clamp(440px, 52vh, 500px) }
+    .scard {
+      /* width of a closed card = width of the text column, so text never reflows while cards resize */
+      --u: calc((100cqw - (var(--n, 4) - 1) * var(--gap)) / (var(--n, 4) - 1 + var(--grow)));
+      flex: 1 1 0; min-width: 0; background: #F6F7FC; cursor: pointer;
+      transition: flex-grow .6s cubic-bezier(.2, .7, .2, 1), background-color .4s;
+    }
+    .scard.on { flex-grow: var(--grow); background: #fff; cursor: default }
+    .stxt { position: absolute; inset: 0 auto 0 0; width: var(--u); padding: 30px 26px 104px }
+    /* the panel slides in by animating left/right, not transform: a transform animation is drawn
+       once and then moved on the GPU, which leaves the art slightly soft until it ends */
+    .sart { position: absolute; top: var(--gap); right: calc(var(--gap) - 28px); bottom: var(--gap); left: calc(var(--u) + 28px); height: auto; margin: 0; opacity: 0; transition: opacity .18s, left .5s cubic-bezier(.2, .7, .2, 1), right .5s cubic-bezier(.2, .7, .2, 1); pointer-events: none }
+    .scard.on .sart { opacity: 1; left: var(--u); right: var(--gap); transition: opacity .4s .15s, left .6s cubic-bezier(.2, .7, .2, 1) .1s, right .6s cubic-bezier(.2, .7, .2, 1) .1s }
+    /* illustration pieces float in one after another once the card opens; the rise itself is
+       driven from the script through the SVG transform attribute, so it is repainted sharp every frame */
+    .sart :global(.fl) { opacity: 0; transition: opacity .2s }
+    .scard.on .sart :global(.fl) { opacity: 1; transition: opacity .45s calc(.25s + var(--d, 0s)) }
+  }
+  /* phones: no icon tile, so no space kept for it under the text */
+  @media (max-width: 640px) { .sicon { display: none } .stxt { padding-bottom: 24px } }
+  @media (prefers-reduced-motion: reduce) { .scard, .sart, .sart :global(.fl) { transition: none !important } }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.srow').forEach((row) => {
+    const cards = Array.from(row.querySelectorAll<HTMLElement>('.scard'));
+    row.style.setProperty('--n', String(cards.length));
+    const desktop = matchMedia('(min-width: 1100px)');
+    const still = matchMedia('(prefers-reduced-motion: reduce)');
+    const frames = new WeakMap<Element, number>();
+
+    // Each .fl piece rises 16 units into place (delay .2s + its --d, 0.7s, ease-out). Writing the SVG
+    // transform attribute keeps the piece in normal painting, so it is never shown as a soft, moved bitmap.
+    const rise = (card: HTMLElement) => {
+      card.querySelectorAll<SVGGElement>('.fl').forEach((g) => {
+        cancelAnimationFrame(frames.get(g) ?? 0);
+        if (!desktop.matches || still.matches) { g.removeAttribute('transform'); return; }
+        const delay = 200 + (parseFloat(getComputedStyle(g).getPropertyValue('--d')) || 0) * 1000;
+        const start = performance.now() + delay;
+        const step = (now: number) => {
+          const t = Math.min(Math.max((now - start) / 700, 0), 1);
+          const y = 16 * Math.pow(1 - t, 4);
+          g.setAttribute('transform', `translate(0 ${y.toFixed(2)})`);
+          if (t < 1) frames.set(g, requestAnimationFrame(step));
+          else g.removeAttribute('transform');
+        };
+        g.setAttribute('transform', 'translate(0 16)');
+        frames.set(g, requestAnimationFrame(step));
+      });
+    };
+    const open = (c: HTMLElement) => {
+      if (c.classList.contains('on')) return;
+      cards.forEach((o) => o.classList.toggle('on', o === c));
+      rise(c);
+    };
+    cards.forEach((c) => {
+      c.addEventListener('mouseenter', () => open(c));
+      c.addEventListener('focusin', () => open(c));
+      c.addEventListener('click', () => open(c));
+    });
+  });
+</script>

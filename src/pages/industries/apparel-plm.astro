@@ -1,0 +1,166 @@
+---
+import Base from '../../layouts/Base.astro';
+import Contact from '../../components/Contact.astro';
+import Icon from '../../components/Icon.astro';
+import StepCards from '../../components/StepCards.astro';
+import SetupBento from '../../components/SetupBento.astro';
+import ScreenInventory from '../../components/screens/ScreenInventory.astro';
+import ScreenGarment from '../../components/screens/ScreenGarment.astro';
+import ScreenMessages from '../../components/screens/ScreenMessages.astro';
+import ScreenDashboard from '../../components/screens/ScreenDashboard.astro';
+import ArtDesign from '../../components/step-art/ArtDesign.astro';
+import ArtSuppliers from '../../components/step-art/ArtSuppliers.astro';
+import ArtSampling from '../../components/step-art/ArtSampling.astro';
+import ArtDeliver from '../../components/step-art/ArtDeliver.astro';
+import { breadcrumbs, service } from '../../lib/schema';
+
+const description =
+  'Apparel PLM built around your team: one shared record for every garment, from first sketch and sampling to supplier email, purchase order and delivery.';
+
+---
+<Base
+  title="Apparel PLM software for fashion teams | Catalyst"
+  description={description}
+  jsonLd={[
+    breadcrumbs([{ name: 'Apparel PLM', path: '/industries/apparel-plm/' }]),
+    service({ name: 'Apparel PLM system', description, path: '/industries/apparel-plm/', audience: 'Clothing design and production teams' }),
+  ]}
+>
+  <section class="phero" aria-labelledby="hero-h">
+    <div class="wrap copy">
+      <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li aria-current="page">Apparel PLM</li></ol>
+      <p class="eyebrow">Apparel PLM, made to measure</p>
+      <h1 id="hero-h">Every garment in one place</h1>
+      <p class="lede">One shared record for each design, from first sketch and sampling to supplier email, ordering and delivery. Built for clothing design and production teams.</p>
+      <div class="tags" aria-label="Covers"><span>Tech packs</span><span>Sampling</span><span>Supplier email</span><span>Purchase orders</span><span>Delivery tracking</span></div>
+      <a class="scrollcue" href="#features"><span>See what it covers</span><span class="arrows" aria-hidden="true"><Icon name="chev" sw={2} /><Icon name="chev" sw={2} /></span></a>
+    </div>
+    <div class="stage-pv"><div class="stage" id="stage">
+      <ScreenInventory label="Design inventory: every design in the collection as a card with its sketch, status, supplier, colour and delivery date." />
+    </div></div>
+    <p class="note">Screens from the product. Brand, people, designs and numbers are sample data.</p>
+  </section>
+
+  <section class="sec" id="walkthrough" aria-labelledby="walk-h"><div class="wrap">
+    <div class="bhead"><p class="eyebrow">How it works</p><h2 id="walk-h">From reference number to delivery.</h2><p>Follow one design, a hooded zip jacket, through the whole season. Every step happens in the same place, and the whole team sees it.</p></div>
+    <StepCards items={[
+      { step: 'Step 1', title: 'Create the design', text: 'Reserve a reference number, open a draft, and add photos and the tech pack.', icon: 'plus', tone: 'blue', art: ArtDesign },
+      { step: 'Step 2', title: 'Work with suppliers', text: "Email suppliers right from the design. Their replies land on the same design, not in someone's inbox.", icon: 'mail', tone: 'violet', art: ArtSuppliers },
+      { step: 'Step 3', title: 'Track sampling', text: 'Enter sample dates and the status updates itself: done, due or late.', icon: 'clock', tone: 'sky', art: ArtSampling },
+      { step: 'Step 4', title: 'Inspect and deliver', text: 'Record the final inspection, mark the delivery, and export the list when you need it.', icon: 'truck', tone: 'lilac', art: ArtDeliver },
+    ]} />
+  </div></section>
+
+  <section class="sec" id="features" aria-label="Main features" style="padding-top:0"><div class="wrap spots">
+    <article class="spot">
+      <div class="stext">
+        <p class="eyebrow">One garment, one page</p>
+        <h2>Everything about a design, on a single page.</h2>
+        <p>Photos, style number, supplier, fabric, costs and where the design is in its timeline. No more piecing it together from five files.</p>
+        <ul class="ticks">
+          <li><Icon name="check" sw={2} />A timeline of every stage, from first sample to delivery</li>
+          <li><Icon name="check" sw={2} />Target cost, wholesale and retail price</li>
+          <li><Icon name="check" sw={2} />Messages, documents and a full history in tabs</li>
+        </ul>
+      </div>
+      <div class="panel p-blue"><ScreenGarment label="A garment page: the design's sampling and delivery timeline, photo and product details." /></div>
+    </article>
+
+    <article class="spot rev">
+      <div class="stext">
+        <p class="eyebrow">Email in context</p>
+        <h2>Supplier email lives on the design.</h2>
+        <p>Write to a supplier from the design page. The subject fills in by itself and replies come back to the same place, with attachments and the whole conversation in one view.</p>
+        <ul class="ticks">
+          <li><Icon name="check" sw={2} />Replies are matched to the right design automatically</li>
+          <li><Icon name="check" sw={2} />Each thread shows if you are waiting on the supplier</li>
+          <li><Icon name="check" sw={2} />Message text is stored encrypted</li>
+        </ul>
+      </div>
+      <div class="panel p-violet"><ScreenMessages label="The Messages tab of a garment: supplier threads and an email conversation with an attached packing list." /></div>
+    </article>
+
+    <article class="spot">
+      <div class="stext">
+        <p class="eyebrow">Dashboard &amp; calendar</p>
+        <h2>See where every design stands.</h2>
+        <p>What is late, what is on the way and which deadlines are coming. Every number opens the list behind it, so nothing is a guess.</p>
+        <ul class="ticks">
+          <li><Icon name="check" sw={2} />The current collection and its dates at a glance</li>
+          <li><Icon name="check" sw={2} />Trend groups with their colour palettes</li>
+        </ul>
+      </div>
+      <div class="panel p-sky"><ScreenDashboard label="The dashboard: collection totals, import statistics with overdue and in-transit counts, a calendar and trend groups." /></div>
+    </article>
+  </div></section>
+
+  <section class="sec" id="all" aria-labelledby="all-h" style="padding-top:0"><div class="wrap">
+    <p class="eyebrow">What else it covers</p>
+    <h2 id="all-h">Built for the way fashion teams work.</h2>
+    <div class="cgrid">
+      <div class="cap"><span class="ci"><Icon name="trends" /></span><h3>Trend groups</h3><p>Lay designs out on a grid, like a mood board, grouped the way your team thinks.</p></div>
+      <div class="cap"><span class="ci"><Icon name="fabric" /></span><h3>Fabrics &amp; trims</h3><p>Catalogues with photos, quantities per garment and delivery dates.</p></div>
+      <div class="cap"><span class="ci"><Icon name="money" /></span><h3>Costs &amp; prices</h3><p>Materials, shipping, unit cost and target, wholesale and retail price for each design.</p></div>
+      <div class="cap"><span class="ci"><Icon name="history" /></span><h3>Full history</h3><p>Every change is recorded. Any filtered list exports to a spreadsheet.</p></div>
+      <div class="cap"><span class="ci"><Icon name="lock" /></span><h3>Sign-in &amp; roles</h3><p>Sign in with Microsoft 365 or Google Workspace. Each role sees what it needs.</p></div>
+      <div class="cap"><span class="ci"><Icon name="sliders" /></span><h3>Your own setup</h3><p>Admins manage people, collections, suppliers and the steps of your timeline.</p></div>
+    </div>
+  </div></section>
+
+  <section class="sec" id="setup" aria-labelledby="setup-h" style="padding-top:0"><div class="wrap">
+    <div class="bhead"><p class="eyebrow">Getting started</p><h2 id="setup-h">Shaped to your team before day one.</h2><p>This is where we start, not where we stop. Steps, statuses, fields and whole screens can be changed, added or removed to match how your team works.</p></div>
+    <SetupBento />
+  </div></section>
+
+  <Contact
+    eyebrow="This is just one example"
+    title="Your business works differently? So will your system."
+    lede="Everything on this page can change: the steps, the screens, the names, even what the system is for. Tell us how your team works and we'll book a walkthrough."
+    cta="Book a walkthrough"
+  />
+</Base>
+
+<style>
+  .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 28px }
+  .tags span { font-size: 14px; color: var(--navy); background: #E9EEFA; padding: 7px 14px; border-radius: 999px }
+  .phero { padding-bottom: 0 }
+  .scrollcue { display: inline-flex; flex-direction: column; align-items: center; gap: 14px; margin-top: clamp(56px, 9vh, 100px); color: var(--navy); text-decoration: none; font-size: 16px }
+  .scrollcue > span:first-child { border-bottom: 1px solid var(--accent); padding-bottom: 3px }
+  .arrows { display: flex; flex-direction: column; align-items: center; animation: cue 1.8s ease-in-out infinite }
+  .arrows :global(svg) { width: 22px; height: 22px; display: block; transform: rotate(90deg) }
+  .arrows :global(svg + svg) { margin-top: -12px; opacity: .45 }
+  @keyframes cue { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(7px) } }
+  /* The hero screen tilts back and is blurred, then comes into focus as you scroll (script below) */
+  .stage-pv { perspective: 1800px; perspective-origin: 50% 0 }
+  .stage { transform-origin: 50% 0 }
+  @media (prefers-reduced-motion: reduce) { .arrows { animation: none } }
+  .stage { margin: clamp(72px, 12vh, 140px) var(--side) 0; border-radius: var(--r-lg); overflow: hidden; padding: clamp(24px, 5vw, 72px) clamp(16px, 5vw, 72px) 0; background: radial-gradient(ellipse 55% 60% at 50% 40%, color-mix(in srgb, var(--bloom) 70%, transparent), transparent 72%), linear-gradient(135deg, var(--g1) 0%, var(--g2) 52%, var(--g3) 100%) }
+  .stage :global(.scr) { max-width: 1180px; margin: 0 auto; border-radius: 14px 14px 0 0; box-shadow: 0 30px 70px rgba(26, 35, 64, .22) }
+  .note { margin: 14px 0 0; font-size: 13px; color: var(--mid); text-align: center }
+  .spots { display: flex; flex-direction: column; gap: clamp(110px, 16vh, 180px) }
+  /* product screens are HTML (components/screens), styled like the screenshots they replace */
+  #features .panel :global(.scr) { border-radius: 14px 0 0 0; box-shadow: 0 30px 70px rgba(26, 35, 64, .22) }
+  /* phones: tighter, like other sections; less space between a photo and the next title, and title to photo */
+  @media (max-width: 640px) { .phero { padding-bottom: 40px } .stage { margin-top: 40px } .spots { gap: 48px } .spot { gap: 24px } }
+</style>
+
+<script>
+  // Hero screen comes into focus while scrolling: tilt, scale, blur and fade ease out to none.
+  const st = document.getElementById('stage');
+  if (st && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let ticking = false;
+    const focus = () => {
+      ticking = false;
+      const vh = window.innerHeight;
+      const t = st.parentElement!.getBoundingClientRect().top;
+      const p = Math.max(0, Math.min(1, (vh * 0.95 - t) / (vh * 0.7)));
+      const e = 1 - Math.pow(1 - p, 3);
+      st.style.transform = `rotateX(${((1 - e) * 22).toFixed(2)}deg) scale(${(0.86 + 0.14 * e).toFixed(4)})`;
+      st.style.filter = e > 0.995 ? 'none' : `blur(${((1 - e) * 5).toFixed(2)}px)`;
+      st.style.opacity = (0.55 + 0.45 * e).toFixed(3);
+    };
+    window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(focus); } }, { passive: true });
+    window.addEventListener('resize', focus);
+    focus();
+  }
+</script>

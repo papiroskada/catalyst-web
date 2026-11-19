@@ -1,0 +1,31 @@
+---
+// DRAFT TEMPLATE — have this reviewed by a lawyer for the markets you serve before launch.
+import Legal from '../layouts/Legal.astro';
+import { SITE } from '../site';
+---
+<Legal title="Privacy policy | Catalyst" heading="Privacy policy" path="/privacy/" updated="2026-11-15"
+  description="How Catalyst collects, uses and protects personal information sent through this website.">
+  <p>This policy explains what personal information {SITE.legalName} ("Catalyst", "we") collects through {SITE.url.replace('https://', '')}, why, and what choices you have.</p>
+
+  <h2>What we collect</h2>
+  <ul>
+    <li><strong>Contact form and email:</strong> your name, work email and anything you write in your message.</li>
+    <li><strong>Technical data:</strong> standard server logs (IP address, browser type, pages requested) kept by our hosting provider for security.</li>
+  </ul>
+  <p>This website does not use advertising or tracking cookies. [If you add analytics, describe the tool and what it collects here.]</p>
+
+  <h2>How we use it</h2>
+  <p>We use your details only to reply to your enquiry and, if you become a client, to work with you. We do not sell your information or use it for unrelated marketing.</p>
+
+  <h2>Who we share it with</h2>
+  <p>Service providers that help us run this website and handle email: [hosting provider], [form provider], [email provider]. They process data only on our instructions.</p>
+
+  <h2>How long we keep it</h2>
+  <p>Enquiries that do not lead to work are deleted after [24 months]. Client records are kept for as long as the law requires.</p>
+
+  <h2>Your rights</h2>
+  <p>You can ask to see, correct or delete the personal information we hold about you, or withdraw consent, by emailing <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. You may also complain to your local data protection authority.</p>
+
+  <h2>Contact</h2>
+  <p>{SITE.legalName}, {SITE.address}. Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+</Legal>

@@ -1,0 +1,324 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Contact from '../../components/Contact.astro';
+import Icon from '../../components/Icon.astro';
+import cTask from '../../assets/screens/smc-task.png';
+import cChart from '../../assets/screens/smc-chart.png';
+import cTokens from '../../assets/screens/smc-tokens.png';
+import cEquity from '../../assets/screens/smc-equity.png';
+import cDone from '../../assets/screens/smc-done.png';
+import tasks from '../../assets/screens/sm-tasks.png';
+import equity from '../../assets/screens/sm-equity.png';
+import tokens from '../../assets/screens/sm-tokens.png';
+import { breadcrumbs, softwareApp } from '../../lib/schema';
+
+const PRODUCT = 'https://startupmode.app/';
+const DOCS = 'https://docs.startupmode.app/';
+
+const description =
+  'StartupMode, a product we built for founder-led teams: tasks, timesheets, token rewards, vesting, cap table and share certificates in one workspace.';
+
+// Facts below come from startupmode.app and docs.startupmode.app (checked Nov 2026).
+// Layout is deliberately different from the apparel page: left-aligned hero with a collage,
+// a step board, a tabbed feature viewer and a capability list, in the brand blue.
+
+const journey = [
+  { title: 'Set up the company', text: 'Create the workspace, invite the team and decide who leads and who contributes.', icon: 'users' },
+  { title: 'Plan and track work', text: 'Tasks move from to-do to review to done, with comments and files on each one.', icon: 'list' },
+  { title: 'Log and approve time', text: 'Members log hours against tasks. Admins approve or reject with the context attached.', icon: 'clock' },
+  { title: 'Reward and grant equity', text: 'Approved work earns tokens. Vesting and share certificates are managed in the same system.', icon: 'checkCircle' },
+];
+
+const features = [
+  {
+    id: 'work', tab: 'Tasks & timesheets', title: 'Work and hours in one trail.',
+    text: 'Every task keeps its history, comments and files. Time is logged against the task it was spent on, so reviews happen with the facts in front of you instead of a chase for updates.',
+    ticks: ['To-do, in review and done, with deadlines and owners', 'Timesheets submitted, reviewed and approved in the app', 'Optional Jira connection for teams already using it'],
+    img: tasks, alt: 'StartupMode task management: counts of active, high-priority and completed tasks above a board of active task cards.',
+  },
+  {
+    id: 'equity', tab: 'Equity & cap table', title: 'Ownership without the spreadsheet.',
+    text: "Set up the company's shares, define vesting by role or person and issue certificates when a decision is made. The cap table updates with every change, so everyone works from the current picture.",
+    ticks: ['Cliffs, vesting periods and allocations per role', 'Share certificates generated as PDF', 'Members can follow their own vesting progress'],
+    img: equity, alt: 'StartupMode share setup: authorised shares, the employee equity pool and a chart of founder and pool ownership.',
+  },
+  {
+    id: 'tokens', tab: 'Token rewards', title: 'Make contribution visible.',
+    text: 'Approved work earns tokens by rules the founder sets. A ledger records every reward and a leaderboard shows who is moving the company forward.',
+    ticks: ['Token values by task type, role or contribution', 'Streak and bonus rules for consistent work', 'A permanent ledger of every reward'],
+    img: tokens, alt: 'StartupMode token analytics: total tokens distributed, active members and a leaderboard of top contributors.',
+  },
+];
+
+const caps = [
+  { icon: 'lock', title: 'Roles & permissions', text: 'Founder, admins and members each see what their role needs, and nothing more.' },
+  { icon: 'server', title: 'Separate workspaces', text: 'Each organisation runs in its own workspace with its own members and data.' },
+  { icon: 'chat', title: 'Live notifications', text: 'Approvals, assignments, rewards and equity actions reach the right person straight away.' },
+  { icon: 'trends', title: 'Activity analytics', text: 'Output, submissions and ownership activity on dashboards built for the founder.' },
+  { icon: 'history', title: 'Audit trail', text: 'Every submission and decision is time-stamped, so reporting holds up later.' },
+];
+
+// Hero collage: close crops of real StartupMode screens (cut from the sm-*.png screenshots).
+// x/y/w are % of the collage box; depth sets how much a piece drifts while scrolling.
+const collage = [
+  { img: cChart, alt: 'Activity timeline: tasks and submissions over the last seven days.', x: 10, y: 23, w: 108, depth: 0.02, cls: 'big' },
+  { img: cTask, alt: 'A task card flagged "Needs reassignment" because its assignee left.', x: 0, y: 0, w: 64, depth: 0.06 },
+  { img: cEquity, alt: 'Live equity split: founder reserve and future team pool.', x: 0, y: 64, w: 76, depth: 0.05 },
+  { img: cTokens, alt: 'Token analytics tile: 15 points distributed.', x: 64, y: 52, w: 38, depth: 0.09 },
+  { img: cDone, alt: 'Tasks tile: 2 completed.', x: 62, y: 82, w: 34, depth: 0.11 },
+];
+---
+<Base
+  title="StartupMode: tasks, time & equity for startups | Catalyst"
+  description={description}
+  jsonLd={[
+    breadcrumbs([{ name: 'StartupMode', path: '/industries/startupmode/' }]),
+    softwareApp({ name: 'StartupMode', description, url: PRODUCT, category: 'BusinessApplication' }),
+  ]}
+>
+  <section class="smhero" aria-labelledby="hero-h">
+    <div class="wrap smgrid">
+      <div class="smcopy">
+        <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li aria-current="page">StartupMode</li></ol>
+        <p class="eyebrow">A product we built for startups</p>
+        <h1 id="hero-h">One workspace for work, rewards and ownership</h1>
+        <p class="lede">StartupMode brings tasks, timesheets, contributor rewards and equity into one system, so a founder-led team stops running the company from scattered tools and spreadsheets.</p>
+        <p class="live"><a class="btn" href={PRODUCT} rel="noopener">Visit startupmode.app</a><a class="link" href={DOCS} rel="noopener">Read the docs</a></p>
+        <div class="tags" aria-label="Covers"><span>Tasks</span><span>Timesheets</span><span>Token rewards</span><span>Vesting</span><span>Cap table</span><span>Share certificates</span></div>
+      </div>
+      <figure class="smfig">
+        <div class="collage">
+          {collage.map((c, i) => (
+            <div class:list={['piece', c.cls]} style={`--x:${c.x}%;--y:${c.y}%;--w:${c.w}%;--depth:${c.depth};--i:${i}`}>
+              <Image src={c.img} alt={c.alt} widths={[480, 960, Math.min(c.img.width, 1600)]} sizes={`(max-width: 980px) ${c.w}vw, ${Math.round(c.w * 6.4)}px`} loading="eager" />
+            </div>
+          ))}
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" id="walkthrough" aria-labelledby="walk-h"><div class="wrap">
+    <div class="bhead"><p class="eyebrow">How it works</p><h2 id="walk-h">From first hire to first share certificate.</h2><p>A founder opens a workspace, brings in the team and runs day-to-day work, rewards and ownership from the same place.</p></div>
+    <ol class="flow">
+      {journey.map((j, i) => (
+        <li style={`--i:${i}`}>
+          <div class="ftop">
+            <span class="fi" aria-hidden="true"><Icon name={j.icon} /></span>
+            <span class="fn" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          </div>
+          <h3>{j.title}</h3>
+          <p>{j.text}</p>
+          <div class="res" aria-hidden="true">
+            {i === 0 && (
+              <div class="r-team"><span class="av" style="background:#C9D4F1">A</span><span class="av" style="background:#D8D0F0">M</span><span class="av" style="background:#CFE6DA">L</span><em>3 members invited</em></div>
+            )}
+            {i === 1 && (
+              <div class="r-track"><span>To do</span><i></i><span class="on">In review</span><i></i><span>Done</span></div>
+            )}
+            {i === 2 && (
+              <div class="r-time"><Icon name="clock" /><b>6.5h logged</b><span class="ok">Approved</span></div>
+            )}
+            {i === 3 && (
+              <div class="r-reward"><span class="tok">+50 tokens</span><div class="vest"><span>Vesting</span><b><i></i></b><em>25%</em></div></div>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div></section>
+
+  <section class="sec feat" id="features" aria-labelledby="feat-h"><div class="wrap">
+    <div class="feathead">
+      <div><p class="eyebrow">Inside the product</p><h2 id="feat-h">Three parts of a company, one system.</h2></div>
+      <div class="tablist" role="tablist" aria-label="Product areas">
+        {features.map((f, i) => (
+          <button type="button" role="tab" id={`tab-${f.id}`} aria-controls={`panel-${f.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{f.tab}</button>
+        ))}
+      </div>
+    </div>
+    <div class="tpanels">
+      {features.map((f, i) => (
+        <article class:list={['tpanel', { on: i === 0 }]} role="tabpanel" id={`panel-${f.id}`} aria-labelledby={`tab-${f.id}`}>
+          <div class="ttext">
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
+            <ul class="ticks">{f.ticks.map((t) => <li><Icon name="check" sw={2} />{t}</li>)}</ul>
+          </div>
+          <div class="tshot"><Image src={f.img} alt={f.alt} widths={[640, 1180, 2400]} sizes="(max-width: 980px) 92vw, 760px" loading={i === 0 ? 'eager' : 'lazy'} /></div>
+        </article>
+      ))}
+    </div>
+  </div></section>
+
+  <section class="sec" id="all" aria-labelledby="all-h" style="padding-top:0"><div class="wrap capwrap">
+    <div class="caphead">
+      <p class="eyebrow">What else it covers</p>
+      <h2 id="all-h">Built for how small teams actually run.</h2>
+      <p>Guides for founders and members live at <a class="link" href={DOCS} rel="noopener">docs.startupmode.app</a>.</p>
+    </div>
+    <ul class="caps">
+      {caps.map((c) => (
+        <li><span class="ci" aria-hidden="true"><Icon name={c.icon} /></span><h3>{c.title}</h3><p>{c.text}</p></li>
+      ))}
+    </ul>
+  </div></section>
+
+  <Contact
+    eyebrow="Need your own system?"
+    title="Your team works its own way. Your software should too."
+    lede="StartupMode is one product we built. Tell us how your company runs and we'll book a walkthrough of what we could build for you."
+    cta="Book a walkthrough"
+  />
+</Base>
+
+<style>
+  /* accent for this page: the brand blue */
+  .smhero, .flow, .feat, .caps { --sm: var(--accent); --sm-soft: var(--soft) }
+
+  /* hero: copy on the left, the product screen on the right running off the page edge */
+  .smhero { position: relative; overflow-x: clip; padding-top: calc(var(--hh) + clamp(56px, 9vh, 96px)) }
+  .smgrid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 56px; align-items: center }
+  .smhero .crumbs { justify-content: flex-start }
+  .smhero h1 { font-size: clamp(38px, 4.4vw, 64px); line-height: 1.02; letter-spacing: -.025em; max-width: 13ch }
+  .smhero .lede { margin: 24px 0 0; max-width: 46ch }
+  .live { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin: 32px 0 0 }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 36px }
+  .tags span { font-size: 14px; color: var(--navy); background: #E9EEFA; padding: 7px 14px; border-radius: 999px }
+  .smfig { margin: 0; min-width: 0 }
+  /* collage of product details; pieces float in on load and drift slightly while scrolling */
+  .collage { position: relative; aspect-ratio: 10 / 8 }
+  .piece { position: absolute; left: var(--x); top: var(--y); width: var(--w); border-radius: 14px; overflow: hidden; background: #111; border: 1px solid rgba(255, 255, 255, .08); box-shadow: 0 24px 50px rgba(26, 35, 64, .22), 0 2px 6px rgba(26, 35, 64, .1); transform: translateY(calc(var(--shift, 0px) * var(--depth) * -1)); animation: pin .8s cubic-bezier(.2, .7, .2, 1) calc(.1s + var(--i) * .1s) both }
+  .piece.big { box-shadow: 0 30px 70px rgba(26, 35, 64, .2) }
+  .piece :global(img) { display: block; width: 100%; height: auto }
+  @keyframes pin { from { opacity: 0; translate: 0 24px } }
+  .note { margin: 14px 0 0; font-size: 13px; color: var(--mid) }
+
+  /* how it works: four steps on one board, each showing what it produces */
+  .flow { position: relative; list-style: none; margin: 0; padding: 14px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; border-radius: 30px; background: #EBEEF7 }
+  .flow li { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 24px 22px 20px; border-radius: 20px; background: #fff }
+  /* arrow between steps */
+  .flow li:not(:last-child)::after { content: ""; position: absolute; z-index: 1; top: 34px; right: -21px; width: 28px; height: 28px; border-radius: 50%; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E8FD0' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 7l5 5-5 5'/%3E%3C/svg%3E") center / 16px no-repeat; box-shadow: 0 2px 8px rgba(26, 35, 64, .12) }
+  .ftop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px }
+  .fi { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--soft); color: var(--navy) }
+  .fi :global(svg) { width: 21px; height: 21px }
+  .fn { font: 600 26px/1 var(--display); color: #C9D0DF; letter-spacing: -.01em }
+  .flow h3 { font: 600 20px/1.3 var(--body) }
+  .flow p { margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--body-ink) }
+  /* the result of each step, as a small piece of interface */
+  .res { margin-top: auto; padding: 12px; border-radius: 14px; background: var(--tint); font-size: 13px; color: var(--ink); min-height: 56px; display: flex; align-items: center }
+  .flow.anim .res > * { opacity: 0; transform: translateY(8px); transition: opacity .5s, transform .6s cubic-bezier(.2, .7, .2, 1); transition-delay: calc(.15s + var(--i) * .22s) }
+  .flow.anim.in .res > * { opacity: 1; transform: none }
+  .r-team { display: flex; align-items: center }
+  .r-team .av { display: grid; place-items: center; width: 28px; height: 28px; margin-right: -7px; border-radius: 50%; border: 2px solid #fff; font-size: 11px; font-weight: 600; color: var(--navy) }
+  .r-team em { margin-left: 16px; font-style: normal; font-weight: 500 }
+  .r-track { display: flex; align-items: center; gap: 6px; width: 100% }
+  .r-track span { padding: 5px 9px; border-radius: 99px; background: #fff; color: var(--mid); font-weight: 500; white-space: nowrap }
+  .r-track span.on { background: var(--navy); color: #fff }
+  .r-track i { flex: 1; min-width: 6px; height: 2px; border-radius: 2px; background: #C9D0DF }
+  .r-time { display: flex; align-items: center; gap: 8px; width: 100%; white-space: nowrap }
+  .r-time :global(svg) { width: 16px; height: 16px; color: var(--mid) }
+  .r-time .ok { margin-left: auto; padding: 4px 10px; border-radius: 99px; background: #E3F1E6; color: #2F6B45; font-weight: 600 }
+  .r-reward { display: flex; flex-direction: column; gap: 9px; width: 100% }
+  .tok { align-self: flex-start; padding: 4px 10px; border-radius: 99px; background: var(--soft); color: #2F4A86; font-weight: 600 }
+  .vest { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; color: var(--mid) }
+  .vest b { height: 6px; border-radius: 4px; background: #DDE2EC; overflow: hidden }
+  .vest b i { display: block; width: 25%; height: 100%; border-radius: 4px; background: var(--accent) }
+  .vest em { font-style: normal; font-weight: 600; color: var(--ink) }
+
+  /* features: one viewer with tabs */
+  .feat { padding-top: 0 }
+  .feathead { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 28px 40px; margin-bottom: 40px }
+  .feathead h2 { max-width: 16ch }
+  .tablist { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; border-radius: 16px; background: var(--tint) }
+  .tablist button { border: 0; background: none; padding: 11px 18px; border-radius: 11px; font: 500 15px var(--body); color: var(--body-ink); cursor: pointer; transition: background-color .25s, color .25s, box-shadow .25s }
+  .tablist button:hover { color: var(--ink) }
+  .tablist button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 2px 8px rgba(26, 35, 64, .08) }
+  .tablist button[aria-selected="true"]::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 9px; border-radius: 50%; background: var(--sm); vertical-align: 1px }
+  .tpanel { display: grid; grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr); gap: clamp(32px, 5vw, 72px); align-items: center; padding: clamp(24px, 3vw, 40px); border-radius: 28px; background: #fff; border: 1px solid var(--line) }
+  .tpanel + .tpanel { margin-top: 24px }
+  .ttext h3 { font: 600 clamp(26px, 2.6vw, 36px)/1.1 var(--display); letter-spacing: -.015em }
+  .ttext > p { margin: 18px 0 0; font-size: 17px; line-height: 1.6; color: var(--body-ink) }
+  .feat .ticks :global(svg) { color: var(--sm) }
+  .tshot { border-radius: 18px; overflow: hidden; padding: 28px 0 0 28px; background: radial-gradient(60% 60% at 90% 0%, rgba(110, 143, 208, .5), transparent 70%), #0F1222 }
+  .tshot :global(img) { display: block; width: 100%; height: auto; border-radius: 10px 0 0 0 }
+  /* with JavaScript only the selected panel shows; without it every panel is listed */
+  .feat:not(.js) .tablist { display: none }
+  .feat.js .tpanel:not(.on) { display: none }
+  .feat.js .tpanel + .tpanel { margin-top: 0 }
+  .feat.js .tpanel.on { animation: tin .45s cubic-bezier(.2, .7, .2, 1) }
+  @keyframes tin { from { opacity: 0; transform: translateY(10px) } }
+
+  /* capabilities: heading on the left, a ruled list on the right */
+  .capwrap { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 40px 72px; align-items: start }
+  .caphead h2 { font-size: clamp(30px, 3.4vw, 46px) }
+  .caphead p:not(.eyebrow) { margin: 20px 0 0; font-size: 17px; line-height: 1.6; color: var(--mid) }
+  .caps { list-style: none; margin: 0; padding: 0 }
+  .caps li { display: grid; grid-template-columns: 44px minmax(0, 200px) minmax(0, 1fr); gap: 8px 22px; align-items: start; padding: 26px 0; border-top: 1px solid var(--line) }
+  .caps li:last-child { border-bottom: 1px solid var(--line) }
+  .caps .ci { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--soft); color: var(--navy) }
+  .caps .ci :global(svg) { width: 21px; height: 21px }
+  .caps h3 { font: 600 18px/1.3 var(--body); padding-top: 11px }
+  .caps p { margin: 0; padding-top: 9px; font-size: 16px; line-height: 1.6; color: var(--body-ink) }
+
+  @media (max-width: 1180px) {
+    .flow { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+    .flow li::after { display: none }
+  }
+  @media (max-width: 980px) {
+    .smgrid, .tpanel, .capwrap { grid-template-columns: minmax(0, 1fr) }
+    .collage { margin-right: 0 }
+  }
+  @media (max-width: 640px) {
+    .flow { grid-template-columns: minmax(0, 1fr) }
+    .caps li { grid-template-columns: 44px minmax(0, 1fr) }
+    .caps p { grid-column: 2; padding-top: 0 }
+    .tablist { width: 100% }
+    .tablist button { flex: 1 1 auto }
+  }
+  @media (prefers-reduced-motion: reduce) { .feat.js .tpanel.on, .piece { animation: none } .piece { transform: none } .flow.anim .res > * { opacity: 1; transform: none; transition: none } }
+</style>
+
+<script>
+  // How it works: each step's result appears in turn once the board is on screen.
+  const flow = document.querySelector<HTMLElement>('.flow');
+  if (flow && 'IntersectionObserver' in window) {
+    flow.classList.add('anim');
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { flow.classList.add('in'); io.disconnect(); } }, { threshold: 0.35 });
+    io.observe(flow);
+  }
+
+  // Hero collage: pieces drift at different speeds while the hero scrolls out of view.
+  const collageEl = document.querySelector<HTMLElement>('.collage');
+  const wide = window.matchMedia('(min-width: 981px)');
+  if (collageEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let ticking = false;
+    // only on wide screens: on phones the collage sits below the text and drifting would bunch it up
+    const drift = () => { ticking = false; collageEl.style.setProperty('--shift', wide.matches ? `${Math.min(window.scrollY, 900)}px` : '0px'); };
+    window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(drift); } }, { passive: true });
+  }
+
+  // Tabs for the feature viewer (arrow keys move between tabs).
+  const feat = document.querySelector<HTMLElement>('.feat');
+  if (feat) {
+    feat.classList.add('js');
+    const tabs = Array.from(feat.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const select = (t: HTMLButtonElement, focus = false) => {
+      tabs.forEach((o) => {
+        const on = o === t;
+        o.setAttribute('aria-selected', String(on));
+        o.tabIndex = on ? 0 : -1;
+        document.getElementById(o.getAttribute('aria-controls')!)!.classList.toggle('on', on);
+      });
+      if (focus) t.focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t));
+      t.addEventListener('keydown', (e) => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (d) { e.preventDefault(); select(tabs[(i + d + tabs.length) % tabs.length], true); }
+      });
+    });
+  }
+</script>

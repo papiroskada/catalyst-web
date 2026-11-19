@@ -1,0 +1,23 @@
+---
+import Base from './Base.astro';
+import { breadcrumbs } from '../lib/schema';
+
+interface Props { title: string; heading: string; description: string; path: string; updated: string }
+const { title, heading, description, path, updated } = Astro.props;
+---
+<Base title={title} description={description} contactHref="/#contact" jsonLd={[breadcrumbs([{ name: heading, path }])]}>
+  <article class="legal wrap">
+    <h1>{heading}</h1>
+    <p class="upd">Last updated: <time datetime={updated}>{new Date(updated).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time></p>
+    <slot />
+  </article>
+</Base>
+
+<style>
+  .legal { max-width: 760px; padding-top: calc(var(--hh) + 80px); padding-bottom: 120px }
+  .legal h1 { font-size: clamp(36px, 4.4vw, 56px); line-height: 1.05; letter-spacing: -.02em }
+  .upd { color: var(--mid); margin: 16px 0 48px }
+  .legal :global(h2) { font-size: 24px; letter-spacing: 0; margin: 40px 0 12px }
+  .legal :global(p), .legal :global(li) { font-size: 17px; line-height: 1.7; color: var(--body-ink) }
+  .legal :global(ul) { padding-left: 22px }
+</style>

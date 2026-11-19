@@ -1,0 +1,119 @@
+---
+// The garment page of the app (Main tab): sampling and delivery timeline, photo and product details.
+import AppScreen from './AppScreen.astro';
+interface Props { label?: string }
+
+const p1 = [
+  { l: 'O/S Sent', d: '08 Sep' },
+  { l: 'C/S Requested', d: '15 Sep' },
+  { l: 'C/S In Work', d: '22 Sep' },
+  { l: 'C/S In Transit', d: '06 Oct' },
+  { l: 'C/S Approved', d: '14 Oct' },
+];
+const p2 = [
+  { l: 'PO Sent', d: '27 Oct', s: 'done' },
+  { l: 'PO In Transit', d: 'Now', s: 'cur' },
+  { l: 'Delivered', d: 'ETA 02 Dec', s: 'todo' },
+];
+const ident = [
+  ['Import number', 'IM-3627', true],
+  ['Style number', '312557'],
+  ['Category', 'Jackets'],
+  ['Season / collection', 'Spring · Collection 312 (2027)'],
+];
+const check = '<path d="M7 12.5l3.2 3.2L17 9" />';
+---
+<AppScreen active="Inventory" height={900} footTop={891} label={Astro.props.label ?? 'A garment page: the sampling and delivery timeline, photo and product details.'}>
+  <div class="g">
+    <div class="crumbs"><span class="btn back"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>Back</span><span>Inventory / Jackets / <span class="mono">IM-3627</span></span></div>
+    <div class="ids"><span class="mono">IM-3627 · 312557</span><span class="pill p-blue"><i></i>In Transit</span><span class="pill">Import</span></div>
+    <h1>Hooded Zip Jacket</h1>
+    <p class="meta">Jackets · Collection 312 · Spring 2027 · Anna</p>
+    <div class="tabs"><span class="tab on">Main</span><span class="tab">Messages <span class="cnt">4</span></span><span class="tab">Documents <span class="cnt">3</span></span><span class="tab">Activity <span class="cnt">12</span></span></div>
+
+    <div class="card tl">
+      <span class="eyebrow-s ph1">Phase 1 · Sampling</span>
+      <span class="eyebrow-s ph2">Phase 2 · Order &amp; Delivery</span>
+      <svg class="track" viewBox="0 0 875 30" width="875" height="30">
+        {[33, 153, 273, 394].map((x, i) => <line x1={x + 16} x2={[153, 273, 394, 514][i] - 16} y1="15" y2="15" stroke="#3f7d5c" stroke-width="2" />)}
+        <line x1="578" x2="686" y1="15" y2="15" stroke="#3f7d5c" stroke-width="2" />
+        <line x1="718" x2="826" y1="15" y2="15" stroke="#e1e4ea" stroke-width="2" />
+        {[33, 153, 273, 394, 514, 562].map((x) => <g><circle cx={x} cy="15" r="10" fill="#3f7d5c" stroke="none" /><g transform={`translate(${x - 12} 3)`} stroke="#fff" stroke-width="2.2" set:html={check} /></g>)}
+        <circle cx="702" cy="15" r="13.5" fill="#1f2a44" fill-opacity=".12" stroke="none" />
+        <circle cx="702" cy="15" r="9" fill="#fff" stroke="#1f2a44" stroke-width="2" />
+        <circle cx="702" cy="15" r="4.5" fill="#1f2a44" stroke="none" />
+        <circle cx="842" cy="15" r="9" fill="#fff" stroke="#cfd4dd" stroke-width="2" />
+      </svg>
+      {p1.map((s, i) => <span class="st" style={`left:${23 + i * 102}px`}><b>{s.l}</b><span class="mono">{s.d}</span></span>)}
+      {p2.map((s, i) => <span class:list={['st', s.s]} style={`left:${552 + i * 103}px`}><b>{s.l}</b><span class="mono">{s.d}</span></span>)}
+      <div class="tfoot"><span class="lnk">+ New sampling round</span><span class="btn">Complete step</span><span class="btn">Update progress</span></div>
+    </div>
+
+    <div class="card pd">
+      <div class="photo">
+        <svg viewBox="0 0 240 299" width="240" height="299">
+          <g transform="translate(72 90) scale(1.7)">
+            <path d="M18 9 Q14 -5 27 -8 Q40 -5 36 9 Q32 4 27 4 Q22 4 18 9 Z" fill="#232a40" />
+            <path d="M17 8 L5 13 Q-4 17 -6 28 L-13 70 Q-13 74 -9 74 L-2 74 Q1 74 1 71 L8 34 L8 79 Q8 83 12 83 L42 83 Q46 83 46 79 L46 34 L53 71 Q53 74 56 74 L63 74 Q67 74 67 70 L60 28 Q58 17 49 13 L37 8 Q32 14 27 14 Q22 14 17 8 Z" fill="#191d2e" />
+            <path d="M20 6 Q27 0 34 6 Q31 11 27 11 Q23 11 20 6 Z" fill="#0d1019" />
+            <g fill="none" stroke-linecap="round">
+              <path d="M27 12 V82" stroke="#4a5068" stroke-width=".8" />
+              <path d="M8 76.5 H46" stroke="#2a3047" stroke-width=".9" />
+              <path d="M5 13 Q8 24 8 34 M49 13 Q46 24 46 34" stroke="#242a3f" stroke-width=".8" />
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="thumbs"><i class="on"></i><i></i><i></i></div>
+      <h2>Product details</h2>
+      <span class="btn edit">Edit details</span>
+      <div class="grp" style="top:76px"><span class="eyebrow-s">Identification</span></div>
+      <dl style="top:99px">{ident.map(([k, v, m]) => <div><dt>{k}</dt><dd class:list={{ mono: m }}>{v}</dd></div>)}</dl>
+      <div class="grp" style="top:278px"><span class="eyebrow-s">Product</span></div>
+      <dl style="top:301px">
+        <div><dt>Color</dt><dd><i class="sw"></i>Midnight</dd></div>
+        <div><dt>Fiber content</dt><dd>70% Rayon · 25% Nylon · 5% Spandex</dd></div>
+      </dl>
+      <div class="grp" style="top:395px"><span class="eyebrow-s">Sourcing &amp; Order</span></div>
+    </div>
+  </div>
+</AppScreen>
+
+<style is:global>
+  .app .g > * { position: absolute; left: 0 }
+  .app .g .crumbs { top: 0 }
+  .app .g .ids { top: 51px; display: flex; align-items: center; gap: 12px }
+  .app .g .ids > .mono { font-size: 16px; color: #3d4554 }
+  .app .g h1 { top: 83px; margin: 0; font-size: 24px; font-weight: 600; line-height: 32px; letter-spacing: -.005em }
+  .app .g .meta { top: 119px; margin: 0; font-size: 16px; line-height: 22px; color: #5d6676 }
+  .app .g .tabs { top: 153px; right: 0 }
+  .app .g .tl { top: 213px; right: 0; height: 189px; overflow: hidden }
+  .app .g .tl > * { position: absolute }
+  .app .g .ph1 { left: 23px; top: 14px }
+  .app .g .ph2 { left: 552px; top: 14px }
+  .app .g .track { left: 0; top: 34px; overflow: visible }
+  .app .g .st { top: 66px; display: flex; flex-direction: column; width: 92px; font-size: 15px; line-height: 19.5px }
+  .app .g .st b { font-weight: 600 }
+  .app .g .st.done, .app .g .st.cur, .app .g .st.todo { width: 101px }
+  .app .g .st .mono { font-size: 14px; color: #5d6676 }
+  .app .g .st.cur .mono { font-family: 'Plex Sans', sans-serif; font-size: 15px }
+  .app .g .st.todo b { color: #5d6676 }
+  .app .g .tfoot { left: 0; right: 0; bottom: 0; height: 51px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding-right: 22px; background: #fbfaf7; border-top: 1px solid #ebedf1 }
+  .app .g .lnk { margin-right: 16px; font-size: 16px; font-weight: 500; color: #1f4f86 }
+  .app .g .tfoot .btn { font-size: 16px; height: 34px }
+  .app .g .pd { top: 420px; right: 0; height: 520px }
+  .app .g .pd > * { position: absolute }
+  .app .g .photo { left: 23px; top: 22px; width: 240px; height: 299px; border-radius: 12px; background: #eceae5; overflow: hidden }
+  .app .g .thumbs { left: 23px; top: 332px; display: flex; gap: 9px }
+  .app .g .thumbs i { width: 35px; height: 35px; box-sizing: border-box; border-radius: 8px; background: #eceae5 }
+  .app .g .thumbs i.on { border: 2px solid #1b2230 }
+  .app .g .pd h2 { left: 291px; top: 28px; margin: 0; font-size: 22px; font-weight: 600; line-height: 28px }
+  .app .g .edit { right: 22px; top: 22px; height: 39px; font-size: 16px }
+  .app .g .grp { left: 291px; right: 22px; height: 22px; border-bottom: 1px solid #1f2a44; display: flex; align-items: center }
+  .app .g dl { left: 291px; right: 22px; margin: 0 }
+  .app .g dl div { display: grid; grid-template-columns: 194px 1fr; align-items: center; height: 41.5px; border-bottom: 1px solid #eef0f3; font-size: 16px }
+  .app .g dt { color: #5d6676 }
+  .app .g dd { margin: 0; display: flex; align-items: center; gap: 9px }
+  .app .g dd.mono { font-size: 16px }
+  .app .g .sw { width: 13px; height: 13px; border-radius: 3px; background: #191d2e }
+</style>

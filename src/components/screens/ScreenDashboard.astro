@@ -1,0 +1,126 @@
+---
+// The dashboard: collection totals, import statistics, a calendar of the month and trend groups.
+import AppScreen from './AppScreen.astro';
+interface Props { label?: string }
+
+const stats = [['Designs', 8], ['Imports', 7], ['Domestic', 1]];
+const imports = [
+  { n: 1, t: 'Overdue', d: 'Expected delivery has passed and the garment is not delivered.', k: 'red' },
+  { n: 2, t: 'In transit', d: 'The order is on the way.', k: 'blue' },
+  { n: 1, t: 'Due in the next 7 days', d: 'Next: <span class="mono">IM-3601</span> Wide-Leg Trouser Jean · 20 Nov' },
+  { n: 1, t: 'Delivered', d: '1 of 7 imports delivered' },
+];
+// November 2026 starts on a Sunday; today is the 15th
+const weeks: (number | null)[][] = [[null, null, null, null, null, null, 1]];
+for (let d = 2; d <= 30; d += 7) weeks.push(Array.from({ length: 7 }, (_, i) => (d + i <= 30 ? d + i : null)));
+const trends = [
+  ['Linen Basics', 4, ['#d9c7a7', '#ece3d2', '#9c8a74', '#a9cfc4']],
+  ['Washed Blues', 3, ['#4a5f8c', '#7d9bd1', '#bcd4ec', '#efefe9']],
+  ['Nightfall', 2, ['#16213d', '#1b1b1f', '#e07a5f', '#e9e4dc']],
+  ['Breton Stripes', 6, ['#22325a', '#f4f2ec', '#b8403a', '#cbb48c']],
+  ['Lemon Grove', 2, ['#ecd96b', '#6e8f52', '#f3ead8', '#b9694a']],
+  ['Terracotta Sun', 5, ['#fafaf7', '#efe8d8', '#d9cdb5', '#b7b0a3']],
+  ['Sea Glass', 3, ['#9fd3cf', '#cfe8d8', '#3f7f7f', '#e3d6bd']],
+  ['Café Society', 1, ['#3e2c25', '#c8a883', '#f1e6d3']],
+  ['Marina', 4, ['#ece4d4', '#24314f', '#a7a9ad', '#5a73a0']],
+  ['Olive Grove', 2, ['#6f6c4a', '#a9b597', '#bba97c', '#5c4a3a']],
+] as const;
+---
+<AppScreen active="Dashboard" height={900} footTop={788} label={Astro.props.label ?? 'The dashboard: collection totals, import statistics with overdue and in-transit counts, a calendar and trend groups.'}>
+  <div class="g d">
+    <h1>Dashboard</h1>
+    <div class="cur"><span class="eyebrow-s">Current collection</span><i></i><b>Spring 2027</b><span class="num">312</span><span class="rest">· 1 Oct – 15 Mar · Coastline, washed linen and blues</span></div>
+
+    <div class="card stats">{stats.map(([l, n]) => <div><span class="eyebrow-s">{l}</span><b>{n}</b></div>)}</div>
+
+    <div class="card imp">
+      <div class="hd"><b>Import statistics</b><span>7 imports · Spring 2027</span></div>
+      {imports.map((r) => (
+        <div class="row">
+          <span class:list={['nb', r.k]}>{r.n}</span>
+          <div><b>{r.t}</b><p set:html={r.d} /></div>
+          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+        </div>
+      ))}
+    </div>
+
+    <div class="card cal">
+      <div class="hd"><b>Calendar</b><span>November 2026</span><span class="btn">Today</span></div>
+      <div class="wd">{['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => <span>{d}</span>)}</div>
+      <div class="mn">November</div>
+      <div class="wk">
+        {weeks.map((w) => (
+          <div>{w.map((d) => <span class:list={{ in: d, past: d && d < 15, now: d === 15 }}>{d === 15 ? <i>{d}</i> : d}</span>)}</div>
+        ))}
+      </div>
+    </div>
+
+    <div class="card tg">
+      <div class="hd"><b>Trend groups</b><span>10 groups · Spring 2027</span></div>
+      <div class="tiles">
+        {trends.map(([n, c, cols]) => (
+          <div class="tile">
+            <div class="pal">{cols.map((col) => <i style={`background:${col}`} />)}</div>
+            <div class="tn"><b>{n}</b><span><b>{c}</b> {c === 1 ? 'design' : 'designs'}</span></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</AppScreen>
+
+<style is:global>
+  .app .d h1 { top: -3px }
+  .app .d .cur { top: 33px; display: flex; align-items: center; gap: 8px; font-size: 16px; color: #5d6676; white-space: nowrap }
+  .app .d .cur .eyebrow-s { color: #5d6676 }
+  .app .d .cur i { width: 17px; height: 10px; border-radius: 99px; background: #dcefe2; box-shadow: inset 0 0 0 1px #bfdcc9 }
+  .app .d .cur b { font-weight: 600; color: #1b2230 }
+  .app .d .cur .num { color: #3d4554; font-weight: 500; margin-left: -2px }
+  .app .d .hd { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #e1e4ea; font-size: 16px; color: #5d6676 }
+  .app .d .hd b { font-size: 20px; font-weight: 600; color: #1b2230 }
+
+  .app .d .stats { top: 69px; width: 429px; height: 108px; display: flex; overflow: hidden }
+  .app .d .stats > div { flex: 1; display: flex; flex-direction: column; padding: 21px 0 0 25px; border-left: 1px solid #e1e4ea }
+  .app .d .stats > div:first-child { border-left: 0 }
+  .app .d .stats .eyebrow-s { color: #5d6676 }
+  .app .d .stats b { font-size: 46px; font-weight: 600; line-height: 60px; margin-top: -3px }
+
+  .app .d .imp { top: 195px; width: 429px; height: 364px; overflow: hidden }
+  .app .d .imp .hd { height: 48px; padding: 0 17px }
+  .app .d .imp .hd b, .app .d .tg .hd b { font-size: 18px }
+  .app .d .imp .hd span, .app .d .tg .hd span { font-size: 15px }
+  .app .d .row { display: flex; align-items: center; gap: 13px; padding: 13px 22px 13px 17px; border-bottom: 1px solid #eef0f3 }
+  .app .d .row:last-child { border-bottom: 0 }
+  .app .d .nb { display: grid; place-items: center; width: 43px; height: 43px; flex: none; box-sizing: border-box; border: 1px solid #cfd4dd; border-radius: 8px; font-size: 21px; font-weight: 600 }
+  .app .d .nb.red { background: #fbe3e1; border-color: #f2c4bf; color: #b0382f }
+  .app .d .nb.blue { background: #e6ebf5; border-color: #cfd4dd; color: #1f2a44 }
+  .app .d .row > div { flex: 1; font-size: 16px; margin: -3px -10px 0 0 }
+  .app .d .row b { display: block; font-weight: 600; line-height: 22px }
+  .app .d .row p { margin: 0; line-height: 21px; color: #5d6676 }
+  .app .d .row svg { width: 14px; height: 14px; flex: none; color: #3d4554; stroke-width: 2 }
+
+  .app .d .cal { top: 69px; left: 447px; width: 428px; height: 410px; overflow: hidden }
+  .app .d .cal .hd { height: 65px; box-sizing: border-box; padding: 0 17px 0 16px; gap: 11px }
+  .app .d .cal .hd b { font-size: 18px }
+  .app .d .cal .hd span:not(.btn) { font-size: 15px; font-weight: 600; color: #1f2a44 }
+  .app .d .cal .btn { margin-left: auto; height: 39px; width: 76px; font-size: 16px; font-weight: 500 }
+  .app .d .wd { display: grid; grid-template-columns: repeat(7, 1fr); margin: 0 12px 0 11.5px; height: 34px; align-items: center; border-bottom: 1px solid #e1e4ea; text-align: center; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #5d6676 }
+  .app .d .mn { height: 43px; display: grid; place-items: center; font-size: 16px; font-weight: 600 }
+  .app .d .wk { display: flex; flex-direction: column; gap: 4.5px; margin: 0 12px 0 11.5px }
+  .app .d .wk > div { display: grid; grid-template-columns: repeat(7, 1fr); height: 39.8px }
+  .app .d .wk span { display: grid; place-items: center; font-size: 16px; font-weight: 600; color: #1b2230 }
+  .app .d .wk span.in { background: #dcefe2 }
+  .app .d .wk span.past { font-weight: 400; color: #5d6676 }
+  .app .d .wk i { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 99px; background: #1f2a44; color: #fff; font-style: normal }
+
+  .app .d .tg { top: 577px; right: 0; height: 320px; overflow: hidden }
+  .app .d .tg .hd { height: 49px; padding: 0 17px }
+  .app .d .tiles { display: grid; grid-template-columns: repeat(5, 158px); gap: 13px 12.8px; padding: 15px 17px }
+  .app .d .tile { height: 85px; box-sizing: border-box; padding: 13px 13px 0 14px; border: 1px solid #e1e4ea; border-radius: 12px }
+  .app .d .pal { display: flex; height: 31px; border-radius: 6px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(26, 35, 64, .06) }
+  .app .d .pal i { flex: 1 }
+  .app .d .tn { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 16px; white-space: nowrap }
+  .app .d .tn > b { min-width: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis }
+  .app .d .tn span { flex: none; color: #5d6676 }
+  .app .d .tn span b { color: #1b2230; font-weight: 600 }
+</style>

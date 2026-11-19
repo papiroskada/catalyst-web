@@ -1,0 +1,292 @@
+@import '@fontsource/figtree/latin-400.css';
+@import '@fontsource/figtree/latin-500.css';
+@import '@fontsource/figtree/latin-600.css';
+@import '@fontsource/syne/latin-600.css';
+
+:root {
+  --g1: #9EB2E6; --g2: #DDE3F4; --g3: #C2CCEC; --bloom: #9DB4EE;
+  --paper: #FBFBFD; --tint: #F1F3F9; --mid: #6F7689; --ink: #12182A; --navy: #1A2340;
+  --accent: #6E8FD0; --soft: #D6DEF4; --line: rgba(18, 24, 42, .1); --body-ink: #3F4762;
+  --display: "Syne", "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --body: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --hh: 72px; --side: clamp(12px, 3vw, 58px); --r-lg: clamp(28px, 3.4vw, 48px);
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100% }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); -webkit-font-smoothing: antialiased; overflow-x: clip }
+img { max-width: 100%; height: auto; display: block }
+a { color: inherit }
+:target { scroll-margin-top: calc(var(--hh) + 12px) }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap }
+.skip { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--navy); color: #fff; padding: 10px 16px; border-radius: 8px; text-decoration: none }
+.skip:focus { top: 12px }
+
+.wrap { max-width: 1280px; margin: 0 auto; padding-inline: max(24px, env(safe-area-inset-left, 0px)) }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; margin: 0; text-wrap: balance }
+h2 { font-size: clamp(32px, 4vw, 56px); line-height: 1.04; letter-spacing: -.02em }
+.eyebrow { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--mid); margin: 0 0 18px }
+.lede { margin: 24px 0 0; font-size: 18px; line-height: 1.55; color: #4E5670; max-width: 52ch }
+.sec { padding-block: clamp(96px, 14vh, 160px) }
+.prose-p { font-size: 18px; line-height: 1.6; color: var(--body-ink); max-width: 62ch }
+
+.btn { display: inline-flex; align-items: center; gap: 10px; border: 0; background: var(--navy); color: #F3F5F9; font: 500 16px var(--body); padding: 16px 30px; border-radius: 999px; cursor: pointer; text-decoration: none }
+.btn:hover { background: #243058 }
+.btn[disabled] { opacity: .6; cursor: progress }
+.link { color: var(--navy); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 3px; font-size: 16px }
+/* thicker underline on hover without changing the link's height (no layout shift) */
+.link:hover { box-shadow: inset 0 -1px 0 var(--accent) }
+
+/* header */
+.site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 40; padding-top: env(safe-area-inset-top, 0px); background: rgba(251, 251, 253, .9); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); transition: background-color .3s, border-color .3s }
+.site-header.overlay:not(.solid) { background: transparent; border-bottom-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none }
+.hwrap { position: relative; height: var(--hh); display: flex; align-items: center; justify-content: space-between; gap: 24px; max-width: 1360px; margin: 0 auto; padding-inline: 24px }
+.wm { display: flex; align-items: center; font-family: var(--display); font-weight: 600; font-size: 19px; letter-spacing: .16em; color: var(--navy); line-height: 1; margin-left: 14px; text-decoration: none }
+.cm { display: inline-block; margin: 0 -1px 0 -3px; transform: translateY(-3%) }
+.cm svg { display: block; overflow: visible }
+.cm path { stroke-width: 15; transition: stroke-width .22s ease-out .06s }
+.cm line { stroke-width: 4; stroke-dashoffset: var(--len); transition: stroke-dashoffset .1s ease-in }
+body.col .cm line { stroke-dashoffset: 0; transition: stroke-dashoffset .14s ease-out calc(.34s + var(--n) * .022s) }
+.cg { transform-box: view-box; transform-origin: 60px 60px }
+.lt { display: inline-block; transform-origin: 0 50%; transition: transform .45s cubic-bezier(.2, 1.35, .35, 1) calc(.08s + var(--i) * .02s), opacity .1s linear calc(.08s + var(--i) * .02s) }
+.lt.api { margin-left: .55em }
+body.col .cm path { stroke-width: 9; transition: stroke-width .22s ease-out .26s }
+body.col .cg { animation: catBump .34s cubic-bezier(.3, .7, .4, 1) .24s both }
+body.col .lt { transform: translateX(var(--dx, 0px)) scaleX(.3); opacity: 0; transition: transform .26s cubic-bezier(.55, 0, .85, .35) calc(var(--i) * .018s), opacity .06s linear calc(var(--i) * .018s + .2s) }
+@keyframes catBump { 0% { transform: scale(1, 1) } 28% { transform: scale(1.14, .9) } 58% { transform: scale(.95, 1.05) } 80% { transform: scale(1.02, .99) } 100% { transform: scale(1, 1) } }
+nav.main { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; gap: 32px; font-size: 15px; color: var(--mid); white-space: nowrap }
+nav.main a { text-decoration: none }
+nav.main a:hover, nav.main a[aria-current="page"] { color: var(--ink) }
+/* Solutions dropdown */
+.dd { position: relative }
+.dd-btn { display: inline-flex; align-items: center; gap: 6px; padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer }
+.dd-btn svg { width: 14px; height: 14px; transform: rotate(90deg); transition: transform .25s }
+.dd-btn:hover, .dd-btn[data-active], .dd.open .dd-btn { color: var(--ink) }
+.dd.open .dd-btn svg { transform: rotate(-90deg) }
+.dd-panel { position: absolute; left: -16px; top: calc(100% + (var(--hh) - 100%) / 2 + 4px); width: min(600px, calc(50vw + 80px)); padding: 16px; background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 30px 60px rgba(26, 35, 64, .14), 0 2px 6px rgba(26, 35, 64, .04); white-space: normal; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .18s, transform .18s, visibility 0s linear .18s }
+.dd-panel::before { content: ""; position: absolute; left: 0; right: 0; top: -48px; height: 48px }
+.dd.open .dd-panel { opacity: 1; visibility: visible; transform: none; transition: opacity .18s, transform .18s }
+.dd-panel ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px }
+.dd-panel li a { display: flex; gap: 20px; align-items: center; padding: 16px; border-radius: 14px; text-decoration: none; color: var(--ink); transition: background-color .15s }
+.dd-panel li a:hover, .dd-panel li a:focus-visible, .dd-panel li a[aria-current="page"] { background: var(--tint) }
+.dd-thumb { position: relative; flex: none; width: 128px; height: 88px; border-radius: 10px; overflow: hidden }
+.dd-thumb img { position: absolute; left: 14px; top: 14px; width: 220px; max-width: none; height: auto; border-radius: 5px 0 0 0; box-shadow: 0 6px 16px rgba(26, 35, 64, .18) }
+.dd-text { display: flex; flex-direction: column; gap: 5px; min-width: 0 }
+.dd-ind { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mid) }
+.dd-name { font-weight: 500; font-size: 16px }
+.dd-sum { font-size: 13.5px; line-height: 1.45; color: var(--body-ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden }
+.dd-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; padding: 18px 20px; border-radius: 14px; background: linear-gradient(135deg, var(--g2), #EEF1FA); font-size: 14px; color: var(--body-ink); text-decoration: none }
+.dd-foot strong { font-weight: 500; color: var(--navy) }
+.dd-foot svg { width: 16px; height: 16px; color: var(--navy); transition: transform .2s }
+.dd-foot:hover svg { transform: translateX(3px) }
+@media (prefers-reduced-motion: reduce) { .dd-panel, .dd-btn svg { transition: none } }
+.hlink { white-space: nowrap; font-size: 14px; color: var(--navy); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 2px }
+
+.hright { display: flex; align-items: center; gap: 20px }
+.mnav { display: none; position: relative }
+.mnav summary { list-style: none; cursor: pointer; width: 40px; height: 40px; display: grid; place-content: center; gap: 6px; border-radius: 10px }
+.mnav summary::-webkit-details-marker { display: none }
+.mnav summary span { display: block; width: 20px; height: 2px; background: var(--navy); border-radius: 2px; transition: transform .2s }
+.mnav[open] summary span:first-child { transform: translateY(4px) rotate(45deg) }
+.mnav[open] summary span:last-child { transform: translateY(-4px) rotate(-45deg) }
+.mnav nav { position: absolute; right: 0; top: calc(100% + 10px); min-width: 220px; display: flex; flex-direction: column; padding: 8px; background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 20px 40px rgba(26, 35, 64, .12) }
+.mnav nav a { padding: 12px 14px; border-radius: 8px; text-decoration: none; font-size: 16px }
+.mnav nav a:hover, .mnav nav a[aria-current="page"] { background: var(--tint) }
+.mnav .mfoot { display: none }
+/* phones: full-screen menu with large items, the contact action at the bottom; page scroll locked while open */
+@media (max-width: 640px) {
+  html:has(.mnav[open]) { overflow: hidden }
+  .site-header:has(.mnav[open]) { background: var(--paper); border-bottom-color: var(--line); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px) }
+  /* the header (backdrop-filter) is the containing block, so the panel starts right under it */
+  .mnav nav { position: fixed; top: 100%; left: 0; right: 0; height: calc(100dvh - var(--hh) - env(safe-area-inset-top, 0px)); min-width: 0;
+    padding: 20px 24px calc(24px + env(safe-area-inset-bottom, 0px)); gap: 2px; overflow-y: auto;
+    border: 0; border-radius: 0; box-shadow: none; background: var(--paper); animation: menu-in .28s cubic-bezier(.2, .8, .2, 1) }
+  .mnav nav > a { padding: 14px 0; border-radius: 0; font: 500 24px/1.2 var(--body); letter-spacing: -.01em; color: var(--ink) }
+  .mnav nav > a:hover { background: none }
+  .mnav nav > a[aria-current="page"] { background: none; color: var(--accent) }
+  .mnav nav > a.mcontact { display: none }
+  .mnav .mfoot { display: flex; flex-direction: column; align-items: stretch; gap: 18px; margin-top: auto; padding-top: 24px; border-top: 1px solid var(--line) }
+  .mnav .mfoot .btn { justify-content: center; padding: 16px 30px; border-radius: 999px } /* same pill as every other button */
+  .mnav .mfoot .mmail { align-self: center; font-size: 15px; color: var(--mid); text-decoration: none; padding: 0 }
+}
+@keyframes menu-in { from { opacity: 0; transform: translateY(-8px) } }
+
+/* cards shared by several pages */
+.bhead { margin-bottom: 60px }
+.bhead p:not(.eyebrow) { margin: 20px 0 0; font-size: 18px; line-height: 1.6; color: var(--mid); max-width: 56ch }
+.bgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px }
+.bgrid.three { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+.bcard { position: relative; display: flex; flex-direction: column; gap: 18px; padding: 30px 36px 108px; min-height: clamp(300px, 36vh, 380px); border: 1px solid var(--line); border-radius: 14px; background: #fff }
+.bcard .step { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent) }
+.bcard h3 { font: 600 clamp(21px, 1.9vw, 25px)/1.3 var(--body) }
+.bcard p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--body-ink) }
+.bi { position: absolute; right: 24px; bottom: 24px; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 12px; background: var(--soft); color: var(--navy) }
+.bi svg { width: 26px; height: 26px }
+
+.ticks { list-style: none; margin: 28px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px }
+.ticks li { display: flex; gap: 12px; font-size: 16px; line-height: 1.5; color: var(--ink) }
+.ticks svg { flex: none; width: 20px; height: 20px; margin-top: 2px; color: var(--accent) }
+
+.cgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 44px 48px; margin-top: 64px }
+.cap { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 4px 18px }
+.cap .ci { grid-row: span 2; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; background: var(--soft); color: var(--navy) }
+.cap .ci svg { width: 21px; height: 21px }
+.cap h3 { font: 600 18px/1.3 var(--body); align-self: center }
+.cap p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--body-ink) }
+
+/* screenshot panels */
+.panel { position: relative; border-radius: 24px; overflow: hidden; padding: 40px 0 0 40px }
+.panel img { border-radius: 14px 0 0 0; box-shadow: 0 30px 70px rgba(26, 35, 64, .22); width: 100%; object-fit: cover; object-position: left top }
+.p-blue { background: linear-gradient(140deg, #B4C5EE 0%, #8EA8E3 55%, #7895DA 100%) }
+.p-violet { background: linear-gradient(140deg, #CDD3F0 0%, #AFB6E8 55%, #9AA0DE 100%) }
+.p-sky { background: linear-gradient(140deg, #BFD6EC 0%, #97B9E0 55%, #7EA3D6 100%) }
+.p-indigo { background: linear-gradient(140deg, #C9CEE9 0%, #9EA9DB 55%, #7E8CCB 100%) }
+
+.spot { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(40px, 6vw, 96px); align-items: center }
+.spot.rev { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr) }
+.spot.rev .stext { order: 2 }
+.stext h2 { font-size: clamp(30px, 3.4vw, 46px) }
+.stext p:not(.eyebrow) { margin: 24px 0 0; font-size: 18px; line-height: 1.6; color: var(--body-ink); max-width: 44ch }
+
+/* inner-page hero */
+.phero { padding-top: calc(var(--hh) + clamp(90px, 13vh, 140px)); padding-bottom: clamp(64px, 9vh, 100px); text-align: center; background: radial-gradient(ellipse 60% 50% at 50% 0%, #E9EEFA, transparent 70%) }
+.phero .copy { display: flex; flex-direction: column; align-items: center }
+.phero h1 { font-size: clamp(38px, 5.2vw, 76px); line-height: 1.02; letter-spacing: -.025em; max-width: 18ch }
+.phero .lede { margin-inline: auto }
+.crumbs { display: flex; gap: 8px; justify-content: center; list-style: none; padding: 0; margin: 0 0 22px; font-size: 14px; color: var(--mid) }
+.crumbs li + li::before { content: "/"; margin-right: 8px; opacity: .6 }
+.crumbs a { text-decoration: none }
+.crumbs a:hover { color: var(--ink) }
+
+/* FAQ */
+.fgrid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 56px; align-items: start }
+.fhead { display: flex; flex-direction: column; gap: 20px }
+.fhead p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--mid); max-width: 30ch }
+.fhead .link { align-self: flex-start }
+.qlist { display: flex; flex-direction: column; gap: 12px }
+.qa { background: #F3F5FB; border-radius: 20px; transition: background-color .3s }
+.qa[open] { background: #E8EDF9 }
+.qa summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 28px; font: 600 clamp(19px, 1.6vw, 22px)/1.3 var(--display); color: var(--ink) }
+.qa summary::-webkit-details-marker { display: none }
+.qa summary i { position: relative; flex: none; width: 32px; height: 32px; border-radius: 50%; background: #fff; transition: transform .35s cubic-bezier(.2, .7, .2, 1), background-color .3s linear }
+.qa summary i::before, .qa summary i::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; background: var(--navy); border-radius: 2px; transform: translate(-50%, -50%) }
+/* Bars flip colour at the midpoint of the circle's .3s fade, so they never match the circle (no blink) */
+.qa summary i::before { transition: background-color 0s linear .15s }
+.qa summary i::after { transform: translate(-50%, -50%) rotate(90deg); transition: transform .35s, background-color 0s linear .15s }
+.qa[open] summary i { background: var(--navy); transform: rotate(180deg) }
+.qa[open] summary i::before { background: #fff }
+.qa[open] summary i::after { background: #fff; transform: translate(-50%, -50%) rotate(0) }
+/* While closing, show the closed state (+ icon, light card) right away instead of after the height animation */
+.qa.closing { background: #F3F5FB }
+.qa.closing summary i { background: #fff; transform: none }
+.qa.closing summary i::before { background: var(--navy) }
+.qa.closing summary i::after { background: var(--navy); transform: translate(-50%, -50%) rotate(90deg) }
+.qa summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 20px }
+.qa-body { overflow: hidden }
+.qa p { margin: 0; padding: 0 28px 26px; font-size: 17px; line-height: 1.65; color: var(--body-ink); max-width: 62ch }
+
+/* contact */
+.contact { position: relative; margin: 0 var(--side) var(--side); border-radius: var(--r-lg); overflow: hidden; background: radial-gradient(ellipse 50% 60% at 25% 50%, color-mix(in srgb, var(--bloom) 65%, transparent), transparent 70%), linear-gradient(135deg, var(--g3) 0%, var(--g2) 50%, var(--g1) 100%) }
+.contact .wrap { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding-block: clamp(110px, 17vh, 190px) }
+.contact .eyebrow { color: #4E5670 }
+.contact h2 { font-size: clamp(34px, 4.4vw, 60px); max-width: 18ch }
+.contact .lede { margin-inline: auto; max-width: 56ch }
+.contact .btn { margin-top: 36px }
+.contact .mail { display: inline-block; margin-top: 26px; font: 500 16px var(--body); color: var(--navy) }
+/* variant with the form in the section (home page) */
+.contact.has-form .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; text-align: left; padding-block: clamp(80px, 12vh, 128px) }
+.contact.has-form h2 { max-width: 14ch }
+.contact.has-form .lede { margin-inline: 0; max-width: 44ch }
+@media (max-width: 980px) { .contact.has-form .wrap { grid-template-columns: minmax(0, 1fr) } }
+/* form variant: the button only shows on phones, where the form is swapped for the dialog */
+.contact .cbtn { display: none }
+@media (max-width: 640px) {
+  .contact.has-form .wrap { text-align: center; justify-items: center }
+  .contact.has-form .ctext { display: flex; flex-direction: column; align-items: center }
+  .contact.has-form .lede { margin-inline: auto }
+  .contact.has-form .cbtn { display: inline-flex; margin-top: 32px; align-self: center }
+  .contact.has-form .cform-slot { display: none }
+}
+
+/* contact dialog (ContactDialog.astro) */
+html.dlg-open { overflow: hidden }
+.cdlg { width: min(560px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; border-radius: 24px; background: transparent; color: var(--ink); overflow: visible }
+.cdlg::backdrop { background: rgba(26, 35, 64, .38); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px) }
+.cdlg-in { position: relative; max-height: calc(100dvh - 32px); overflow-y: auto; padding: 36px 36px 32px; border-radius: 24px; background: #fff; box-shadow: 0 40px 90px rgba(26, 35, 64, .3) }
+.cdlg h2 { font-size: clamp(26px, 3vw, 34px); line-height: 1.1; padding-right: 40px }
+.cdlg-lede { margin: 14px 0 24px; font-size: 15.5px; line-height: 1.55; color: #4E5670 }
+.cdlg-lede .link { font-size: inherit }
+.cdlg .cform { padding: 0; background: none; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none }
+.cdlg-x { position: absolute; top: 18px; right: 18px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: #fff; color: var(--navy); cursor: pointer; box-shadow: 0 2px 8px rgba(26, 35, 64, .1); transition: background-color .2s }
+.cdlg-x:hover { background: var(--tint) }
+.cdlg[open] { animation: dlg-in .32s cubic-bezier(.2, .7, .2, 1) }
+.cdlg[open]::backdrop { animation: dlg-fade .32s ease-out }
+.cdlg.closing { animation: dlg-out .2s ease-in forwards }
+.cdlg.closing::backdrop { animation: dlg-fade .2s ease-in reverse forwards }
+@keyframes dlg-in { from { opacity: 0; transform: translateY(18px) scale(.97) } }
+@keyframes dlg-out { to { opacity: 0; transform: translateY(10px) scale(.98) } }
+@keyframes dlg-fade { from { opacity: 0 } }
+@media (max-width: 560px) { .cdlg-in { padding: 28px 22px 24px } }
+/* phones: the dialog is a bottom sheet — slides up from the bottom edge, can be dragged down to close */
+@media (max-width: 640px) {
+  .cdlg { width: 100%; max-width: 100%; max-height: 92dvh; margin: auto 0 0; border-radius: 24px 24px 0 0 }
+  .cdlg-in { max-height: 92dvh; border-radius: 24px 24px 0 0; padding: 32px 22px calc(24px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -20px 60px rgba(26, 35, 64, .22); touch-action: pan-y }
+  .cdlg-in::before { content: ""; position: absolute; top: 10px; left: 50%; width: 40px; height: 5px; margin-left: -20px; border-radius: 3px; background: rgba(26, 35, 64, .18) }
+  .cdlg-x { top: 16px; right: 14px }
+  .cdlg[open] { animation: sheet-in .38s cubic-bezier(.2, .8, .2, 1) }
+  .cdlg.closing { animation: sheet-out .24s ease-in forwards }
+}
+@keyframes sheet-in { from { transform: translateY(100%) } }
+@keyframes sheet-out { to { transform: translateY(100%) } }
+.cform { background: rgba(255, 255, 255, .72); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, .9); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 16px }
+.field { display: flex; flex-direction: column; gap: 6px }
+.field label { font-size: 14px; font-weight: 500 }
+.field input, .field textarea { font: 16px var(--body); color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; width: 100% }
+.field textarea { min-height: 110px; resize: vertical }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(110, 143, 208, .2) }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden }
+.err { font-size: 13px; color: #A32D2D; margin: 0 }
+.consent { font-size: 13px; line-height: 1.5; color: #4E5670; margin: 0 }
+.sent { font-size: 16px; line-height: 1.5; color: var(--navy); margin: 0 }
+
+/* footer */
+.site-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; padding-block: 28px 40px; font-size: 14px; color: var(--mid) }
+.site-footer .fwm { font: 600 15px var(--display); letter-spacing: .16em; color: var(--navy) }
+.site-footer nav { display: flex; flex-wrap: wrap; gap: 24px }
+.site-footer a { text-decoration: none }
+.site-footer a:hover { color: var(--ink) }
+
+@media (max-width: 1180px) { .bgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) } .cgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+@media (max-width: 980px) {
+  .spot, .spot.rev, .fgrid { grid-template-columns: minmax(0, 1fr) }
+  .spot.rev .stext { order: 0 }
+  .bgrid.three { grid-template-columns: minmax(0, 1fr) }
+}
+@media (max-width: 860px) { nav.main { display: none } .mnav { display: block } }
+@media (max-width: 480px) { .hlink { display: none } }
+@media (max-width: 860px) { .lede { font-size: 16px } }
+@media (max-width: 820px) { .bgrid, .cgrid { grid-template-columns: minmax(0, 1fr) } .panel { padding: 24px 0 0 20px } .bcard { min-height: 0 } }
+/* phones: much tighter vertical rhythm between sections */
+@media (max-width: 640px) {
+  /* rhythm: 80px between sections (40 + 40, also where a section is marked padding-top:0 inline),
+     at most ~48px between blocks inside a section */
+  .sec { padding-block: 40px !important }
+  .phero { padding-bottom: 40px }
+  .contact { margin-top: 40px }
+  .contact .wrap, .contact.has-form .wrap { padding-block: 72px }
+  .bhead { margin-bottom: 32px }
+  .cgrid { margin-top: 40px }
+  /* short text cards become one compact list: a single white panel, a row per item (icon left, text right),
+     thin dividers between rows — nothing hidden off-screen and about half the height of stacked cards */
+  .bgrid, .bgrid.three { gap: 0; border: 1px solid var(--line); border-radius: 20px; background: #fff; overflow: hidden }
+  .bcard { display: grid; grid-template-columns: 40px minmax(0, 1fr); column-gap: 16px; row-gap: 6px; align-items: start;
+    min-height: 0; padding: 20px; border: 0; border-radius: 0; background: none }
+  .bcard + .bcard { border-top: 1px solid var(--line) }
+  .bcard h3 { grid-column: 2; grid-row: 1; font-size: 18px; line-height: 1.3 }
+  .bcard p { grid-column: 2; grid-row: 2; font-size: 15px; line-height: 1.55 }
+  .bi { position: static; grid-column: 1; grid-row: 1 / span 2; width: 40px; height: 40px; border-radius: 10px }
+  .bi svg { width: 20px; height: 20px }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important } html { scroll-behavior: auto } }

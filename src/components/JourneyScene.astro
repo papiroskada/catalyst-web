@@ -1,0 +1,58 @@
+---
+// Small illustrated scenes for Journey.astro (decorative HTML; safe to render more than once).
+interface Props { kind: 'talk' | 'map' | 'first' | 'grow' | 'run' }
+const { kind } = Astro.props;
+---
+{kind === 'talk' && (<Fragment>
+    <!-- stacked with one even gap (see .chat in Journey.astro): ours on the left, client's on the right -->
+    <div class="chat">
+      <div class="pc bub us" style="--d:0s">Where do orders get stuck?</div>
+      <div class="pc bub them" style="--d:.12s">Between sampling and the factory. It all lives in email.</div>
+      <div class="pc bub us" style="--d:.24s">Show us, just as they are.</div>
+      <div class="pc typing" style="--d:.36s"><i /><i /><i /></div>
+    </div>
+</Fragment>)}
+{kind === 'map' && (<Fragment>
+    <div class="pc card flow" style="--d:0s; top:6px; left:0; right:0">
+      <small class="lbl">Your flow, your words</small>
+      <div class="nodes"><span>Brief</span><em /><span>Sample</span><em /><span class="hl">Approve</span><em /><span>Make</span></div>
+      <div class="who"><span class="av s">A</span><span class="av s b">T</span><span class="av s c">F</span><small>3 roles · 6 statuses</small></div>
+    </div>
+    <div class="pc card quote" style="--d:.14s; top:140px; left:34px; right:12px">
+      <small class="lbl">Quote · first version</small>
+      <span class="bar" style="width:78%" /><span class="bar" style="width:56%" />
+      <div class="qfoot"><span class="bar dark" style="width:34%" /><span class="ok">✓ Agreed</span></div>
+    </div>
+</Fragment>)}
+{kind === 'first' && (<Fragment>
+    <div class="pc win" style="--d:0s; top:20px; left:0; right:0">
+      <div class="wbar"><i /><i /><i /><b>Sampling</b></div>
+      <div class="row"><span class="mono">IM-3627</span><span>Hooded jacket</span><span class="st amber">In review</span></div>
+      <div class="row"><span class="mono">IM-3631</span><span>Linen shirt</span><span class="st green">Approved</span></div>
+      <div class="row"><span class="mono">IM-3640</span><span>Wool coat</span><span class="st blue">Sent</span></div>
+      <div class="row ghost"><span class="mono">IM-3644</span><span class="bar" style="width:60%" /><span class="bar" style="width:70%" /></div>
+    </div>
+    <div class="pc live" style="--d:.14s; top:0; right:14px"><i />Live</div>
+    <div class="pc toast" style="--d:.28s; top:224px; left:22px">✓ Your existing data moved over</div>
+</Fragment>)}
+{kind === 'grow' && (<Fragment>
+    <div class="pc tiles" style="--d:0s; top:10px; left:0; right:0">
+      <span class="tile done">Sampling<em>✓</em></span>
+      <span class="tile done">Proofs<em>✓</em></span>
+      <span class="tile next">Production<em>+</em></span>
+    </div>
+    <div class="pc bub them sm" style="--d:.14s; top:104px; left:0"><span class="av b">T</span>Could we see due dates on this list?</div>
+    <div class="pc bub us sm" style="--d:.28s; top:178px; right:0">Added in this round ✓</div>
+    <div class="pc ver" style="--d:.4s; top:240px; left:24px">v1.4 → v1.5</div>
+</Fragment>)}
+{kind === 'run' && (<Fragment>
+    <div class="pc card status" style="--d:0s; top:12px; left:0; right:0">
+      <div class="shead"><i />All systems normal</div>
+      <div class="up">{Array.from({ length: 30 }, (_, k) => <i class={k === 19 ? 'lo' : ''} />)}</div>
+      <div class="checks"><span>✓ Backups</span><span>✓ Updates</span><span>✓ Security</span></div>
+    </div>
+    <div class="pc help" style="--d:.16s; top:170px; left:30px; right:18px">
+      <span class="hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/></svg></span>
+      <span><b>Support 24/7</b><small>someone who knows your system</small></span>
+    </div>
+</Fragment>)}

@@ -1,0 +1,87 @@
+---
+// One contact dialog per page (rendered by the Base layout). Any link to "#contact" (the header's
+// "Contact us", the mobile menu, the Solutions dropdown footer) or any element with [data-contact]
+// (the final section's button) opens it instead of navigating.
+// Without JavaScript the links keep working: "#contact" scrolls to the final section and the
+// [data-contact] button is a mailto: link.
+// formOnPage: the page also has the form in its final section (home). Then "#contact" links only open
+// the dialog on phones, where that form is hidden; on larger screens they scroll to the form.
+import ContactForm from './ContactForm';
+import { SITE } from '../site';
+
+interface Props { formOnPage?: boolean }
+const { formOnPage = false } = Astro.props;
+---
+<dialog class="cdlg" id="contact-dialog" aria-labelledby="cdlg-h" data-form-on-page={formOnPage ? '' : undefined}>
+  <div class="cdlg-in">
+    <button class="cdlg-x" type="button" aria-label="Close" data-close>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+    <p class="eyebrow">Contact</p>
+    <h2 id="cdlg-h">Tell us how your business runs.</h2>
+    <p class="cdlg-lede">We will come back within two working days with questions, not a sales pitch. Prefer email? Write to <a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+    <ContactForm client:idle endpoint={SITE.formEndpoint} email={SITE.email} source={Astro.url.pathname} />
+  </div>
+</dialog>
+
+<script>
+  const dlg = document.getElementById('contact-dialog') as HTMLDialogElement | null;
+  if (dlg && typeof dlg.showModal === 'function') {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let opener: HTMLElement | null = null;
+    const phone = window.matchMedia('(max-width: 640px)'); // same breakpoint that hides the section form
+
+    const open = (from: HTMLElement) => {
+      opener = from;
+      from.closest('details')?.removeAttribute('open'); // close the mobile menu if the link was in it
+      document.documentElement.classList.add('dlg-open');
+      dlg.classList.remove('closing');
+      dlg.showModal();
+      dlg.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
+    };
+    const close = () => {
+      if (!dlg.open || dlg.classList.contains('closing')) return;
+      if (reduced) { dlg.close(); return; }
+      dlg.classList.add('closing');
+      setTimeout(() => dlg.close(), 200);
+    };
+    // phones: drag the sheet down from its top (when its content is scrolled to the top) to close it
+    const sheet = dlg.querySelector<HTMLElement>('.cdlg-in')!;
+    let y0: number | null = null, dy = 0;
+    sheet.addEventListener('touchstart', (e) => {
+      if (!phone.matches || sheet.scrollTop > 0) return;
+      y0 = e.touches[0].clientY; dy = 0; sheet.style.transition = 'none';
+    }, { passive: true });
+    sheet.addEventListener('touchmove', (e) => {
+      if (y0 === null) return;
+      dy = Math.max(0, e.touches[0].clientY - y0);
+      sheet.style.transform = dy ? `translateY(${dy}px)` : '';
+    }, { passive: true });
+    sheet.addEventListener('touchend', () => {
+      if (y0 === null) return;
+      y0 = null;
+      sheet.style.transition = 'transform .2s ease-out';
+      if (dy > 110) close(); // keeps the dragged offset; the sheet then slides out from there
+      else sheet.style.transform = '';
+    });
+
+    dlg.addEventListener('close', () => {
+      sheet.style.transform = ''; sheet.style.transition = '';
+      dlg.classList.remove('closing');
+      document.documentElement.classList.remove('dlg-open');
+      opener?.focus({ preventScroll: true });
+    });
+    dlg.addEventListener('cancel', (e) => { e.preventDefault(); close(); }); // Escape: animate out too
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) close(); }); // click on the backdrop
+    dlg.querySelector('[data-close]')!.addEventListener('click', close);
+
+    document.addEventListener('click', (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const el = (e.target as Element).closest<HTMLElement>('a[href="#contact"], a[href="/#contact"], [data-contact]');
+      if (!el || dlg.contains(el)) return;
+      if (dlg.hasAttribute('data-form-on-page') && !el.hasAttribute('data-contact') && !phone.matches) return; // scroll to the form instead
+      e.preventDefault();
+      open(el);
+    });
+  }
+</script>

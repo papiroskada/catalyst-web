@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import { NAV, SITE } from '../site';
+import { PRODUCTS, productPath } from '../data/products';
+import Icon from './Icon.astro';
+
+interface Props { overlay?: boolean; contactHref?: string }
+const { overlay = false, contactHref = '#contact' } = Astro.props;
+const path = Astro.url.pathname;
+
+// Ticks around the "C" mark (drawn in when the wordmark collapses on scroll).
+const ticks = [];
+for (let a = 50, n = 0; a <= 310; a += 20, n++) {
+  const r = (a * Math.PI) / 180, c = Math.cos(r), s = Math.sin(r);
+  const out = (a - 50) % 60 === 0 ? 55 : 50;
+  ticks.push({ x1: (60 + 45 * c).toFixed(1), y1: (60 - 45 * s).toFixed(1), x2: (60 + out * c).toFixed(1), y2: (60 - out * s).toFixed(1), len: out - 45, n });
+}
+const letters = 'ATALYSTAPI'.split('');
+---
+<header class:list={['site-header', { overlay }]} id="hdr">
+  <div class="hwrap">
+    <a class="wm" href="/" aria-label="Catalyst API, home">
+      <span class="cm" id="cm"><svg width="26" height="26" viewBox="0 0 120 120" fill="none" aria-hidden="true"><g class="cg"><g stroke="currentColor">{ticks.map((t) => <line x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} style={`stroke-dasharray:${t.len};--len:${t.len};--n:${t.n}`} />)}</g><path d="M87.6 36.9 A36 36 0 1 0 87.6 83.1" stroke="currentColor" /></g></svg></span>
+      {letters.map((l, i) => <span class:list={['lt', { api: i === 7 }]} aria-hidden="true" style={`--i:${i}`}>{l}</span>)}
+    </a>
+    <nav class="main" aria-label="Main">
+      <div class="dd" id="dd">
+        <button class="dd-btn" type="button" aria-expanded="false" aria-controls="dd-panel" data-active={path.startsWith('/industries/') ? '' : undefined}>
+          Solutions<Icon name="chev" sw={2} />
+        </button>
+        <div class="dd-panel" id="dd-panel">
+          <ul>
+            {PRODUCTS.map((p) => (
+              <li><a href={productPath(p)} aria-current={path === productPath(p) ? 'page' : undefined}>
+                <span class:list={['dd-thumb', p.panel]}><Image src={p.img} alt="" widths={[200, 400]} sizes="200px" loading="lazy" /></span>
+                <span class="dd-text"><span class="dd-ind">{p.industry}</span><span class="dd-name">{p.name}</span><span class="dd-sum">{p.summary}</span></span>
+              </a></li>
+            ))}
+          </ul>
+          <a class="dd-foot" href={contactHref}><span>Your industry isn't here? <strong>Tell us how you work</strong></span><Icon name="chev" sw={2} /></a>
+        </div>
+      </div>
+      {NAV.map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+    </nav>
+    <div class="hright">
+      <a class="hlink" href={contactHref}>Contact us</a>
+      <details class="mnav">
+        <summary aria-label="Menu"><span></span><span></span></summary>
+        <nav aria-label="Mobile">
+          <a href="/">Home</a>
+          {PRODUCTS.map((p) => <a href={productPath(p)} aria-current={path === productPath(p) ? 'page' : undefined}>{p.name}</a>)}
+          {NAV.map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+          <a class="mcontact" href={contactHref}>Contact</a>
+          <!-- phones: the menu fills the screen; contact action and email sit at its bottom -->
+          <div class="mfoot">
+            <a class="btn" href={contactHref} data-contact>Get in touch</a>
+            <a class="mmail" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          </div>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Wordmark collapses into the "C" mark once the page scrolls; overlay header turns solid past the hero.
+  const hdr = document.getElementById('hdr')!;
+  const cm = document.getElementById('cm')!;
+  const lts = Array.from(document.querySelectorAll<HTMLElement>('.lt'));
+  const hero = document.getElementById('hero');
+  const measure = () => {
+    const base = cm.offsetLeft + cm.offsetWidth * 0.42;
+    lts.forEach((l) => l.style.setProperty('--dx', `${-(l.offsetLeft - base)}px`));
+  };
+  let collapsed = false;
+  const onScroll = () => {
+    const y = window.scrollY;
+    if (!collapsed && y > 40) { collapsed = true; document.body.classList.add('col'); }
+    else if (collapsed && y <= 12) { collapsed = false; document.body.classList.remove('col'); }
+    if (hero) hdr.classList.toggle('solid', hero.getBoundingClientRect().bottom <= hdr.offsetHeight + 1);
+  };
+  measure();
+  document.fonts?.ready.then(measure);
+  addEventListener('resize', measure);
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  // Close the mobile menu after choosing a link (same-page anchors don't reload).
+  // Solutions dropdown: opens on click or hover, closes on Escape, outside click or leaving it.
+  const dd = document.getElementById('dd')!;
+  const btn = dd.querySelector<HTMLButtonElement>('.dd-btn')!;
+  let leaveT: number | undefined;
+  const setOpen = (o: boolean) => { dd.classList.toggle('open', o); btn.setAttribute('aria-expanded', String(o)); };
+  let hoverOpenedAt = 0;
+  // A click right after hover opened the menu should keep it open, not toggle it shut.
+  btn.addEventListener('click', () => {
+    if (Date.now() - hoverOpenedAt < 600) return;
+    setOpen(!dd.classList.contains('open'));
+  });
+  const hover = matchMedia('(hover: hover)').matches;
+  if (hover) {
+    dd.addEventListener('mouseenter', () => {
+      clearTimeout(leaveT);
+      if (!dd.classList.contains('open')) { hoverOpenedAt = Date.now(); setOpen(true); }
+    });
+    dd.addEventListener('mouseleave', () => { leaveT = window.setTimeout(() => setOpen(false), 180); });
+  }
+  dd.addEventListener('focusout', (e) => { if (!dd.contains(e.relatedTarget as Node)) setOpen(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && dd.classList.contains('open')) { setOpen(false); btn.focus(); } });
+  document.addEventListener('click', (e) => { if (!dd.contains(e.target as Node)) setOpen(false); });
+  document.querySelectorAll<HTMLAnchorElement>('.mnav nav a').forEach((a) => a.addEventListener('click', () => a.closest('details')?.removeAttribute('open')));
+</script>

@@ -1,0 +1,95 @@
+---
+// The Messages tab of a garment: supplier threads on the left, the open email conversation on the right.
+import AppScreen from './AppScreen.astro';
+interface Props { label?: string }
+---
+<AppScreen active="Inventory" height={820} footTop={691} label={Astro.props.label ?? 'The Messages tab of a garment: supplier threads and an email conversation with an attached packing list.'}>
+  <div class="g m">
+    <div class="crumbs"><span class="btn back"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>Back</span><span>Inventory / Jackets / <span class="mono">IM-3627</span></span></div>
+    <div class="ids"><span class="mono">IM-3627 · 312557</span><span class="pill p-blue"><i></i>In Transit</span><span class="pill">Import</span></div>
+    <h1>Hooded Zip Jacket</h1>
+    <div class="tabs"><span class="tab">Main</span><span class="tab on">Messages <span class="cnt dark">4</span></span><span class="tab">Documents <span class="cnt">3</span></span><span class="tab">Activity <span class="cnt">12</span></span></div>
+
+    <div class="card box">
+      <div class="threads">
+        <div class="th"><span><span class="eyebrow-s">Threads</span> <span class="n">· 2</span></span><span class="btn">+ New thread</span></div>
+        <div class="tr on">
+          <div class="r1"><b>Thread 1</b><span class="pill p-amber">Waiting on supplier</span><span class="mono dt">12 Nov</span></div>
+          <div class="r2"><span class="mono">IM-3627</span> · Lumen Textiles</div>
+          <div class="r3"><span>Lumen Textiles: Shipment booked, 2 parcels</span><span class="cnt dk">3</span></div>
+        </div>
+        <div class="tr">
+          <div class="r1"><b>Thread 2</b><span class="pill">Closed</span><span class="mono dt">29 Oct</span></div>
+          <div class="r2"><span class="mono">IM-3627</span> · Lumen Textiles</div>
+          <div class="r3"><span>You: Label artwork attached for approval</span><span class="cnt lt">1</span></div>
+        </div>
+      </div>
+      <div class="conv">
+        <div class="ch"><b>Thread 1 <span class="mono">IM-3627</span></b><span>with Lumen Textiles · <span class="mono">orders@lumen.example</span></span></div>
+        <div class="sep" style="top:82px"><span>10 Nov</span></div>
+        <span class="av" style="top:105px">A</span>
+        <div class="msg" style="top:106px;height:102px">
+          <div class="mh"><b>Anna</b><span class="pill p-green">Email sent</span><span class="addr mono">→ orders@lumen.example</span><span class="mono tm">09:12</span></div>
+          <p>Confirming PO 204117, two parcels. Could you share the tracking number once the shipment is booked?</p>
+        </div>
+        <div class="sep" style="top:232px"><span>12 Nov</span></div>
+        <span class="av" style="top:255px">LT</span>
+        <div class="msg in" style="top:255px;height:165px">
+          <div class="mh"><b class="nm">Lumen Textiles</b><span class="pill p-blue">Email received</span><span class="addr mono"><span>←</span>orders@lumen.example</span></div>
+          <p>Shipment booked, two parcels. Tracking 1Z84 35A9 0404 6309, arriving around 2 December.</p>
+          <span class="att"><svg viewBox="0 0 24 24"><path d="M16.5 7.5v8.5a4.5 4.5 0 0 1-9 0V6a3 3 0 0 1 6 0v9.5a1.5 1.5 0 0 1-3 0V8" /></svg>packing-list-204117.pdf <span>· 84 KB</span></span>
+        </div>
+        <span class="btn dark reply"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5" /><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" /></svg>Reply</span>
+      </div>
+    </div>
+  </div>
+</AppScreen>
+
+<style is:global>
+  .app .m .tabs { top: 126px }
+  .app .m .box { top: 186px; right: 0; height: 640px; overflow: hidden; display: flex }
+  .app .m .threads { width: 374px; flex: none; background: #fbfbfc; border-right: 1px solid #e1e4ea }
+  .app .m .th { height: 57px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 16px 0 17px; border-bottom: 1px solid #e1e4ea }
+  .app .m .th .n { font-size: 13px; color: #5d6676; letter-spacing: .06em }
+  .app .m .th .btn { height: 39px; font-size: 16px }
+  .app .m .tr { position: relative; height: 102.5px; box-sizing: border-box; padding: 9px 14px 0 14px; border-bottom: 1px solid #e1e4ea; font-size: 16px }
+  .app .m .tr.on { background: #fff; box-shadow: inset 3px 0 0 #1f2a44 }
+  .app .m .tr > div { display: flex; align-items: center; height: 28px }
+  .app .m .r1 b { font-weight: 600; margin-right: 6.5px }
+  .app .m .r1 .pill { height: 27px; font-size: 15px; padding: 0 10px }
+  .app .m .dt { margin-left: auto; font-size: 14px; color: #5d6676 }
+  .app .m .r2 { color: #3d4554; margin-top: 2px }
+  .app .m .r2 .mono { margin-right: 6px }
+  .app .m .r3 { color: #5d6676; justify-content: space-between }
+  .app .m .cnt.dk { background: #fff; color: #3d4554; box-shadow: inset 0 0 0 1.5px #3d4554 }
+  .app .m .cnt.lt { background: #dde0e5; color: #1b2230 }
+  .app .m .conv { position: relative; flex: 1; background: #fff }
+  .app .m .conv > * { position: absolute }
+  .app .m .ch { left: 0; right: 0; top: 0; height: 57px; box-sizing: border-box; padding: 9px 21px 0; display: flex; flex-direction: column; border-bottom: 1px solid #e1e4ea; font-size: 15px; line-height: 20px; color: #5d6676 }
+  .app .m .ch b { font-size: 16px; font-weight: 600; color: #1b2230 }
+  .app .m .ch b .mono { font-weight: 500 }
+  .app .m .sep { left: 17px; right: 16px; display: flex; align-items: center; gap: 16px; font-size: 15px; color: #5d6676; transform: translateY(-50%) }
+  .app .m .sep::before, .app .m .sep::after { content: ""; flex: 1; height: 1px; background: #e1e4ea }
+  .app .m .av { left: 17px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 99px; background: #e6ebf5; color: #1f2a44; font-size: 12px; font-weight: 600 }
+  .app .m .msg { left: 57px; width: 427px; box-sizing: border-box; padding: 0 13px; border: 1px solid #e1e4ea; border-radius: 14px; background: #fff; font-size: 16px }
+  .app .m .msg.in { background: #f7f9fc }
+  .app .m .mh { display: flex; align-items: center; height: 48px; gap: 9px }
+  .app .m .mh b { font-weight: 600 }
+  .app .m .mh .pill { height: 28px; font-weight: 500 }
+  .app .m .mh .addr { color: #5d6676; font-size: 16px; margin-left: 1px; white-space: nowrap }
+  .app .m .tm { margin-left: auto; color: #5d6676; font-size: 15px }
+  .app .m .msg p { margin: -4px 0 0; line-height: 24px; color: #1b2230 }
+  .app .m .msg.in .mh { height: 62px; align-items: center }
+  .app .m .msg.in .mh { gap: 7px }
+  .app .m .msg.in .nm { width: 56px; line-height: 20px }
+  .app .m .msg.in .pill { padding: 0 10px }
+  .app .m .msg.in .addr { display: flex; flex-direction: column; line-height: 20px; margin-left: 0; font-size: 14.5px }
+  .app .m .msg.in .addr span { font-family: 'Plex Sans', sans-serif }
+  .app .m .msg.in .tm { margin-right: -4px; font-size: 14px }
+  .app .m .msg.in p { margin-top: -6px }
+  .app .m .att { display: inline-flex; align-items: center; gap: 9px; height: 39px; margin-top: 12px; padding: 0 16px 0 13px; box-sizing: border-box; border: 1px solid #cfd4dd; border-radius: 8px; background: #fff; font-size: 16px; color: #1b2230 }
+  .app .m .att svg { width: 16px; height: 16px; color: #3d4554 }
+  .app .m .att span { color: #5d6676 }
+  .app .m .reply { left: 386px; top: 436px; height: 39px; width: 99px; font-size: 16px }
+  .app .m .reply svg { width: 18px; height: 18px; stroke-width: 1.8 }
+</style>

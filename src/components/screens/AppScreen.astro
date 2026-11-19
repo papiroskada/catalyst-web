@@ -1,0 +1,110 @@
+---
+// A product screen drawn in HTML instead of a screenshot, so the browser renders every letter itself
+// and it stays as sharp as live text at any size. The app is laid out at its real width (1180px)
+// and scaled to the width of its container. Sample data only.
+//
+// Props: active   – which sidebar item is highlighted
+//        width    – width of the app window in app pixels (default 1180)
+//        height   – visible height of the screen in app pixels
+//        footTop  – where the sidebar's bottom group starts (it sits at the bottom of the app window)
+//        label    – accessible description of the whole screen
+interface Props { active: 'Dashboard' | 'Inventory'; width?: number; height: number; footTop: number; label: string }
+const { active, width = 1180, height, footTop, label } = Astro.props;
+
+const nav = [
+  { name: 'Dashboard', icon: 'grid' },
+  { name: 'Inventory', icon: 'shirt' },
+  { name: 'Inbox', icon: 'tray', badge: 2 },
+  { name: 'Trend groups', icon: 'dots' },
+  { name: 'Set-up list', icon: 'doc' },
+];
+const sourcing = [{ name: 'Fabrics', icon: 'fabric' }, { name: 'Trims', icon: 'button' }];
+const foot = ['Collections', 'Team & Partners', 'Settings'];
+const icons: Record<string, string> = {
+  grid: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>',
+  shirt: '<path d="M9 3.5 4 6l1.6 4.2L8 9.5V20.5h8V9.5l2.4.7L20 6l-5-2.5c-.4 1.4-1.6 2.3-3 2.3S9.4 4.9 9 3.5Z"/>',
+  tray: '<path d="M3.5 13.5 6 5.5h12l2.5 8v5a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5v-5Z"/><path d="M3.5 13.5H8l1 2.5h6l1-2.5h4.5"/>',
+  dots: '<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><circle cx="12" cy="15.5" r="3"/>',
+  doc: '<rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4"/>',
+  fabric: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 15 15 4M9 20 20 9"/>',
+  button: '<circle cx="12" cy="12" r="8.5"/><circle cx="10" cy="10" r="1"/><circle cx="14" cy="10" r="1"/><circle cx="10" cy="14" r="1"/><circle cx="14" cy="14" r="1"/>',
+};
+---
+<div class="scr" role="img" aria-label={label} style={`--w:${width};--h:${height}`}>
+  <div class="app" aria-hidden="true">
+    <aside class="side">
+      <div class="logo"><span class="brand">Atelier</span><span class="trk">Tracker</span></div>
+      <nav class="nv">
+        {nav.map((n) => (
+          <span class:list={['it', { on: n.name === active }]}>
+            <svg viewBox="0 0 24 24" set:html={icons[n.icon]} />{n.name}{n.badge && <b class="badge">{n.badge}</b>}
+          </span>
+        ))}
+        <span class="sec">Sourcing · Domestic</span>
+        {sourcing.map((n) => <span class="it"><svg viewBox="0 0 24 24" set:html={icons[n.icon]} />{n.name}</span>)}
+      </nav>
+      <div class="foot" style={`top:${footTop}px`}>{foot.map((f) => <span class="it">{f}</span>)}</div>
+    </aside>
+    <header class="top">
+      <span class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>Search style #, import #, PO, name…<kbd>⌘K</kbd></span>
+      <span class="ava">A</span>
+    </header>
+    <main class="main"><slot /></main>
+  </div>
+</div>
+
+<style is:global>
+  @font-face { font-family: 'Plex Sans'; font-weight: 400 700; font-display: swap; src: url('/fonts/plex/plex-sans-latin-var.woff2') format('woff2') }
+  @font-face { font-family: 'Plex Mono'; font-weight: 400; font-display: swap; src: url('/fonts/plex/plex-mono-latin-400.woff2') format('woff2') }
+  @font-face { font-family: 'Plex Mono'; font-weight: 500; font-display: swap; src: url('/fonts/plex/plex-mono-latin-500.woff2') format('woff2') }
+
+  .scr { position: relative; container-type: inline-size; aspect-ratio: var(--w) / var(--h); overflow: hidden; background: #f6f7f9 }
+  /* tan(atan2(a, b)) turns the length ratio a / b into a plain number for scale() */
+  .scr .app { position: absolute; inset: 0 auto auto 0; width: calc(var(--w) * 1px); height: calc(var(--h) * 1px); transform-origin: 0 0; transform: scale(tan(atan2(100cqw, calc(var(--w) * 1px))));
+    font: 400 15px/1.4 'Plex Sans', 'IBM Plex Sans', system-ui, sans-serif; color: #1b2230; background: #f6f7f9; text-align: left; letter-spacing: 0; -webkit-font-smoothing: antialiased }
+  .app svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+  .app .mono { font-family: 'Plex Mono', 'IBM Plex Mono', ui-monospace, monospace }
+
+  .app .side { position: absolute; inset: 0 auto 0 0; width: 248px; background: #fff; border-right: 1px solid #e1e4ea }
+  .app .logo { position: absolute; left: 34px; top: 10px; display: flex; align-items: center; gap: 13px }
+  .app .brand { font-size: 12px; font-weight: 600; line-height: 32px; letter-spacing: .22em; text-transform: uppercase; padding-right: 27px; border-right: 1px solid #e1e4ea }
+  .app .trk { font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #4d6a94 }
+  .app .nv { position: absolute; left: 20px; right: 20px; top: 60px; display: flex; flex-direction: column; gap: 3px }
+  .app .it { display: flex; align-items: center; gap: 14px; height: 41px; padding: 0 14px; border-radius: 10px; font-size: 16px; color: #3d4554 }
+  .app .it svg { width: 17px; height: 17px; flex: none; color: #5d6676 }
+  .app .it.on { background: #e6ebf5; color: #1f2a44; font-weight: 600 }
+  .app .it.on svg { color: #1f2a44 }
+  .app .badge { margin-left: auto; display: grid; place-items: center; min-width: 20px; height: 20px; border-radius: 99px; background: #b0382f; color: #fff; font-size: 12px; font-weight: 600 }
+  .app .sec { display: block; padding: 13.5px 14px 3px; line-height: 16px; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #5d6676 }
+  .app .foot { position: absolute; left: 20px; right: 20px; display: flex; flex-direction: column; gap: 3px; padding-top: 12px; border-top: 1px solid #e1e4ea }
+  .app .foot .it { padding-left: 14px }
+
+  .app .top { position: absolute; left: 248px; right: 0; top: 0; height: 57px; border-bottom: 1px solid #e1e4ea }
+  .app .search { position: absolute; left: 28px; top: 8px; width: 559px; height: 39px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 0 12px 0 15px; border: 1px solid #cfd4dd; border-radius: 10px; background: #fff; font-size: 14px; color: #5d6676 }
+  .app .search svg { width: 15px; height: 15px; stroke-width: 2 }
+  .app .search kbd { margin-left: auto; font: 500 11px 'Plex Mono', monospace; padding: 2px 5px; border: 1px solid #cfd4dd; border-radius: 4px; color: #3d4554 }
+  .app .ava { position: absolute; right: 29px; top: 10px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 99px; background: #e6ebf5; color: #1f2a44; font-size: 15px; font-weight: 600 }
+
+  .app .main { position: absolute; left: 276px; right: 29px; top: 74px }
+
+  /* shared pieces of the app's UI */
+  .app .card { background: #fff; border: 1px solid #e1e4ea; border-radius: 16px }
+  .app .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 34px; padding: 0 16px; box-sizing: border-box; border: 1px solid #cfd4dd; border-radius: 10px; background: #fff; font-size: 15px; font-weight: 600; color: #1b2230; white-space: nowrap }
+  .app .btn.dark { background: #1f2a44; border-color: #1f2a44; color: #fff }
+  .app .pill { display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 12px; border-radius: 99px; background: #eceef2; color: #3d4554; font-size: 15px; white-space: nowrap }
+  .app .pill i { width: 7px; height: 7px; border-radius: 99px; background: currentColor }
+  .app .p-blue { background: #e4eefa; color: #1f4f86; font-weight: 600 }
+  .app .p-blue i { background: #2f6db3 }
+  .app .p-green { background: #e3f1e6; color: #2f6b45; font-weight: 500 }
+  .app .p-amber { background: #fbf0dc; color: #8a5a12; font-weight: 500 }
+  .app .cnt { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; box-sizing: border-box; border-radius: 99px; background: #eef0f4; color: #3d4554; font-size: 13px; font-weight: 600 }
+  .app .cnt.dark { background: #1f2a44; color: #fff }
+  .app .crumbs { display: flex; align-items: center; gap: 13px; font-size: 16px; color: #5d6676 }
+  .app .crumbs .mono { color: #1b2230 }
+  .app .back { gap: 9px; height: 38px; padding: 0 16px 0 12px; font-weight: 500; font-size: 16px }
+  .app .back svg { width: 14px; height: 14px; stroke-width: 2 }
+  .app .tabs { display: flex; align-items: flex-end; gap: 6px; border-bottom: 1px solid #e1e4ea }
+  .app .tab { display: inline-flex; align-items: center; gap: 9px; height: 42px; padding: 0 16px; box-sizing: border-box; font-size: 16px; font-weight: 500; color: #3d4554; border: 1px solid transparent; border-bottom: 0; border-radius: 10px 10px 0 0 }
+  .app .tab.on { color: #1f2a44; font-weight: 600; background: #fff; border-color: #e1e4ea; box-shadow: inset 0 2px 0 #1f2a44; margin-bottom: -1px; height: 43px }
+  .app .eyebrow-s { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #1f2a44 }
+</style>

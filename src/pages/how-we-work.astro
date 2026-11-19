@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import Contact from '../components/Contact.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import Journey from '../components/Journey.astro';
+import { breadcrumbs, faqPage } from '../lib/schema';
+
+// TODO: confirm these answers match your contracts before launch.
+const faq = [
+  { q: 'What do you need from us to start?', a: 'An hour or two with the people who do the work, and a look at the spreadsheets, forms and emails you use today. That is enough for a first quote.' },
+  { q: 'Who owns the system and the data?', a: 'Your data is always yours, and you can export it at any time. Ownership of the code and hosting arrangements are agreed in writing before work starts.' },
+  { q: 'What if we stop working with you?', a: 'You get a full export of your data, and we help you move it. We do not lock anyone in.' },
+];
+
+const steps = [
+  { title: 'A map of your work and a clear quote', tag: 'Full price upfront', icon: 'map', scene: 'map', tone: 'violet',
+    text: 'We write down your flow in your own words: stages, statuses, who does what, which reports matter. Based on that you get a clear quote and a plan for the first version.' },
+  { title: 'A first version in weeks', tag: 'Live in weeks', icon: 'bolt', scene: 'first', tone: 'sky',
+    text: 'We start with the part that slows you down most, for example sampling, proofs or job tracking, and move your existing data over. Your team uses it for real work from early on.' },
+  { title: 'Step by step, guided by your team', tag: 'Every few weeks', icon: 'history', scene: 'grow', tone: 'lilac',
+    text: 'Every few weeks we add the next part and adjust what is already there based on what your team tells us. Nothing is final until it works for the people using it.' },
+  { title: 'Running, supported, still changing', tag: 'Support 24/7', icon: 'headset', scene: 'run', tone: 'indigo',
+    text: 'We host it with us or on your own servers, look after security, updates and backups, and keep changing it as your business does.' },
+] as const;
+---
+<Base
+  title="How we work: process & pricing | Catalyst"
+  description="How Catalyst works: we learn how your team talks and works, ship a first version in weeks, then keep changing it as you grow. What a quote is based on, hosting options and support."
+  jsonLd={[breadcrumbs([{ name: 'How we work', path: '/how-we-work/' }]), faqPage(faq)]}
+>
+  <Journey items={steps} label="How we work, step by step">
+    <Fragment slot="hero">
+      <p class="eyebrow">How we work</p>
+      <h1>From first conversation to a system you run on</h1>
+      <p class="lede">No long specification and no big-bang launch. We learn how you work, build the part that hurts most first, and keep going from there.</p>
+    </Fragment>
+  </Journey>
+
+  <section class="sec" style="padding-top:0" aria-labelledby="price-h"><div class="wrap">
+    <div class="bhead"><p class="eyebrow">Pricing</p><h2 id="price-h">What a quote is based on.</h2><p>We don't sell fixed packages, because no two businesses need the same system. You get the full price before any work starts.</p></div>
+    <div class="bgrid three">
+      <article class="bcard"><h3>Scope</h3><p>Which parts of your work the system covers: one process to start with, or orders, materials, production and delivery together.</p><span class="bi"><Icon name="map" /></span></article>
+      <article class="bcard"><h3>People</h3><p>How many people use it and in which roles, including suppliers or clients who only need to approve or reply.</p><span class="bi"><Icon name="users" /></span></article>
+      <article class="bcard"><h3>Moving in</h3><p>What needs to come over from your current files and tools, and anything we connect to, such as accounting or email.</p><span class="bi"><Icon name="sheet" /></span></article>
+    </div>
+  </div></section>
+
+  <section class="sec" style="padding-top:0" aria-labelledby="run-h"><div class="wrap">
+    <div class="bhead"><p class="eyebrow">After launch</p><h2 id="run-h">Hosting and support.</h2></div>
+    <div class="bgrid three">
+      <article class="bcard"><h3>Hosted with us</h3><p>We run it for you and take care of security, updates and backups.</p><span class="bi"><Icon name="server" /></span></article>
+      <article class="bcard"><h3>On your servers</h3><p>Prefer your data on-site or in your own cloud account? We set it up there and maintain it.</p><span class="bi"><Icon name="lock" /></span></article>
+      <article class="bcard"><h3>Support 24/7</h3><p>You reach a person who knows your system and your team, not a call centre.</p><span class="bi"><Icon name="headset" /></span></article>
+    </div>
+  </div></section>
+
+  <Faq items={faq} title="Before you get in touch" />
+  <Contact />
+</Base>
+
+<style>
+  .bcard { min-height: 0 }
+</style>

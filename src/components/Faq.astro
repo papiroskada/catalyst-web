@@ -1,0 +1,88 @@
+---
+// FAQ rendered as native <details> so answers are in the HTML for search engines;
+// the script only adds "one open at a time" behaviour.
+interface Props { items: { q: string; a: string }[]; title?: string; intro?: string }
+const { items, title = 'Things you might be wondering', intro = "Didn't find your answer? We're happy to talk it through." } = Astro.props;
+---
+<section class="sec faq" id="faq" aria-labelledby="faq-h">
+  <div class="wrap fgrid">
+    <div class="fhead">
+      <h2 id="faq-h">{title}</h2>
+      <p>{intro}</p>
+      <a class="link" href="#contact">Let's talk</a>
+    </div>
+    <div class="qlist">
+      {items.map((it, i) => (
+        <details class="qa" open={i === 0}>
+          <summary><span>{it.q}</span><i aria-hidden="true"></i></summary>
+          <div class="qa-body"><p>{it.a}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // One open at a time, with a smooth height + fade animation (Web Animations API).
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const EASE = 'cubic-bezier(.2,.7,.2,1)';
+
+  document.querySelectorAll<HTMLElement>('.qlist').forEach((list) => {
+    const qs = Array.from(list.querySelectorAll<HTMLDetailsElement>('.qa'));
+    const body = (d: HTMLDetailsElement) => d.querySelector<HTMLElement>('.qa-body')!;
+
+    // Reserve the height of the tallest state so content below doesn't jump.
+    const fit = () => {
+      const was = qs.map((d) => d.open);
+      list.style.minHeight = '';
+      let max = 0;
+      qs.forEach((_, i) => {
+        qs.forEach((o, j) => { o.open = i === j; });
+        max = Math.max(max, list.offsetHeight);
+      });
+      qs.forEach((d, i) => { d.open = was[i]; });
+      list.style.minHeight = max + 'px';
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    document.fonts?.ready.then(fit);
+
+    const close = (d: HTMLDetailsElement) => {
+      if (!d.open || d.classList.contains('closing')) return;
+      if (reduced) { d.open = false; return; }
+      const b = body(d);
+      b.getAnimations().forEach((a) => a.cancel());
+      const anim = b.animate(
+        [{ height: b.offsetHeight + 'px', opacity: 1 }, { height: '0px', opacity: 0 }],
+        { duration: 320, easing: EASE },
+      );
+      d.classList.add('closing');
+      anim.onfinish = () => { d.open = false; d.classList.remove('closing'); };
+    };
+
+    const open = (d: HTMLDetailsElement) => {
+      const b = body(d);
+      b.getAnimations().forEach((a) => a.cancel());
+      d.classList.remove('closing');
+      d.open = true;
+      if (reduced) return;
+      b.animate(
+        [{ height: '0px', opacity: 0 }, { height: b.offsetHeight + 'px', opacity: 1 }],
+        { duration: 380, easing: EASE },
+      );
+      b.firstElementChild?.animate(
+        [{ transform: 'translateY(-8px)' }, { transform: 'none' }],
+        { duration: 420, easing: EASE },
+      );
+    };
+
+    qs.forEach((d) => {
+      d.querySelector('summary')!.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (d.open && !d.classList.contains('closing')) { close(d); return; }
+        qs.forEach((o) => { if (o !== d) close(o); });
+        open(d);
+      });
+    });
+  });
+</script>
