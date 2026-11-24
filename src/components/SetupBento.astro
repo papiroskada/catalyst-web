@@ -46,9 +46,9 @@ const hosting = [
       </div>
       <div class="flow"><i style="--d:0s"></i><i style="--d:.8s"></i><i style="--d:1.6s"></i></div>
       <div class="clean">
-        <div class="crow" style="--d:0s"><b style="background:#3F7D5C"></b><span></span><em>Approved</em></div>
-        <div class="crow" style="--d:.8s"><b style="background:#3A7FC9"></b><span></span><em>In transit</em></div>
-        <div class="crow" style="--d:1.6s"><b style="background:#B8A06E"></b><span></span><em>Ordered</em></div>
+        <div class="crow" style="--d:0s"><b style="background:var(--ok-2)"></b><span></span><em>Approved</em></div>
+        <div class="crow" style="--d:.8s"><b style="background:var(--info)"></b><span></span><em>In transit</em></div>
+        <div class="crow" style="--d:1.6s"><b style="background:var(--warn-2)"></b><span></span><em>Ordered</em></div>
       </div>
     </div>
     <div class="txt"><h3>Bring your spreadsheets</h3><p>Start fresh, import your existing sheets, or let us move everything over once.</p></div>
@@ -69,57 +69,57 @@ const hosting = [
 
 <style>
   .bento { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 20px }
-  .bx { display: flex; flex-direction: column; gap: 22px; padding: 12px 12px 28px; border: 1px solid var(--line); border-radius: 24px; background: #fff }
+  .bx { display: flex; flex-direction: column; gap: 22px; padding: 12px 12px 28px; border: 1px solid var(--line); border-radius: 24px; background: var(--surface) }
   .bx-names { grid-row: span 2 }
   .vis { position: relative; overflow: hidden; border-radius: 16px; background: var(--tint); min-height: 190px }
   .txt { display: flex; flex-direction: column; gap: 10px; padding: 0 16px }
   h3 { font: 600 clamp(20px, 1.8vw, 23px)/1.3 var(--body) }
   .txt p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--body-ink); max-width: 46ch }
-  .mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .92em }
+  .mono { font-family: var(--mono); font-size: .92em }
 
   /* names: a record whose labels retype */
-  .names-vis { flex: 1; display: grid; place-items: center; padding: 32px 24px; background: radial-gradient(70% 55% at 30% 20%, rgba(255, 255, 255, .6), transparent 70%), linear-gradient(150deg, #DCE4F7 0%, #C9D4F1 55%, #B9C7EE 100%) }
-  .nwin { width: min(100%, 360px); padding: 16px 20px 20px; border-radius: 18px; background: #fff; box-shadow: 0 24px 50px rgba(26, 35, 64, .16) }
+  .names-vis { flex: 1; display: grid; place-items: center; padding: 32px 24px; background: radial-gradient(70% 55% at 30% 20%, color-mix(in srgb, var(--surface) 60%, transparent), transparent 70%), linear-gradient(150deg, var(--pn-1) 0%, var(--pn-2) 55%, var(--pn-3) 100%) }
+  .nwin { width: min(100%, 360px); padding: 16px 20px 20px; border-radius: 18px; background: var(--surface); box-shadow: 0 24px 50px color-mix(in srgb, var(--navy) 16%, transparent) }
   .nbar { display: flex; align-items: center; gap: 6px; margin-bottom: 18px }
-  .nbar i { width: 8px; height: 8px; border-radius: 50%; background: #E1E4EA }
-  .nmode { margin-left: auto; font-size: 11px; font-weight: 600; letter-spacing: .04em; padding: 4px 10px; border-radius: 99px; background: #E3E9F8; color: #2F4A86; transition: background-color .3s, color .3s }
-  .nmode.generic { background: #EEF0F4; color: var(--mid) }
+  .nbar i { width: 8px; height: 8px; border-radius: 50%; background: var(--n-200) }
+  .nmode { margin-left: auto; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 99px; background: var(--tint-6); color: var(--brand-2); transition: background-color .3s, color .3s }
+  .nmode.generic { background: var(--n-100); color: var(--mid) }
   .ncrumb { font-size: 13px; color: var(--mid) }
-  .sep { margin: 0 6px; color: #B8BFCC }
+  .sep { margin: 0 6px; color: var(--n-400) }
   .ntitle { margin: 6px 0 14px; font: 600 19px/1.25 var(--display); color: var(--ink) }
   dl { margin: 0 }
-  dl > div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid #EEF0F3; font-size: 14px }
+  dl > div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--n-100); font-size: 14px }
   dt { color: var(--mid) }
   dd { margin: 0; color: var(--ink) }
-  .npill { display: inline-block; padding: 3px 10px; border-radius: 99px; background: #E3E9F8; color: #2F4A86; font-size: 12.5px; font-weight: 600 }
+  .npill { display: inline-block; padding: 3px 10px; border-radius: 99px; background: var(--tint-6); color: var(--brand-2); font-size: 12.5px; font-weight: 600 }
   .w { display: inline-block; min-height: 1.2em; padding: 0 .2em; margin: 0 -.2em; border-radius: 5px; white-space: nowrap; transition: background-color .3s, color .3s }
-  .w.yours { background: #D9E1F6; color: #2F4A86; font-weight: 600 }
+  .w.yours { background: var(--soft-2); color: var(--brand-2); font-weight: 600 }
   .w.typing::after { content: ""; display: inline-block; width: 1.5px; height: 1em; margin-left: 1px; vertical-align: -.12em; background: currentColor; animation: caret .8s steps(1) infinite }
   @keyframes caret { 50% { opacity: 0 } }
 
   /* sheets: old files on the left feed one clean list on the right */
   .sheets-vis { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .8fr) minmax(0, 1fr); align-items: center; gap: 0; padding: 26px 28px; container-type: inline-size }
   .files { display: flex; flex-direction: column; gap: 10px; align-items: flex-start }
-  .file { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px 8px 9px; border-radius: 10px; background: #fff; box-shadow: 0 6px 16px rgba(26, 35, 64, .08); font: 12.5px ui-monospace, "SF Mono", Menlo, monospace; color: var(--body-ink); transform: rotate(var(--r)); white-space: nowrap }
-  .file :global(svg) { width: 16px; height: 16px; color: #3F7D5C }
+  .file { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px 8px 9px; border-radius: 10px; background: var(--surface); box-shadow: 0 6px 16px color-mix(in srgb, var(--navy) 8%, transparent); font: 12.5px ui-monospace, "SF Mono", Menlo, monospace; color: var(--body-ink); transform: rotate(var(--r)); white-space: nowrap }
+  .file :global(svg) { width: 16px; height: 16px; color: var(--ok-2) }
   .flow { position: relative; height: 100%; min-height: 120px }
-  .flow::before { content: ""; position: absolute; left: 8%; right: 8%; top: 50%; border-top: 2px dashed #C9D0DF }
-  .flow i { position: absolute; top: calc(50% - 7px); left: 4%; width: 22px; height: 14px; border-radius: 4px; background: #fff; border: 1.5px solid #9EB2E6; opacity: 0; animation: cell 2.4s cubic-bezier(.5, 0, .3, 1) var(--d) infinite }
+  .flow::before { content: ""; position: absolute; left: 8%; right: 8%; top: 50%; border-top: 2px dashed var(--rule-2) }
+  .flow i { position: absolute; top: calc(50% - 7px); left: 4%; width: 22px; height: 14px; border-radius: 4px; background: var(--surface); border: 1.5px solid var(--g1); opacity: 0; animation: cell 2.4s cubic-bezier(.5, 0, .3, 1) var(--d) infinite }
   @keyframes cell { 0% { opacity: 0; transform: translateX(0) } 15% { opacity: 1 } 80% { opacity: 1 } 100% { opacity: 0; transform: translateX(23cqw) } }
-  .clean { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 14px; background: #fff; box-shadow: 0 14px 30px rgba(26, 35, 64, .12) }
+  .clean { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 14px; background: var(--surface); box-shadow: 0 14px 30px color-mix(in srgb, var(--navy) 12%, transparent) }
   .crow { display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 6px 2px; animation: rowin 2.4s ease-out var(--d) infinite }
   .crow b { width: 8px; height: 8px; border-radius: 50% }
-  .crow span { height: 7px; border-radius: 4px; background: #E1E4EA }
+  .crow span { height: 7px; border-radius: 4px; background: var(--n-200) }
   .crow em { font-style: normal; font-size: 11.5px; font-weight: 600; color: var(--body-ink) }
-  @keyframes rowin { 0%, 70% { background: transparent } 85% { background: #EEF2FB } 100% { background: transparent } }
+  @keyframes rowin { 0%, 70% { background: transparent } 85% { background: var(--tint-5) } 100% { background: transparent } }
 
   /* hosting: segmented switch */
   .host-vis { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; padding: 24px 20px }
   .host-vis .seg { width: min(100%, 420px) }
-  .seg { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 4px; border-radius: 14px; background: #fff; box-shadow: 0 6px 16px rgba(26, 35, 64, .08) }
+  .seg { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 4px; border-radius: 14px; background: var(--surface); box-shadow: 0 6px 16px color-mix(in srgb, var(--navy) 8%, transparent) }
   .pill { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / 3); border-radius: 10px; background: var(--navy); transform: translateX(calc(var(--i) * 100%)); transition: transform .5s cubic-bezier(.2, .7, .2, 1) }
   .seg button { position: relative; z-index: 1; border: 0; background: none; padding: 10px 4px; font: 500 13px var(--body); color: var(--body-ink); cursor: pointer; white-space: nowrap; transition: color .3s }
-  .seg button[aria-pressed="true"] { color: #fff }
+  .seg button[aria-pressed="true"] { color: var(--surface) }
   .hnote { margin: 0; min-height: 2.9em; font-size: 13.5px; line-height: 1.45; color: var(--body-ink); text-align: center; transition: opacity .25s }
   .hnote.out { opacity: 0 }
 

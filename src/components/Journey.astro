@@ -82,7 +82,7 @@ const pad = (i: number) => String(i + 2).padStart(2, '0');
   .rail, .dot { display: none }
   .jtop { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px }
   .jn { font: 600 clamp(56px, 7vw, 88px)/.9 var(--display); letter-spacing: -.04em; color: var(--navy) }
-  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 10px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font: 500 14px var(--body); color: var(--navy); white-space: nowrap; box-shadow: 0 4px 14px rgba(26, 35, 64, .06) }
+  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 10px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font: 500 14px var(--body); color: var(--navy); white-space: nowrap; box-shadow: 0 4px 14px color-mix(in srgb, var(--navy) 6%, transparent) }
   .chip :global(svg) { width: 18px; height: 18px; color: var(--accent) }
   .jstep h3 { font: 600 clamp(24px, 2.4vw, 32px)/1.15 var(--display); letter-spacing: -.015em; max-width: 20ch }
   .jstep p { margin: 14px 0 0; font-size: 17px; line-height: 1.6; color: var(--body-ink); max-width: 52ch }
@@ -92,7 +92,7 @@ const pad = (i: number) => String(i + 2).padStart(2, '0');
   /* card surface: the hero palette as soft colour blobs (a "mesh"), no diagonal sheen, plus fine grain
      so it reads as printed rather than plastic; a 1px light inner edge instead of a floating shadow */
   .jart { position: relative; height: 320px; border-radius: 24px; overflow: hidden; display: grid; place-items: center;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--surface) 50%, transparent);
     background:
       radial-gradient(55% 60% at 8% 12%, color-mix(in srgb, var(--c1) 90%, transparent), transparent 70%),
       radial-gradient(50% 55% at 95% 92%, color-mix(in srgb, var(--bl) 80%, transparent), transparent 70%),
@@ -100,85 +100,80 @@ const pad = (i: number) => String(i + 2).padStart(2, '0');
       var(--c2) }
   .jart::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; border-radius: inherit;
     background-image: var(--grain); background-size: 180px; mix-blend-mode: overlay; opacity: .14 }
-  .t-blue { --c1: var(--g1); --c2: var(--g2); --c3: var(--g3); --bl: var(--bloom) } /* exactly the hero */
-  .t-violet { --c1: #AEB0E8; --c2: #E3E2F6; --c3: #CBCAEE; --bl: #A9ACEC }
-  .t-sky { --c1: #97BCE4; --c2: #DCE8F4; --c3: #BFD3EC; --bl: #98BEEA }
-  .t-lilac { --c1: #B7A9E6; --c2: #E6E0F6; --c3: #D0C6EF; --bl: #B3A6EC }
-  .t-indigo { --c1: #9FA8DC; --c2: #DEE1F2; --c3: #C3C8E8; --bl: #A0AAE4 }
 
   .scene { position: relative; z-index: 1; width: 300px; height: 276px; font-family: var(--body); color: var(--ink) }
-  .scene :global(.pc) { position: absolute; box-shadow: 0 0 0 1px rgba(26, 35, 64, .05), 0 1px 2px rgba(26, 35, 64, .06), 0 6px 16px -6px rgba(26, 35, 64, .12) }
-  .scene :global(.bub) { display: flex; align-items: center; gap: 10px; max-width: 236px; padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.35; background: #fff }
+  .scene :global(.pc) { position: absolute; box-shadow: 0 0 0 1px color-mix(in srgb, var(--navy) 5%, transparent), 0 1px 2px color-mix(in srgb, var(--navy) 6%, transparent), 0 6px 16px -6px color-mix(in srgb, var(--navy) 12%, transparent) }
+  .scene :global(.bub) { display: flex; align-items: center; gap: 10px; max-width: 236px; padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.35; background: var(--surface) }
   .scene :global(.chat) { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: 14px }
   .scene :global(.chat .pc) { position: relative; flex: none }
   .scene :global(.chat .us) { align-self: flex-start }
   .scene :global(.chat .them), .scene :global(.chat .typing) { align-self: flex-end }
   .scene :global(.bub.us) { border-bottom-left-radius: 6px }
-  .scene :global(.bub.them) { background: var(--navy); color: #fff; border-bottom-right-radius: 6px }
+  .scene :global(.bub.them) { background: var(--navy); color: var(--surface); border-bottom-right-radius: 6px }
   .scene :global(.bub.sm) { font-size: 13.5px }
-  .scene :global(.bub.us.sm) { background: #fff; color: #2F6B4D; font-weight: 500; border-bottom-left-radius: 18px; border-bottom-right-radius: 6px }
-  .scene :global(.bub.them.sm) { background: #fff; color: var(--ink); border-bottom-right-radius: 18px; border-bottom-left-radius: 6px }
-  .scene :global(.av) { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--navy); color: #fff; font: 600 12px var(--display) }
-  .scene :global(.av.b) { background: #9F8FD9 }
-  .scene :global(.av.c) { background: #7EA3D6 }
-  .scene :global(.av.s) { width: 22px; height: 22px; font-size: 10px; border: 2px solid #fff; margin-right: -8px; box-shadow: none }
-  .scene :global(.file), .scene :global(.help) { display: flex; align-items: center; gap: 12px; padding: 10px 16px 10px 10px; border-radius: 14px; background: #fff }
+  .scene :global(.bub.us.sm) { background: var(--surface); color: var(--ok); font-weight: 500; border-bottom-left-radius: 18px; border-bottom-right-radius: 6px }
+  .scene :global(.bub.them.sm) { background: var(--surface); color: var(--ink); border-bottom-right-radius: 18px; border-bottom-left-radius: 6px }
+  .scene :global(.av) { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--navy); color: var(--surface); font: 600 12px var(--display) }
+  .scene :global(.av.b) { background: var(--av-violet) }
+  .scene :global(.av.c) { background: var(--ps-3) }
+  .scene :global(.av.s) { width: 22px; height: 22px; font-size: 10px; border: 2px solid var(--surface); margin-right: -8px; box-shadow: none }
+  .scene :global(.file), .scene :global(.help) { display: flex; align-items: center; gap: 12px; padding: 10px 16px 10px 10px; border-radius: 14px; background: var(--surface) }
   .scene :global(.file b), .scene :global(.help b) { display: block; font-size: 13.5px; font-weight: 600 }
   .scene :global(.file small), .scene :global(.help small) { display: block; font-size: 12px; color: var(--mid) }
-  .scene :global(.fi), .scene :global(.hi) { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: #E3F1E8; color: #2F6B4D }
+  .scene :global(.fi), .scene :global(.hi) { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--ok-soft); color: var(--ok) }
   .scene :global(.hi) { background: var(--soft); color: var(--navy) }
   .scene :global(.fi svg), .scene :global(.hi svg) { width: 20px; height: 20px }
   .scene :global(.typing) { display: flex; gap: 5px; padding: 12px 14px; border-radius: 16px; background: var(--navy) }
-  .scene :global(.typing i) { width: 6px; height: 6px; border-radius: 50%; background: #fff; opacity: .5; animation: jr-dot 1.2s infinite }
+  .scene :global(.typing i) { width: 6px; height: 6px; border-radius: 50%; background: var(--surface); opacity: .5; animation: jr-dot 1.2s infinite }
   .scene :global(.typing i:nth-child(2)) { animation-delay: .15s }
   .scene :global(.typing i:nth-child(3)) { animation-delay: .3s }
-  .scene :global(.typing.light) { background: #fff; border-bottom-left-radius: 6px }
+  .scene :global(.typing.light) { background: var(--surface); border-bottom-left-radius: 6px }
   .scene :global(.typing.light i) { background: var(--navy) }
   .scene :global(.typing:not(.light)) { border-bottom-right-radius: 6px }
   @keyframes jr-dot { 0%, 60%, 100% { opacity: .35; transform: none } 30% { opacity: 1; transform: translateY(-3px) } }
 
-  .scene :global(.card) { padding: 16px; border-radius: 16px; background: #fff }
-  .scene :global(.lbl) { display: block; margin-bottom: 12px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mid) }
+  .scene :global(.card) { padding: 16px; border-radius: 16px; background: var(--surface) }
+  .scene :global(.lbl) { display: block; margin-bottom: 12px; font-size: 12px; color: var(--mid) }
   .scene :global(.nodes) { display: flex; align-items: center; gap: 4px }
   .scene :global(.nodes span) { padding: 6px 8px; border-radius: 8px; background: var(--tint); font-size: 12px; font-weight: 500; white-space: nowrap }
-  .scene :global(.nodes span.hl) { background: var(--navy); color: #fff }
+  .scene :global(.nodes span.hl) { background: var(--navy); color: var(--surface) }
   .scene :global(.nodes em) { flex: 1; min-width: 6px; height: 2px; border-radius: 2px; background: var(--g1) }
   .scene :global(.who) { display: flex; align-items: center; margin-top: 14px }
   .scene :global(.who small) { margin-left: 16px; font-size: 12px; color: var(--mid) }
-  .scene :global(.bar) { display: block; height: 7px; margin-top: 8px; border-radius: 4px; background: #E3E7F0 }
+  .scene :global(.bar) { display: block; height: 7px; margin-top: 8px; border-radius: 4px; background: var(--n-200) }
   .scene :global(.bar.dark) { height: 10px; background: var(--navy); margin: 0 }
   .scene :global(.qfoot) { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--line) }
-  .scene :global(.ok) { padding: 4px 10px; border-radius: 999px; background: #E3F1E8; color: #2F6B4D; font-size: 12px; font-weight: 600 }
+  .scene :global(.ok) { padding: 4px 10px; border-radius: 999px; background: var(--ok-soft); color: var(--ok); font-size: 12px; font-weight: 600 }
 
-  .scene :global(.win) { border-radius: 14px; background: #fff; overflow: hidden; padding-bottom: 6px }
-  .scene :global(.wbar) { display: flex; align-items: center; gap: 5px; padding: 10px 12px; border-bottom: 1px solid var(--line); background: #F7F8FC }
-  .scene :global(.wbar i) { width: 7px; height: 7px; border-radius: 50%; background: #D3D8E4 }
+  .scene :global(.win) { border-radius: 14px; background: var(--surface); overflow: hidden; padding-bottom: 6px }
+  .scene :global(.wbar) { display: flex; align-items: center; gap: 5px; padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--n-50) }
+  .scene :global(.wbar i) { width: 7px; height: 7px; border-radius: 50%; background: var(--n-300) }
   .scene :global(.wbar b) { margin-left: 8px; font-size: 12.5px; font-weight: 600 }
-  .scene :global(.row) { display: grid; grid-template-columns: 58px 1fr auto; align-items: center; gap: 8px; padding: 9px 12px; font-size: 12.5px; border-bottom: 1px solid #F0F2F7 }
+  .scene :global(.row) { display: grid; grid-template-columns: 58px 1fr auto; align-items: center; gap: 8px; padding: 9px 12px; font-size: 12.5px; border-bottom: 1px solid var(--n-100) }
   .scene :global(.row:last-child) { border-bottom: 0 }
   .scene :global(.row .bar) { margin: 0; height: 6px }
   .scene :global(.row.ghost) { opacity: .6 }
   .scene :global(.mono) { font-family: var(--mono); font-size: 11px; color: var(--mid) }
   .scene :global(.st) { padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 600 }
-  .scene :global(.st.amber) { background: #FBEFD9; color: #8A5A12 }
-  .scene :global(.st.green) { background: #E3F1E8; color: #2F6B4D }
-  .scene :global(.st.blue) { background: #E3EAF9; color: #2D4A8A }
-  .scene :global(.live) { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--navy); color: #fff; font-size: 12px; font-weight: 600 }
-  .scene :global(.live i), .scene :global(.shead i) { width: 8px; height: 8px; border-radius: 50%; background: #5FD08F; box-shadow: 0 0 0 0 rgba(95, 208, 143, .6); animation: jr-ping 2s infinite }
-  @keyframes jr-ping { 70% { box-shadow: 0 0 0 7px rgba(95, 208, 143, 0) } 100% { box-shadow: 0 0 0 0 rgba(95, 208, 143, 0) } }
-  .scene :global(.toast) { padding: 10px 14px; border-radius: 12px; background: #fff; color: #2F6B4D; font-size: 13px; font-weight: 600 }
+  .scene :global(.st.amber) { background: var(--warn-soft); color: var(--warn) }
+  .scene :global(.st.green) { background: var(--ok-soft); color: var(--ok) }
+  .scene :global(.st.blue) { background: var(--info-soft); color: var(--brand-2) }
+  .scene :global(.live) { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--navy); color: var(--surface); font-size: 12px; font-weight: 600 }
+  .scene :global(.live i), .scene :global(.shead i) { width: 8px; height: 8px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 0 color-mix(in srgb, var(--live) 60%, transparent); animation: jr-ping 2s infinite }
+  @keyframes jr-ping { 70% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--live) 0%, transparent) } 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--live) 0%, transparent) } }
+  .scene :global(.toast) { padding: 10px 14px; border-radius: 12px; background: var(--surface); color: var(--ok); font-size: 13px; font-weight: 600 }
 
   .scene :global(.tiles) { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; box-shadow: none }
-  .scene :global(.tile) { display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 14px; background: #fff; font-size: 13px; font-weight: 600; box-shadow: 0 0 0 1px rgba(26, 35, 64, .05), 0 1px 2px rgba(26, 35, 64, .06), 0 6px 16px -6px rgba(26, 35, 64, .12) }
-  .scene :global(.tile em) { font-style: normal; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #E3F1E8; color: #2F6B4D; font-size: 12px }
-  .scene :global(.tile.next) { background: rgba(255, 255, 255, .45); border: 1.5px dashed rgba(26, 35, 64, .35); box-shadow: none; color: var(--navy) }
-  .scene :global(.tile.next em) { background: var(--navy); color: #fff; font-size: 16px }
-  .scene :global(.ver) { padding: 6px 12px; border-radius: 999px; background: var(--navy); color: #fff; font: 600 12px var(--mono) }
+  .scene :global(.tile) { display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 14px; background: var(--surface); font-size: 13px; font-weight: 600; box-shadow: 0 0 0 1px color-mix(in srgb, var(--navy) 5%, transparent), 0 1px 2px color-mix(in srgb, var(--navy) 6%, transparent), 0 6px 16px -6px color-mix(in srgb, var(--navy) 12%, transparent) }
+  .scene :global(.tile em) { font-style: normal; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--ok-soft); color: var(--ok); font-size: 12px }
+  .scene :global(.tile.next) { background: color-mix(in srgb, var(--surface) 45%, transparent); border: 1.5px dashed color-mix(in srgb, var(--navy) 35%, transparent); box-shadow: none; color: var(--navy) }
+  .scene :global(.tile.next em) { background: var(--navy); color: var(--surface); font-size: 16px }
+  .scene :global(.ver) { padding: 6px 12px; border-radius: 999px; background: var(--navy); color: var(--surface); font: 600 12px var(--mono) }
 
   .scene :global(.shead) { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600 }
   .scene :global(.up) { display: flex; gap: 3px; margin: 14px 0 }
-  .scene :global(.up i) { flex: 1; height: 26px; border-radius: 3px; background: #7FCB9C }
-  .scene :global(.up i.lo) { height: 26px; background: #C8E9D4 }
+  .scene :global(.up i) { flex: 1; height: 26px; border-radius: 3px; background: var(--live-2) }
+  .scene :global(.up i.lo) { height: 26px; background: var(--live-soft) }
   .scene :global(.checks) { display: flex; gap: 6px; flex-wrap: wrap }
   .scene :global(.checks span) { padding: 4px 9px; border-radius: 999px; background: var(--tint); font-size: 11.5px; font-weight: 500; color: var(--navy) }
 
@@ -189,7 +184,7 @@ const pad = (i: number) => String(i + 2).padStart(2, '0');
     .jpin { display: block; position: sticky; top: 0; z-index: 0; height: 100vh; margin-bottom: -100vh; pointer-events: none; translate: 0 var(--pin-y, 0px) }
     /* geometry comes from the script: --bx/--by/--bw/--bh card box, --sc scene scale */
     .jbox { position: absolute; left: var(--bx, 0px); top: var(--by, 0px); width: var(--bw, 50%); height: var(--bh, 480px); border-radius: var(--r-lg); overflow: hidden }
-    .jbox::after { content: ""; position: absolute; inset: 0; z-index: 3; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .55); pointer-events: none }
+    .jbox::after { content: ""; position: absolute; inset: 0; z-index: 3; border-radius: inherit; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--surface) 55%, transparent); pointer-events: none }
     .jbox .jart { position: absolute; inset: 0; height: auto; border-radius: 0; opacity: 0; transition: opacity .6s }
     .jbox .jart.on { opacity: 1 }
     .jbox .scene { transform: scale(var(--sc, 1.3)) }
@@ -216,7 +211,7 @@ const pad = (i: number) => String(i + 2).padStart(2, '0');
     .jstep .jart.inline { display: none }
     .rail { display: block; position: absolute; left: var(--rail-x); top: 0; bottom: 0; width: 2px; border-radius: 2px;
       /* faint track that fades in from the top; the fill below grows with scrolling */
-      background: color-mix(in srgb, var(--soft) 55%, transparent); -webkit-mask-image: linear-gradient(transparent, #000 28vh); mask-image: linear-gradient(transparent, #000 28vh) }
+      background: color-mix(in srgb, var(--soft) 55%, transparent); -webkit-mask-image: linear-gradient(transparent, var(--ink) 28vh); mask-image: linear-gradient(transparent, var(--ink) 28vh) }
     .fill { position: absolute; inset: 0 0 auto; height: calc(var(--p, 0) * 100%); border-radius: inherit; background: linear-gradient(var(--g1), var(--navy)) }
     .dot { display: block; position: absolute; left: calc(var(--rail-x) - 72px - 7px + 1px); top: 50%; width: 14px; height: 14px; margin-top: -7px; border-radius: 50%; background: var(--paper); border: 2px solid var(--soft); transition: border-color .4s, background-color .4s, box-shadow .4s }
     .jstep.past .dot, .jstep.on .dot { border-color: var(--navy); background: var(--navy) }

@@ -7,9 +7,8 @@
 import ContactForm from './ContactForm';
 import { SITE } from '../site';
 
-interface Props { eyebrow?: string; title?: string; lede?: string; cta?: string; form?: boolean }
+interface Props { title?: string; lede?: string; cta?: string; form?: boolean }
 const {
-  eyebrow = 'Contact',
   title = 'Tell us how your business runs.',
   lede = 'We will come back within two working days with questions, not a sales pitch.',
   cta = 'Get in touch',
@@ -22,7 +21,6 @@ const mailto = `mailto:${SITE.email}?subject=${encodeURIComponent(cta)}`;
     {form ? (
       <>
         <div class="ctext">
-          <p class="eyebrow">{eyebrow}</p>
           <h2 id="contact-h">{title}</h2>
           <p class="lede">{lede}</p>
           <a class="btn cbtn" href={mailto} data-contact>{cta}</a>
@@ -32,7 +30,6 @@ const mailto = `mailto:${SITE.email}?subject=${encodeURIComponent(cta)}`;
       </>
     ) : (
       <>
-        <p class="eyebrow">{eyebrow}</p>
         <h2 id="contact-h">{title}</h2>
         <p class="lede">{lede}</p>
         <a class="btn" href={mailto} data-contact>{cta}</a>

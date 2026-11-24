@@ -18,15 +18,13 @@ import { website, faqPage } from '../lib/schema';
 
   <section class="hero" id="hero">
     <div class="copy"><div class="copy-in" id="copy">
-      <p class="eyebrow">Operations systems for your business</p>
       <h1>Software made to measure</h1>
-      <p class="lede">We build one working system around how your company already runs, then keep shaping it as you grow.</p>
+      <p class="lede">We build one operations system around how your company already runs, then keep shaping it as you grow.</p>
       <div class="actions"><a class="btn" href="#contact">Get in touch</a></div>
     </div></div>
   </section>
 
   <section class="about" id="about" aria-labelledby="about-h"><div class="wrap">
-    <p class="eyebrow">Who we are</p>
     <h2 id="about-h">We turn the way you work into software.</h2>
     <p class="about-lede">We are developers and designers who build the kind of system a company runs on day to day: orders, materials, production, deliveries. We make it for businesses that want all their work in one place, shaped around how you actually work.</p>
     <div class="agrid">
@@ -67,7 +65,7 @@ import { website, faqPage } from '../lib/schema';
   </div></section>
 
   <section class="sec build" id="build" aria-labelledby="build-h"><div class="wrap">
-    <div class="bhead"><p class="eyebrow">How we work</p><h2 id="build-h">Then we build it and run it your way.</h2></div>
+    <div class="bhead"><h2 id="build-h">Then we build it and run it your way.</h2></div>
     <div class="bgrid">
       <article class="bcard"><h3>A first version in weeks</h3><p>We start with the part that slows you down most, then add the rest step by step. Your team uses it from early on and tells us what to change.</p><span class="bi"><Icon name="bolt" /></span></article>
       <article class="bcard"><h3>Changes whenever you need</h3><p>A new step, a new status, a new report. Tell us, and we adjust the system as your business changes. No starting over.</p><span class="bi"><Icon name="sliders" /></span></article>
@@ -87,7 +85,7 @@ import { website, faqPage } from '../lib/schema';
   .copy { position: relative; z-index: 35; display: flex; justify-content: center; text-align: center; padding-inline: 24px; padding-block: calc(clamp(140px, 21vh, 210px) + var(--hh) + env(safe-area-inset-top, 0px)) clamp(110px, 15vh, 160px); pointer-events: none }
   .copy-in { max-width: 760px; pointer-events: auto; display: flex; flex-direction: column; align-items: center }
   .hero h1 { font-size: clamp(42px, 6vw, 92px); line-height: 1; letter-spacing: -.025em }
-  .hero .lede, .hero .eyebrow { color: #4E5670 }
+  .hero .lede { color: var(--ink-2) }
   .hero .lede { max-width: 44ch }
   .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; align-items: center; margin-top: 36px }
 
@@ -100,24 +98,24 @@ import { website, faqPage } from '../lib/schema';
   .agrid p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--body-ink) }
 
   .know .wrap { padding-block: clamp(180px, 26vh, 300px) }
-  .know h2 { font: 400 13px/1.4 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--mid); margin-bottom: 18px }
-  .kbig { margin: 0; font: 400 clamp(22px, 2.1vw, 30px)/1.45 var(--body); color: #5A6280; text-wrap: pretty }
+  .know h2 { font: 500 16px/1.4 var(--body); color: var(--mid); margin-bottom: 18px }
+  .kbig { margin: 0; font: 400 clamp(22px, 2.1vw, 30px)/1.45 var(--body); color: var(--ink-3); text-wrap: pretty }
   .klead { display: block; font-family: var(--display); font-size: 1.45em; line-height: 1.1; font-weight: 600; letter-spacing: -.02em; color: var(--ink); margin-bottom: .35em }
-  .kbig mark { background: linear-gradient(transparent 12%, #D9E1F6 12%, #D9E1F6 92%, transparent 92%); color: #2F4A86; padding: 0 .12em; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone }
+  .kbig mark { background: linear-gradient(transparent 12%, var(--soft-2) 12%, var(--soft-2) 92%, transparent 92%); color: var(--brand-2); padding: 0 .12em; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone }
 
   .words { --wh: calc(clamp(32px, 4vw, 56px) * 1.04 + 40px); background: var(--soft); padding-top: clamp(72px, 9vh, 110px) }
   .wsub { margin: 10px 0 0; font-size: clamp(18px, 1.6vw, 22px); line-height: 1.35; color: var(--mid) }
   .words-head { position: sticky; top: calc(var(--hh) + 28px); margin-bottom: 36px; z-index: 0 }
   .wstack { display: flex; flex-direction: column; gap: 28px; padding-bottom: 40px }
-  .wcard { position: sticky; z-index: 1; top: calc(var(--hh) + 28px + var(--wh) + 36px + var(--i) * 16px); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 40px; min-height: min(560px, calc(100vh - var(--hh) - var(--wh) - 140px)); padding: 44px; border-radius: 32px; background: #fff; box-shadow: 0 -18px 40px rgba(26, 35, 64, .06); transform-origin: 50% 0 }
+  .wcard { position: sticky; z-index: 1; top: calc(var(--hh) + 28px + var(--wh) + 36px + var(--i) * 16px); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 40px; min-height: min(560px, calc(100vh - var(--hh) - var(--wh) - 140px)); padding: 44px; border-radius: 32px; background: var(--surface); box-shadow: 0 -18px 40px color-mix(in srgb, var(--navy) 6%, transparent); transform-origin: 50% 0 }
   .wc-text { display: flex; flex-direction: column; gap: 18px; min-width: 0 }
   .wcard h3 { font-size: clamp(32px, 3.4vw, 48px); line-height: 1.04; letter-spacing: -.02em; font-weight: 500 }
   .wc-d { margin: 0; font-size: 17px; line-height: 1.6; color: var(--body-ink); max-width: 44ch }
   .wc-chips { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 10px }
-  .wc-chips li { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px 10px 14px; border: 1px solid rgba(18, 24, 42, .06); border-radius: 999px; font-size: 15px }
+  .wc-chips li { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px 10px 14px; border: 1px solid color-mix(in srgb, var(--ink) 6%, transparent); border-radius: 999px; font-size: 15px }
   .wc-chips :global(svg) { width: 20px; height: 20px; color: var(--navy) }
   .wc-cta { margin-top: auto; display: inline-flex; align-items: center; gap: 12px; font-weight: 500; font-size: 16px; text-decoration: none; align-self: flex-start }
-  .wc-arr { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--navy); color: #fff; transition: transform .3s }
+  .wc-arr { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--navy); color: var(--surface); transition: transform .3s }
   .wc-arr :global(svg) { width: 16px; height: 16px }
   .wc-cta:hover .wc-arr { transform: translateX(4px) }
   .wc-panel { position: relative; border-radius: 24px; overflow: hidden; min-height: 380px }
@@ -155,7 +153,7 @@ import { website, faqPage } from '../lib/schema';
     .wc-chips li { gap: 6px; padding: 6px 12px 6px 10px; font-size: 13px }
     .wc-chips :global(svg) { width: 16px; height: 16px }
     .wdots { display: flex; justify-content: center; gap: 8px; margin-top: 20px }
-    .wdots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 999px; background: rgba(26, 35, 64, .22); cursor: pointer; transition: width .3s, background-color .3s }
+    .wdots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 999px; background: color-mix(in srgb, var(--navy) 22%, transparent); cursor: pointer; transition: background-color .3s }
     .wdots button[aria-current] { width: 24px; background: var(--navy) }
   }
   @media (max-width: 560px) { .words-head { position: static } .wcard { position: relative; top: 0 } .wc-panel { min-height: 240px } }
@@ -190,6 +188,7 @@ import { website, faqPage } from '../lib/schema';
     follow();
   }
   // Orbiting ticks around the hero copy, clipped to the hero panel. Skipped for reduced motion.
+  const INK = getComputedStyle(document.documentElement).getPropertyValue('--navy').trim();
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const canvas = document.getElementById('gl') as HTMLCanvasElement;
   const ctx = canvas.getContext('2d')!;
@@ -226,7 +225,7 @@ import { website, faqPage } from '../lib/schema';
     const rx = Math.min(cr.width / 2 + (W < 820 ? 20 : 110), W / 2 - 10);
     const R = W < 640 ? Math.max(W * 0.62, cr.height * 0.52) : Math.min(rx * 0.9, W / 2 - 10);
     const TA = W < 640 ? 0.32 : 0.82, sLen = W < 820 ? 12 : 16, lLen = W < 820 ? 22 : 30;
-    ctx.strokeStyle = '#1A2340'; ctx.lineWidth = 2.4; ctx.globalAlpha = TA;
+    ctx.strokeStyle = INK; ctx.lineWidth = 2.4; ctx.globalAlpha = TA;
     for (let i = 0; i < CIRC.length; i++) {
       const t = CIRC[i];
       const len = t.long ? lLen * (1 + 0.32 * Math.pow(Math.max(0, Math.sin(T * 0.45 + i * 2.39)), 10)) : sLen;

@@ -29,7 +29,6 @@ const description =
   <section class="phero" aria-labelledby="hero-h">
     <div class="wrap copy">
       <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li aria-current="page">Apparel PLM</li></ol>
-      <p class="eyebrow">Apparel PLM, made to measure</p>
       <h1 id="hero-h">Every garment in one place</h1>
       <p class="lede">One shared record for each design, from first sketch and sampling to supplier email, ordering and delivery. Built for clothing design and production teams.</p>
       <div class="tags" aria-label="Covers"><span>Tech packs</span><span>Sampling</span><span>Supplier email</span><span>Purchase orders</span><span>Delivery tracking</span></div>
@@ -42,7 +41,7 @@ const description =
   </section>
 
   <section class="sec" id="walkthrough" aria-labelledby="walk-h"><div class="wrap">
-    <div class="bhead"><p class="eyebrow">How it works</p><h2 id="walk-h">From reference number to delivery.</h2><p>Follow one design, a hooded zip jacket, through the whole season. Every step happens in the same place, and the whole team sees it.</p></div>
+    <div class="bhead"><h2 id="walk-h">From reference number to delivery.</h2><p>Follow one design, a hooded zip jacket, through the whole season. Every step happens in the same place, and the whole team sees it.</p></div>
     <StepCards items={[
       { step: 'Step 1', title: 'Create the design', text: 'Reserve a reference number, open a draft, and add photos and the tech pack.', icon: 'plus', tone: 'blue', art: ArtDesign },
       { step: 'Step 2', title: 'Work with suppliers', text: "Email suppliers right from the design. Their replies land on the same design, not in someone's inbox.", icon: 'mail', tone: 'violet', art: ArtSuppliers },
@@ -54,7 +53,6 @@ const description =
   <section class="sec" id="features" aria-label="Main features" style="padding-top:0"><div class="wrap spots">
     <article class="spot">
       <div class="stext">
-        <p class="eyebrow">One garment, one page</p>
         <h2>Everything about a design, on a single page.</h2>
         <p>Photos, style number, supplier, fabric, costs and where the design is in its timeline. No more piecing it together from five files.</p>
         <ul class="ticks">
@@ -68,7 +66,6 @@ const description =
 
     <article class="spot rev">
       <div class="stext">
-        <p class="eyebrow">Email in context</p>
         <h2>Supplier email lives on the design.</h2>
         <p>Write to a supplier from the design page. The subject fills in by itself and replies come back to the same place, with attachments and the whole conversation in one view.</p>
         <ul class="ticks">
@@ -82,7 +79,6 @@ const description =
 
     <article class="spot">
       <div class="stext">
-        <p class="eyebrow">Dashboard &amp; calendar</p>
         <h2>See where every design stands.</h2>
         <p>What is late, what is on the way and which deadlines are coming. Every number opens the list behind it, so nothing is a guess.</p>
         <ul class="ticks">
@@ -95,7 +91,6 @@ const description =
   </div></section>
 
   <section class="sec" id="all" aria-labelledby="all-h" style="padding-top:0"><div class="wrap">
-    <p class="eyebrow">What else it covers</p>
     <h2 id="all-h">Built for the way fashion teams work.</h2>
     <div class="cgrid">
       <div class="cap"><span class="ci"><Icon name="trends" /></span><h3>Trend groups</h3><p>Lay designs out on a grid, like a mood board, grouped the way your team thinks.</p></div>
@@ -108,21 +103,20 @@ const description =
   </div></section>
 
   <section class="sec" id="setup" aria-labelledby="setup-h" style="padding-top:0"><div class="wrap">
-    <div class="bhead"><p class="eyebrow">Getting started</p><h2 id="setup-h">Shaped to your team before day one.</h2><p>This is where we start, not where we stop. Steps, statuses, fields and whole screens can be changed, added or removed to match how your team works.</p></div>
+    <div class="bhead"><h2 id="setup-h">Shaped to your team before day one.</h2><p>This is where we start, not where we stop. Steps, statuses, fields and whole screens can be changed, added or removed to match how your team works.</p></div>
     <SetupBento />
   </div></section>
 
   <Contact
-    eyebrow="This is just one example"
     title="Your business works differently? So will your system."
-    lede="Everything on this page can change: the steps, the screens, the names, even what the system is for. Tell us how your team works and we'll book a walkthrough."
+    lede="This page is just one example. Everything on it can change: the steps, the screens, the names, even what the system is for. Tell us how your team works and we'll book a walkthrough."
     cta="Book a walkthrough"
   />
 </Base>
 
 <style>
   .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 28px }
-  .tags span { font-size: 14px; color: var(--navy); background: #E9EEFA; padding: 7px 14px; border-radius: 999px }
+  .tags span { font-size: 14px; color: var(--navy); background: var(--tint-4); padding: 7px 14px; border-radius: 999px }
   .phero { padding-bottom: 0 }
   .scrollcue { display: inline-flex; flex-direction: column; align-items: center; gap: 14px; margin-top: clamp(56px, 9vh, 100px); color: var(--navy); text-decoration: none; font-size: 16px }
   .scrollcue > span:first-child { border-bottom: 1px solid var(--accent); padding-bottom: 3px }
@@ -135,11 +129,11 @@ const description =
   .stage { transform-origin: 50% 0 }
   @media (prefers-reduced-motion: reduce) { .arrows { animation: none } }
   .stage { margin: clamp(72px, 12vh, 140px) var(--side) 0; border-radius: var(--r-lg); overflow: hidden; padding: clamp(24px, 5vw, 72px) clamp(16px, 5vw, 72px) 0; background: radial-gradient(ellipse 55% 60% at 50% 40%, color-mix(in srgb, var(--bloom) 70%, transparent), transparent 72%), linear-gradient(135deg, var(--g1) 0%, var(--g2) 52%, var(--g3) 100%) }
-  .stage :global(.scr) { max-width: 1180px; margin: 0 auto; border-radius: 14px 14px 0 0; box-shadow: 0 30px 70px rgba(26, 35, 64, .22) }
+  .stage :global(.scr) { max-width: 1180px; margin: 0 auto; border-radius: 14px 14px 0 0; box-shadow: 0 30px 70px color-mix(in srgb, var(--navy) 22%, transparent) }
   .note { margin: 14px 0 0; font-size: 13px; color: var(--mid); text-align: center }
   .spots { display: flex; flex-direction: column; gap: clamp(110px, 16vh, 180px) }
   /* product screens are HTML (components/screens), styled like the screenshots they replace */
-  #features .panel :global(.scr) { border-radius: 14px 0 0 0; box-shadow: 0 30px 70px rgba(26, 35, 64, .22) }
+  #features .panel :global(.scr) { border-radius: 14px 0 0 0; box-shadow: 0 30px 70px color-mix(in srgb, var(--navy) 22%, transparent) }
   /* phones: tighter, like other sections; less space between a photo and the next title, and title to photo */
   @media (max-width: 640px) { .phero { padding-bottom: 40px } .stage { margin-top: 40px } .spots { gap: 48px } .spot { gap: 24px } }
 </style>

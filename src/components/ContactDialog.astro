@@ -17,7 +17,6 @@ const { formOnPage = false } = Astro.props;
     <button class="cdlg-x" type="button" aria-label="Close" data-close>
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
     </button>
-    <p class="eyebrow">Contact</p>
     <h2 id="cdlg-h">Tell us how your business runs.</h2>
     <p class="cdlg-lede">We will come back within two working days with questions, not a sales pitch. Prefer email? Write to <a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
     <ContactForm client:idle endpoint={SITE.formEndpoint} email={SITE.email} source={Astro.url.pathname} />

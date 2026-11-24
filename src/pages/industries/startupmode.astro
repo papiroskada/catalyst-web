@@ -81,9 +81,8 @@ const collage = [
     <div class="wrap smgrid">
       <div class="smcopy">
         <ol class="crumbs" aria-label="Breadcrumb"><li><a href="/">Home</a></li><li aria-current="page">StartupMode</li></ol>
-        <p class="eyebrow">A product we built for startups</p>
         <h1 id="hero-h">One workspace for work, rewards and ownership</h1>
-        <p class="lede">StartupMode brings tasks, timesheets, contributor rewards and equity into one system, so a founder-led team stops running the company from scattered tools and spreadsheets.</p>
+        <p class="lede">StartupMode is a product we built for startups. It brings tasks, timesheets, contributor rewards and equity into one system, so a founder-led team stops running the company from scattered tools and spreadsheets.</p>
         <p class="live"><a class="btn" href={PRODUCT} rel="noopener">Visit startupmode.app</a><a class="link" href={DOCS} rel="noopener">Read the docs</a></p>
         <div class="tags" aria-label="Covers"><span>Tasks</span><span>Timesheets</span><span>Token rewards</span><span>Vesting</span><span>Cap table</span><span>Share certificates</span></div>
       </div>
@@ -100,7 +99,7 @@ const collage = [
   </section>
 
   <section class="sec" id="walkthrough" aria-labelledby="walk-h"><div class="wrap">
-    <div class="bhead"><p class="eyebrow">How it works</p><h2 id="walk-h">From first hire to first share certificate.</h2><p>A founder opens a workspace, brings in the team and runs day-to-day work, rewards and ownership from the same place.</p></div>
+    <div class="bhead"><h2 id="walk-h">From first hire to first share certificate.</h2><p>A founder opens a workspace, brings in the team and runs day-to-day work, rewards and ownership from the same place.</p></div>
     <ol class="flow">
       {journey.map((j, i) => (
         <li style={`--i:${i}`}>
@@ -112,7 +111,7 @@ const collage = [
           <p>{j.text}</p>
           <div class="res" aria-hidden="true">
             {i === 0 && (
-              <div class="r-team"><span class="av" style="background:#C9D4F1">A</span><span class="av" style="background:#D8D0F0">M</span><span class="av" style="background:#CFE6DA">L</span><em>3 members invited</em></div>
+              <div class="r-team"><span class="av" style="background:var(--pn-2)">A</span><span class="av" style="background:var(--av-2)">M</span><span class="av" style="background:var(--av-3)">L</span><em>3 members invited</em></div>
             )}
             {i === 1 && (
               <div class="r-track"><span>To do</span><i></i><span class="on">In review</span><i></i><span>Done</span></div>
@@ -131,7 +130,7 @@ const collage = [
 
   <section class="sec feat" id="features" aria-labelledby="feat-h"><div class="wrap">
     <div class="feathead">
-      <div><p class="eyebrow">Inside the product</p><h2 id="feat-h">Three parts of a company, one system.</h2></div>
+      <div><h2 id="feat-h">Three parts of a company, one system.</h2></div>
       <div class="tablist" role="tablist" aria-label="Product areas">
         {features.map((f, i) => (
           <button type="button" role="tab" id={`tab-${f.id}`} aria-controls={`panel-${f.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{f.tab}</button>
@@ -154,7 +153,6 @@ const collage = [
 
   <section class="sec" id="all" aria-labelledby="all-h" style="padding-top:0"><div class="wrap capwrap">
     <div class="caphead">
-      <p class="eyebrow">What else it covers</p>
       <h2 id="all-h">Built for how small teams actually run.</h2>
       <p>Guides for founders and members live at <a class="link" href={DOCS} rel="noopener">docs.startupmode.app</a>.</p>
     </div>
@@ -166,7 +164,6 @@ const collage = [
   </div></section>
 
   <Contact
-    eyebrow="Need your own system?"
     title="Your team works its own way. Your software should too."
     lede="StartupMode is one product we built. Tell us how your company runs and we'll book a walkthrough of what we could build for you."
     cta="Book a walkthrough"
@@ -185,25 +182,25 @@ const collage = [
   .smhero .lede { margin: 24px 0 0; max-width: 46ch }
   .live { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin: 32px 0 0 }
   .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 36px }
-  .tags span { font-size: 14px; color: var(--navy); background: #E9EEFA; padding: 7px 14px; border-radius: 999px }
+  .tags span { font-size: 14px; color: var(--navy); background: var(--tint-4); padding: 7px 14px; border-radius: 999px }
   .smfig { margin: 0; min-width: 0 }
   /* collage of product details; pieces float in on load and drift slightly while scrolling */
   .collage { position: relative; aspect-ratio: 10 / 8 }
-  .piece { position: absolute; left: var(--x); top: var(--y); width: var(--w); border-radius: 14px; overflow: hidden; background: #111; border: 1px solid rgba(255, 255, 255, .08); box-shadow: 0 24px 50px rgba(26, 35, 64, .22), 0 2px 6px rgba(26, 35, 64, .1); transform: translateY(calc(var(--shift, 0px) * var(--depth) * -1)); animation: pin .8s cubic-bezier(.2, .7, .2, 1) calc(.1s + var(--i) * .1s) both }
-  .piece.big { box-shadow: 0 30px 70px rgba(26, 35, 64, .2) }
+  .piece { position: absolute; left: var(--x); top: var(--y); width: var(--w); border-radius: 14px; overflow: hidden; background: var(--night); border: 1px solid color-mix(in srgb, var(--surface) 8%, transparent); box-shadow: 0 24px 50px color-mix(in srgb, var(--navy) 22%, transparent), 0 2px 6px color-mix(in srgb, var(--navy) 10%, transparent); transform: translateY(calc(var(--shift, 0px) * var(--depth) * -1)); animation: pin .8s cubic-bezier(.2, .7, .2, 1) calc(.1s + var(--i) * .1s) both }
+  .piece.big { box-shadow: 0 30px 70px color-mix(in srgb, var(--navy) 20%, transparent) }
   .piece :global(img) { display: block; width: 100%; height: auto }
   @keyframes pin { from { opacity: 0; translate: 0 24px } }
   .note { margin: 14px 0 0; font-size: 13px; color: var(--mid) }
 
   /* how it works: four steps on one board, each showing what it produces */
-  .flow { position: relative; list-style: none; margin: 0; padding: 14px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; border-radius: 30px; background: #EBEEF7 }
-  .flow li { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 24px 22px 20px; border-radius: 20px; background: #fff }
+  .flow { position: relative; list-style: none; margin: 0; padding: 14px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; border-radius: 30px; background: var(--tint-7) }
+  .flow li { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 24px 22px 20px; border-radius: 20px; background: var(--surface) }
   /* arrow between steps */
-  .flow li:not(:last-child)::after { content: ""; position: absolute; z-index: 1; top: 34px; right: -21px; width: 28px; height: 28px; border-radius: 50%; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E8FD0' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 7l5 5-5 5'/%3E%3C/svg%3E") center / 16px no-repeat; box-shadow: 0 2px 8px rgba(26, 35, 64, .12) }
+  .flow li:not(:last-child)::after { content: ""; position: absolute; z-index: 1; top: 34px; right: -21px; width: 28px; height: 28px; border-radius: 50%; background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E8FD0' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 7l5 5-5 5'/%3E%3C/svg%3E") center / 16px no-repeat; box-shadow: 0 2px 8px color-mix(in srgb, var(--navy) 12%, transparent) }
   .ftop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px }
   .fi { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--soft); color: var(--navy) }
   .fi :global(svg) { width: 21px; height: 21px }
-  .fn { font: 600 26px/1 var(--display); color: #C9D0DF; letter-spacing: -.01em }
+  .fn { font: 600 26px/1 var(--display); color: var(--rule-2); letter-spacing: -.01em }
   .flow h3 { font: 600 20px/1.3 var(--body) }
   .flow p { margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--body-ink) }
   /* the result of each step, as a small piece of interface */
@@ -211,19 +208,19 @@ const collage = [
   .flow.anim .res > * { opacity: 0; transform: translateY(8px); transition: opacity .5s, transform .6s cubic-bezier(.2, .7, .2, 1); transition-delay: calc(.15s + var(--i) * .22s) }
   .flow.anim.in .res > * { opacity: 1; transform: none }
   .r-team { display: flex; align-items: center }
-  .r-team .av { display: grid; place-items: center; width: 28px; height: 28px; margin-right: -7px; border-radius: 50%; border: 2px solid #fff; font-size: 11px; font-weight: 600; color: var(--navy) }
+  .r-team .av { display: grid; place-items: center; width: 28px; height: 28px; margin-right: -7px; border-radius: 50%; border: 2px solid var(--surface); font-size: 11px; font-weight: 600; color: var(--navy) }
   .r-team em { margin-left: 16px; font-style: normal; font-weight: 500 }
   .r-track { display: flex; align-items: center; gap: 6px; width: 100% }
-  .r-track span { padding: 5px 9px; border-radius: 99px; background: #fff; color: var(--mid); font-weight: 500; white-space: nowrap }
-  .r-track span.on { background: var(--navy); color: #fff }
-  .r-track i { flex: 1; min-width: 6px; height: 2px; border-radius: 2px; background: #C9D0DF }
+  .r-track span { padding: 5px 9px; border-radius: 99px; background: var(--surface); color: var(--mid); font-weight: 500; white-space: nowrap }
+  .r-track span.on { background: var(--navy); color: var(--surface) }
+  .r-track i { flex: 1; min-width: 6px; height: 2px; border-radius: 2px; background: var(--rule-2) }
   .r-time { display: flex; align-items: center; gap: 8px; width: 100%; white-space: nowrap }
   .r-time :global(svg) { width: 16px; height: 16px; color: var(--mid) }
-  .r-time .ok { margin-left: auto; padding: 4px 10px; border-radius: 99px; background: #E3F1E6; color: #2F6B45; font-weight: 600 }
+  .r-time .ok { margin-left: auto; padding: 4px 10px; border-radius: 99px; background: var(--ok-soft); color: var(--ok); font-weight: 600 }
   .r-reward { display: flex; flex-direction: column; gap: 9px; width: 100% }
-  .tok { align-self: flex-start; padding: 4px 10px; border-radius: 99px; background: var(--soft); color: #2F4A86; font-weight: 600 }
+  .tok { align-self: flex-start; padding: 4px 10px; border-radius: 99px; background: var(--soft); color: var(--brand-2); font-weight: 600 }
   .vest { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; color: var(--mid) }
-  .vest b { height: 6px; border-radius: 4px; background: #DDE2EC; overflow: hidden }
+  .vest b { height: 6px; border-radius: 4px; background: var(--n-200); overflow: hidden }
   .vest b i { display: block; width: 25%; height: 100%; border-radius: 4px; background: var(--accent) }
   .vest em { font-style: normal; font-weight: 600; color: var(--ink) }
 
@@ -234,14 +231,14 @@ const collage = [
   .tablist { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; border-radius: 16px; background: var(--tint) }
   .tablist button { border: 0; background: none; padding: 11px 18px; border-radius: 11px; font: 500 15px var(--body); color: var(--body-ink); cursor: pointer; transition: background-color .25s, color .25s, box-shadow .25s }
   .tablist button:hover { color: var(--ink) }
-  .tablist button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 2px 8px rgba(26, 35, 64, .08) }
+  .tablist button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 2px 8px color-mix(in srgb, var(--navy) 8%, transparent) }
   .tablist button[aria-selected="true"]::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 9px; border-radius: 50%; background: var(--sm); vertical-align: 1px }
-  .tpanel { display: grid; grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr); gap: clamp(32px, 5vw, 72px); align-items: center; padding: clamp(24px, 3vw, 40px); border-radius: 28px; background: #fff; border: 1px solid var(--line) }
+  .tpanel { display: grid; grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr); gap: clamp(32px, 5vw, 72px); align-items: center; padding: clamp(24px, 3vw, 40px); border-radius: 28px; background: var(--surface); border: 1px solid var(--line) }
   .tpanel + .tpanel { margin-top: 24px }
   .ttext h3 { font: 600 clamp(26px, 2.6vw, 36px)/1.1 var(--display); letter-spacing: -.015em }
   .ttext > p { margin: 18px 0 0; font-size: 17px; line-height: 1.6; color: var(--body-ink) }
   .feat .ticks :global(svg) { color: var(--sm) }
-  .tshot { border-radius: 18px; overflow: hidden; padding: 28px 0 0 28px; background: radial-gradient(60% 60% at 90% 0%, rgba(110, 143, 208, .5), transparent 70%), #0F1222 }
+  .tshot { border-radius: 18px; overflow: hidden; padding: 28px 0 0 28px; background: radial-gradient(60% 60% at 90% 0%, color-mix(in srgb, var(--accent) 50%, transparent), transparent 70%), var(--night) }
   .tshot :global(img) { display: block; width: 100%; height: auto; border-radius: 10px 0 0 0 }
   /* with JavaScript only the selected panel shows; without it every panel is listed */
   .feat:not(.js) .tablist { display: none }
@@ -254,7 +251,7 @@ const collage = [
   /* capabilities: heading on the left, a ruled list on the right */
   .capwrap { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 40px 72px; align-items: start }
   .caphead h2 { font-size: clamp(30px, 3.4vw, 46px) }
-  .caphead p:not(.eyebrow) { margin: 20px 0 0; font-size: 17px; line-height: 1.6; color: var(--mid) }
+  .caphead p { margin: 20px 0 0; font-size: 17px; line-height: 1.6; color: var(--mid) }
   .caps { list-style: none; margin: 0; padding: 0 }
   .caps li { display: grid; grid-template-columns: 44px minmax(0, 200px) minmax(0, 1fr); gap: 8px 22px; align-items: start; padding: 26px 0; border-top: 1px solid var(--line) }
   .caps li:last-child { border-bottom: 1px solid var(--line) }
@@ -281,8 +278,8 @@ const collage = [
     .tablist::-webkit-scrollbar { display: none }
     .tablist button { flex: none; white-space: nowrap; padding: 10px 16px; font-size: 14px; background: var(--tint) }
     .tablist button::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%; background: transparent; vertical-align: 1px; transition: background-color .25s }
-    .tablist button[aria-selected="true"] { background: var(--navy); color: #fff; box-shadow: none }
-    .tablist button[aria-selected="true"]::before { margin-right: 8px; background: #fff }
+    .tablist button[aria-selected="true"] { background: var(--navy); color: var(--surface); box-shadow: none }
+    .tablist button[aria-selected="true"]::before { margin-right: 8px; background: var(--surface) }
     /* the panel only fades in: sliding it as well made the swap look jumpy on a phone */
     .feat.js .tpanel.on { animation-name: tfade }
   }
