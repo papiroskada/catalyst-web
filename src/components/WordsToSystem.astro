@@ -1,0 +1,20 @@
+---
+// Home page, right after the hero: who we are and how we start.
+// One large statement (the section's heading) and one paragraph. On desktop the section fills the
+// screen, with the text centred vertically in it.
+---
+<section class="about" id="about" aria-labelledby="about-h"><div class="wrap">
+  <h2 class="about-big" id="about-h">We are developers and designers who build the kind of system a company runs on day to day: orders, materials, production, deliveries.</h2>
+  <p class="about-text" id="approach">No off-the-shelf package to bend your business around. Before we build anything, we sit down with your team. We learn that sales calls it a job, not a project, and that the warehouse says partial when half an order has shipped. Those words, and the way work really moves between people, become the shape of your system.</p>
+</div></section>
+
+<style>
+  .about { display: flex; align-items: center; min-height: 100svh }
+  .about .wrap { width: 100%; padding-block: clamp(96px, 12vh, 140px) }
+  .about-big { margin: 0; font: 400 clamp(30px, 3.3vw, 48px)/1.25 var(--body); letter-spacing: -.015em; color: var(--ink); overflow-wrap: break-word; min-width: 0; text-wrap: pretty }
+  .about-text { margin: 48px 0 0; font-size: clamp(19px, 1.5vw, 22px); line-height: 1.6; color: var(--body-ink); text-indent: 3em; text-wrap: pretty }
+
+  /* tablets and phones: no full-screen stretch, just normal section spacing */
+  @media (max-width: 900px) { .about { display: block; min-height: 0 } .about .wrap { padding-block: 120px } .about-text { margin-top: 28px } }
+  @media (max-width: 640px) { .about .wrap { padding-block: 80px } .about-big { font-size: 26px } .about-text { margin-top: 20px; font-size: 18px; text-indent: 2em } }
+</style>

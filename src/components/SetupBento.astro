@@ -100,7 +100,7 @@ const hosting = [
   /* sheets: old files on the left feed one clean list on the right */
   .sheets-vis { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .8fr) minmax(0, 1fr); align-items: center; gap: 0; padding: 26px 28px; container-type: inline-size }
   .files { display: flex; flex-direction: column; gap: 10px; align-items: flex-start }
-  .file { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px 8px 9px; border-radius: 10px; background: var(--surface); box-shadow: 0 6px 16px color-mix(in srgb, var(--navy) 8%, transparent); font: 12.5px ui-monospace, "SF Mono", Menlo, monospace; color: var(--body-ink); transform: rotate(var(--r)); white-space: nowrap }
+  .file { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px 8px 9px; border-radius: 10px; background: var(--surface); box-shadow: 0 6px 16px color-mix(in srgb, var(--navy) 8%, transparent); font: 12.5px var(--mono); color: var(--body-ink); transform: rotate(var(--r)); white-space: nowrap }
   .file :global(svg) { width: 16px; height: 16px; color: var(--ok-2) }
   .flow { position: relative; height: 100%; min-height: 120px }
   .flow::before { content: ""; position: absolute; left: 8%; right: 8%; top: 50%; border-top: 2px dashed var(--rule-2) }

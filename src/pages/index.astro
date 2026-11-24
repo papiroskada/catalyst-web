@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
 import Contact from '../components/Contact.astro';
 import Icon from '../components/Icon.astro';
+import WordsToSystem from '../components/WordsToSystem.astro';
 import { HOME_FAQ, WORDS } from '../data/content';
 import { website, faqPage } from '../lib/schema';
 ---
@@ -24,20 +25,7 @@ import { website, faqPage } from '../lib/schema';
     </div></div>
   </section>
 
-  <section class="about" id="about" aria-labelledby="about-h"><div class="wrap">
-    <h2 id="about-h">We turn the way you work into software.</h2>
-    <p class="about-lede">We are developers and designers who build the kind of system a company runs on day to day: orders, materials, production, deliveries. We make it for businesses that want all their work in one place, shaped around how you actually work.</p>
-    <div class="agrid">
-      <div><h3>We know where it hurts</h3><p>Five versions of the same spreadsheet. Updates lost in someone's inbox. Nobody sure what's late. We've seen it up close, and we build to make it go away.</p></div>
-      <div><h3>Built for you, not for everyone</h3><p>No off-the-shelf package you have to bend your business around. Your steps, your names for things, your way of working.</p></div>
-      <div><h3>Your ideas, even the odd ones</h3><p>A step only your team has? A report nobody else would need? Bring it. If it helps you work, we'll find a way to build it.</p></div>
-    </div>
-  </div></section>
-
-  <section class="know" id="approach" aria-labelledby="know-h"><div class="wrap">
-    <h2 id="know-h">First, we get to know you</h2>
-    <p class="kbig"><span class="klead">Before we build anything,</span> we sit down with your team. We learn that sales calls it a <mark>job</mark>, not a project. That the warehouse says <mark>partial</mark> when half an order has shipped. That the owner just wants one place to see <mark>what's late</mark> this week. Those words, and the way work really moves between people, become the shape of your system.</p>
-  </div></section>
+  <WordsToSystem />
 
   <section class="sec words" id="words" aria-labelledby="words-h"><div class="wrap">
     <div class="words-head"><h2 id="words-h">Your words. Your flow.</h2><p class="wsub">We shape the system around you. A few examples of how that looks:</p></div>
@@ -89,19 +77,7 @@ import { website, faqPage } from '../lib/schema';
   .hero .lede { max-width: 44ch }
   .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; align-items: center; margin-top: 36px }
 
-  .about .wrap { padding-top: clamp(120px, 16vh, 180px) }
-  .about-lede { margin: 28px 0 0; font-size: clamp(18px, 1.6vw, 21px); line-height: 1.6; color: var(--body-ink) }
-  .agrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 4vw, 64px); margin-top: clamp(56px, 8vh, 88px) }
-  .agrid > div { position: relative; padding-top: 30px; display: flex; flex-direction: column; gap: 12px }
-  .agrid > div::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: 4px; background: linear-gradient(90deg, var(--g2) 0%, var(--g1) 30%, var(--accent) 50%, var(--g1) 70%, var(--g2) 100%) }
-  .agrid h3 { font-size: clamp(20px, 1.8vw, 24px); line-height: 1.2 }
-  .agrid p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--body-ink) }
 
-  .know .wrap { padding-block: clamp(180px, 26vh, 300px) }
-  .know h2 { font: 500 16px/1.4 var(--body); color: var(--mid); margin-bottom: 18px }
-  .kbig { margin: 0; font: 400 clamp(22px, 2.1vw, 30px)/1.45 var(--body); color: var(--ink-3); text-wrap: pretty }
-  .klead { display: block; font-family: var(--display); font-size: 1.45em; line-height: 1.1; font-weight: 600; letter-spacing: -.02em; color: var(--ink); margin-bottom: .35em }
-  .kbig mark { background: linear-gradient(transparent 12%, var(--soft-2) 12%, var(--soft-2) 92%, transparent 92%); color: var(--brand-2); padding: 0 .12em; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone }
 
   .words { --wh: calc(clamp(32px, 4vw, 56px) * 1.04 + 40px); background: var(--soft); padding-top: clamp(72px, 9vh, 110px) }
   .wsub { margin: 10px 0 0; font-size: clamp(18px, 1.6vw, 22px); line-height: 1.35; color: var(--mid) }
@@ -109,7 +85,7 @@ import { website, faqPage } from '../lib/schema';
   .wstack { display: flex; flex-direction: column; gap: 28px; padding-bottom: 40px }
   .wcard { position: sticky; z-index: 1; top: calc(var(--hh) + 28px + var(--wh) + 36px + var(--i) * 16px); display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 40px; min-height: min(560px, calc(100vh - var(--hh) - var(--wh) - 140px)); padding: 44px; border-radius: 32px; background: var(--surface); box-shadow: 0 -18px 40px color-mix(in srgb, var(--navy) 6%, transparent); transform-origin: 50% 0 }
   .wc-text { display: flex; flex-direction: column; gap: 18px; min-width: 0 }
-  .wcard h3 { font-size: clamp(32px, 3.4vw, 48px); line-height: 1.04; letter-spacing: -.02em; font-weight: 500 }
+  .wcard h3 { font: 600 clamp(24px, 2.2vw, 32px)/1.2 var(--body); letter-spacing: -.01em }
   .wc-d { margin: 0; font-size: 17px; line-height: 1.6; color: var(--body-ink); max-width: 44ch }
   .wc-chips { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 10px }
   .wc-chips li { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px 10px 14px; border: 1px solid color-mix(in srgb, var(--ink) 6%, transparent); border-radius: 999px; font-size: 15px }
@@ -126,7 +102,6 @@ import { website, faqPage } from '../lib/schema';
   .wdots { display: none }
 
   @media (max-width: 980px) {
-    .agrid { grid-template-columns: minmax(0, 1fr) }
     .wcard { grid-template-columns: minmax(0, 1fr); padding: 28px; top: calc(var(--hh) + 28px + var(--wh) + 36px + var(--i) * 10px) }
     .wc-chips { flex-direction: row; flex-wrap: wrap }
     .wc-panel { min-height: 300px }
@@ -134,16 +109,14 @@ import { website, faqPage } from '../lib/schema';
   /* phones: hero runs edge to edge (no side gaps); much tighter gaps between sections */
   @media (max-width: 640px) {
     .hero { margin: 0 }
-    .about .wrap { padding-top: 80px }
     .sec.build { padding-top: 80px !important } /* follows the tinted "Your words" band: full gap from its edge */
-    .know .wrap { padding-block: 80px }
     .wstack { padding-bottom: 0 }
-    /* "Your words" cards: one swipeable row with snap, the next card peeking in from the right */
+    /* "Your words" cards: one swipeable row with snap, one full-width card at a time; the dots show which */
     .words-head { position: static }
-    .wstack { flex-direction: row; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
+    .wstack { flex-direction: row; gap: 32px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
       margin-inline: -24px; padding-inline: 24px; scroll-padding-inline: 24px; scrollbar-width: none }
     .wstack::-webkit-scrollbar { display: none }
-    .wcard { position: relative; top: 0; flex: 0 0 86%; scroll-snap-align: start; scroll-snap-stop: always; box-shadow: none;
+    .wcard { position: relative; top: 0; flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always; box-shadow: none;
       transform-origin: 50% 50%; filter: none !important }
     /* card layout on phones: text, compact chips, photo, then the link under the photo */
     .wcard { display: flex; flex-direction: column; gap: 16px; padding: 24px }
